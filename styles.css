@@ -1,0 +1,211 @@
+@import url("https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600;7..72,700&display=swap");
+
+:root{
+  /* Paleta basada en el HTML original que compartiste */
+  --ink:#1a1207;
+  --bg:#ffffff;
+  --panel:#f8f9fa;
+  --gold:#8b6914;
+  --gold-lt:#c9a84c;
+  --red:#c00000;
+  --line:#e0e0e0;
+  --card:#ffffff;
+  --text:#1a1207;
+  --muted:#7c6d5c;
+
+  /* Literata se carga desde Google Fonts; si falla, usa una serif similar. */
+  --literata:"Literata", "Palatino Linotype", Palatino, Georgia, serif;
+  --ui:"Literata", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  color:var(--text);
+  font-family:var(--literata);
+  background:var(--bg);
+}
+
+.appbar{
+  background:var(--ink);
+  color:white;
+  padding:.85rem 1rem;
+  box-shadow:none;
+}
+
+.brand{
+  max-width:980px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  gap:.75rem;
+}
+
+.brand-mark{
+  width:38px;
+  height:38px;
+  border:1px solid rgba(255,255,255,.55);
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  color:var(--gold-lt);
+  font-size:1.2rem;
+}
+
+h1{
+  margin:0;
+  font-size:1.08rem;
+  font-weight:700;
+  letter-spacing:.03em;
+}
+
+.appbar p{
+  margin:.08rem 0 0;
+  color:var(--gold-lt);
+  font-family:var(--ui);
+  font-size:.78rem;
+}
+
+.shell{
+  max-width:980px;
+  margin:0 auto;
+  padding:1rem;
+}
+
+.mode-tabs{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:.5rem;
+  margin-bottom:.85rem;
+}
+
+.mode-tabs button{
+  min-height:46px;
+  border-radius:3px;
+  border:1px solid var(--line);
+  background:var(--bg);
+  color:var(--ink);
+  font-weight:700;
+  box-shadow:none;
+}
+
+.mode-tabs button.active{
+  color:var(--bg);
+  background:var(--red);
+  border-color:var(--red);
+}
+
+.controls{
+  display:flex;
+  gap:.75rem;
+  align-items:flex-end;
+  flex-wrap:wrap;
+  margin-bottom:.8rem;
+  padding:.85rem;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:3px;
+}
+
+label{
+  display:flex;
+  flex-direction:column;
+  gap:.25rem;
+  font-family:var(--ui);
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.07em;
+  color:var(--gold);
+  font-weight:800;
+}
+
+input, button{
+  font-family:var(--ui);
+  font-size:.95rem;
+}
+
+input[type=date]{
+  border:1px solid var(--line);
+  border-radius:3px;
+  background:white;
+  padding:.55rem .65rem;
+  min-height:42px;
+  color:var(--text);
+}
+
+button{
+  min-height:42px;
+  border:0;
+  border-radius:3px;
+  padding:.55rem .8rem;
+  background:white;
+  color:var(--ink);
+  cursor:pointer;
+  font-weight:700;
+  box-shadow:none;
+}
+
+button:hover{
+  filter:brightness(.97);
+}
+
+.tabs{
+  display:flex;
+  gap:.45rem;
+  overflow-x:auto;
+  padding:.25rem 0 .75rem;
+  scrollbar-width:thin;
+}
+
+.tabs.hidden{
+  display:none;
+}
+
+.tabs button{
+  white-space:nowrap;
+  color:var(--ink);
+  background:var(--bg);
+  border:1px solid var(--line);
+  font-size:.88rem;
+}
+
+.tabs button.active{
+  background:var(--gold);
+  border-color:var(--gold);
+  color:white;
+}
+
+.viewer-wrap{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:3px;
+  overflow:hidden;
+  box-shadow:none;
+}
+
+iframe{
+  display:block;
+  width:100%;
+  height:calc(100vh - 270px);
+  min-height:620px;
+  border:0;
+  background:white;
+}
+
+.note{
+  font-family:var(--ui);
+  font-size:.82rem;
+  color:var(--muted);
+  text-align:center;
+  margin:1rem 0 0;
+}
+
+@media(max-width:650px){
+  .shell{padding:.75rem}
+  .mode-tabs{gap:.4rem}
+  .mode-tabs button{font-size:.88rem}
+  .tabs{gap:.35rem}
+  .tabs button{font-size:.82rem;padding:.5rem .65rem}
+  iframe{height:calc(100vh - 265px);min-height:560px}
+}

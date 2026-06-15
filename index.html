@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Liturgia y Misal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="appbar">
+    <div class="brand">
+      <div class="brand-mark">✦</div>
+      <div>
+        <h1>Liturgia y Misal</h1>
+        <p>Consulta diaria para la oración</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="mode-tabs" aria-label="Tipo de consulta">
+      <button class="active" data-mode="liturgia">Liturgia de las Horas</button>
+      <button data-mode="misal">Misal</button>
+    </section>
+
+    <section class="controls">
+      <label>
+        Fecha
+        <input id="date" type="date">
+      </label>
+      <button id="today" type="button">Hoy</button>
+    </section>
+
+    <nav id="liturgia-tabs" class="tabs" aria-label="Horas litúrgicas">
+      <button class="active" data-key="invitatorio">Invitatorio</button>
+      <button data-key="oficio">Oficio</button>
+      <button data-key="laudes">Laudes</button>
+      <button data-key="tercia">Tercia</button>
+      <button data-key="sexta">Sexta</button>
+      <button data-key="nona">Nona</button>
+      <button data-key="visperas">Vísperas</button>
+      <button data-key="completas">Completas</button>
+    </nav>
+
+    <nav id="misal-tabs" class="tabs hidden" aria-label="Partes del Misal">
+      <button class="active" data-key="ritos">Ritos Iniciales</button>
+      <button data-key="palabra">Liturgia de la Palabra</button>
+      <button data-key="eucaristica">Liturgia Eucarística</button>
+    </nav>
+
+    <section class="viewer-wrap">
+      <iframe id="viewer" title="Consulta litúrgica"></iframe>
+    </section>
+
+    <p class="note">
+      El contenido se carga desde CEM. Esta página sólo organiza la navegación y conserva tu estilo visual.
+    </p>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
