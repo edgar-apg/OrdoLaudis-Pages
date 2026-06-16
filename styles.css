@@ -1,15 +1,20 @@
-/* OrdoLaudis — estilo alineado con SyntaxLaudis */
+/* OrdoLaudis — tema inspirado en la identidad visual dominicana/op.org
+   Enfoque: alto contraste, negro/blanco, dorado sobrio, grandes encabezados.
+*/
 
 :root {
-  --cream:   #f7f3ec;
-  --parch:   #ede5d0;
-  --gold:    #b8860b;
-  --gold2:   #d4a843;
-  --brown:   #5c3d1e;
-  --ink:     #2a1f0e;
-  --muted:   #8a7560;
-  --red:     #8b1a1a;
+  --black:   #070707;
+  --coal:    #151515;
+  --ink:     #18120c;
+  --ivory:   #f6f1e8;
+  --paper:   #fbf8f1;
   --white:   #ffffff;
+  --line:    #d8cbb8;
+  --gold:    #c9a14a;
+  --gold2:   #a77918;
+  --muted:   #7d715f;
+  --red:     #8b1a1a;
+  --shadow:  rgba(0,0,0,0.12);
 }
 
 *, *::before, *::after {
@@ -18,170 +23,216 @@
   padding: 0;
 }
 
-body {
-  background-color: var(--cream);
-  color: var(--ink);
-  font-family: 'EB Garamond', Georgia, serif;
-  font-size: 17px;
-  line-height: 1.7;
-  min-height: 100vh;
+html {
+  background: var(--ivory);
 }
 
-/* Texture overlay */
+body {
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    linear-gradient(180deg, #ffffff 0%, var(--ivory) 42%, #efe5d3 100%);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.65;
+}
+
+/* Sutil textura de papel, más discreta que en SyntaxLaudis */
 body::before {
   content: '';
   position: fixed;
   inset: 0;
   background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    radial-gradient(circle at 20% 10%, rgba(201,161,74,.08), transparent 26rem),
+    radial-gradient(circle at 85% 0%, rgba(0,0,0,.05), transparent 22rem),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='420' height='420' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E");
   pointer-events: none;
   z-index: 0;
 }
 
-/* Header */
+/* HERO / HEADER */
 header {
   position: relative;
   z-index: 1;
-  text-align: center;
-  padding: 3.2rem 2rem 2.25rem;
-  border-bottom: 1px solid var(--gold);
-  background: linear-gradient(180deg, var(--parch) 0%, var(--cream) 100%);
+  overflow: hidden;
+  min-height: 5rem;
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  padding: .62rem clamp(1rem, 5vw, 3.25rem);
+  color: var(--white);
+  background:
+    linear-gradient(112deg, rgba(7,7,7,.98) 0%, rgba(7,7,7,.96) 75%, rgba(247,243,236,.96) 75.2%, rgba(247,243,236,.96) 100%);
+  border-bottom: 3px solid var(--gold);
+}
+
+header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(201,161,74,.18), transparent 38%),
+    radial-gradient(circle at 20% 20%, rgba(255,255,255,.08), transparent 18rem);
+  pointer-events: none;
 }
 
 header::after {
-  content: '✠ ✠ ✠';
-  display: block;
-  color: var(--gold);
-  font-size: 0.75rem;
-  letter-spacing: 0.6em;
-  margin-top: 1rem;
+  content: '';
+  position: absolute;
+  right: clamp(.8rem, 4vw, 3.2rem);
+  bottom: .42rem;
+  color: rgba(7,7,7,.055);
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.7rem, 5vw, 3.7rem);
+  font-weight: 700;
+  letter-spacing: .08em;
+  line-height: 1;
+}
+
+.site-label,
+.cross-mark,
+h1,
+.subtitle {
+  max-width: 42rem;
+  margin-top: .22rem;
+  color: rgba(255,255,255,.82);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(.78rem, 1.15vw, .92rem);
+  line-height: 1.08;
 }
 
 .site-label {
   font-family: 'Cinzel', serif;
-  font-size: 0.7rem;
-  letter-spacing: 0.35em;
-  color: var(--muted);
+  font-size: .48rem;
+  letter-spacing: .18em;
+  color: var(--gold);
   text-transform: uppercase;
-  margin-bottom: 0.7rem;
+  margin-bottom: .22rem;
+  line-height: 1.05;
 }
 
 .cross-mark {
-  width: 3rem;
-  height: 3rem;
-  margin: 0 auto 0.75rem;
-  border: 1px solid rgba(184,134,11,0.55);
-  border-radius: 50%;
+  width: 1.75rem;
+  height: 1.75rem;
+  margin: 0 0 .32rem;
+  border: 1px solid rgba(201,161,74,.75);
   display: grid;
   place-items: center;
   color: var(--gold);
-  font-size: 1.25rem;
+  font-size: .78rem;
   line-height: 1;
-  background: rgba(255,255,255,0.28);
+  background: rgba(255,255,255,.045);
 }
 
 h1 {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(2rem, 5vw, 3.2rem);
-  font-weight: 600;
-  color: var(--brown);
-  letter-spacing: 0.04em;
-  line-height: 1.15;
+  max-width: none;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(1.75rem, 3.2vw, 2.6rem);
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: -.03em;
+  line-height: .9;
 }
 
 .subtitle {
-  font-family: 'Cormorant Garamond', serif;
+  max-width: 42rem;
+  margin-top: .75rem;
+  color: rgba(255,255,255,.82);
+  font-family: 'EB Garamond', Georgia, serif;
   font-style: italic;
-  font-size: 1.15rem;
-  color: var(--muted);
-  margin-top: 0.4rem;
+  font-size: clamp(1rem, 1.7vw, 1.2rem);
 }
 
-/* Layout */
+/* LAYOUT */
 main {
   position: relative;
   z-index: 1;
-  max-width: 900px;
+  width: min(1060px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: 2.5rem 1.5rem 4rem;
+  padding: 1rem 0 4rem;
 }
 
-/* Mode tabs */
+/* BOTONES PRINCIPALES */
 .mode-tabs {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0.85rem;
-  margin-bottom: 2rem;
+  gap: .9rem;
+  margin-bottom: 1.35rem;
+}
+
+button {
+  font: inherit;
 }
 
 .mode-tabs button,
 .tabs button,
 #today {
   font-family: 'Cinzel', serif;
-  border: 1px solid rgba(184,134,11,0.35);
-  border-radius: 2px;
-  background: rgba(255,255,255,0.45);
-  color: var(--brown);
+  border: 1px solid var(--black);
+  border-radius: 0;
+  background: var(--white);
+  color: var(--black);
   cursor: pointer;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  transition: transform .15s ease, background .15s ease, color .15s ease, border-color .15s ease;
 }
 
 .mode-tabs button {
-  min-height: 3.5rem;
-  padding: 0.85rem 1rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  min-height: 4.4rem;
+  padding: 1rem 1.1rem;
+  font-size: .9rem;
+  font-weight: 700;
+  letter-spacing: .13em;
   text-transform: uppercase;
 }
 
 .mode-tabs button:hover,
 .tabs button:hover,
 #today:hover {
-  background: rgba(184,134,11,0.08);
-  color: var(--red);
+  transform: translateY(-1px);
+  background: var(--ivory);
 }
 
 .mode-tabs button.active,
 .tabs button.active {
-  background: var(--brown);
-  border-color: var(--brown);
-  color: var(--cream);
+  background: var(--black);
+  border-color: var(--black);
+  color: var(--white);
 }
 
-/* Section-style date panel */
+/* PANEL DE FECHA */
 .section {
-  margin-bottom: 2rem;
-  border: 1px solid rgba(184,134,11,0.25);
-  border-radius: 2px;
-  overflow: hidden;
-  background: rgba(255,255,255,0.45);
+  margin-bottom: 1.35rem;
+  border: 1px solid var(--black);
+  background: rgba(255,255,255,.82);
+  box-shadow: 0 14px 35px rgba(0,0,0,.06);
 }
 
 .section-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.85rem 1.4rem;
-  background: linear-gradient(90deg, var(--parch), var(--cream));
-  border-bottom: 1px solid rgba(184,134,11,0.2);
+  padding: .8rem 1rem;
+  background: var(--black);
+  border-bottom: 1px solid var(--black);
+  color: var(--white);
 }
 
 .section-title {
   font-family: 'Cinzel', serif;
-  font-size: 0.85rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  color: var(--brown);
+  font-size: .76rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  color: var(--white);
   text-transform: uppercase;
 }
 
 .controls {
   display: flex;
-  gap: 0.8rem;
+  gap: .85rem;
   align-items: flex-end;
   flex-wrap: wrap;
-  padding: 1rem 1.4rem 1.25rem;
+  padding: 1rem;
 }
 
 .date-label {
@@ -189,35 +240,37 @@ main {
 }
 
 input[type="date"] {
-  min-height: 2.7rem;
-  padding: 0.55rem 0.75rem;
-  border: 1px solid rgba(184,134,11,0.35);
-  border-radius: 2px;
-  background: rgba(255,255,255,0.62);
+  min-height: 2.85rem;
+  padding: .55rem .75rem;
+  border: 1px solid var(--line);
+  background: var(--paper);
   color: var(--ink);
   font-family: 'EB Garamond', Georgia, serif;
-  font-size: 1rem;
+  font-size: 1.04rem;
   outline: none;
 }
 
 input[type="date"]:focus {
-  box-shadow: 0 0 0 3px rgba(184,134,11,0.15);
+  box-shadow: 0 0 0 3px rgba(201,161,74,.24);
+  border-color: var(--gold);
 }
 
 #today {
-  min-height: 2.7rem;
-  padding: 0.55rem 1rem;
-  font-size: 0.85rem;
-  font-weight: 600;
+  min-height: 2.85rem;
+  padding: .55rem 1rem;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
 }
 
-/* Hour / Missal tabs */
+/* TABS DE HORAS / MISAL */
 .tabs {
   display: flex;
-  gap: 0.6rem;
+  gap: .55rem;
   overflow-x: auto;
-  padding: 0.1rem 0 0.9rem;
-  margin-bottom: 0.75rem;
+  padding: .2rem 0 1rem;
+  margin-bottom: .35rem;
   scrollbar-width: thin;
 }
 
@@ -227,77 +280,120 @@ input[type="date"]:focus {
 
 .tabs button {
   white-space: nowrap;
-  padding: 0.62rem 0.85rem;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+  padding: .62rem .86rem;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .09em;
   text-transform: uppercase;
   flex: 0 0 auto;
+  border-color: rgba(7,7,7,.28);
 }
 
-/* Viewer */
+.tabs button.active {
+  border-color: var(--black);
+}
+
+/* VISOR */
 .viewer-wrap {
-  border: 1px solid rgba(184,134,11,0.25);
-  border-radius: 2px;
+  border: 1px solid var(--black);
   overflow: hidden;
-  background: rgba(255,255,255,0.45);
+  background: var(--white);
+  box-shadow: 0 20px 50px rgba(0,0,0,.10);
 }
 
 iframe {
   display: block;
   width: 100%;
-  height: calc(100vh - 270px);
-  min-height: 650px;
+  height: calc(100vh - 245px);
+  min-height: 680px;
   border: 0;
   background: white;
 }
 
-/* Footer */
+/* FOOTER */
 footer {
   position: relative;
   z-index: 1;
+  margin-top: .6rem;
   text-align: center;
-  padding: 1.5rem;
-  font-size: 0.82rem;
-  color: var(--muted);
+  padding: .65rem 1rem;
+  font-size: .76rem;
+  line-height: 1.25;
+  color: rgba(255,255,255,.72);
   font-style: italic;
-  border-top: 1px solid rgba(184,134,11,0.2);
+  background: var(--black);
+  border-top: 3px solid var(--gold);
 }
 
-/* Responsive */
-@media (max-width: 600px) {
+/* RESPONSIVE */
+@media (max-width: 760px) {
   header {
-    padding: 2.35rem 1rem 1.85rem;
+    min-height: 5.7rem;
+    justify-items: center;
+    text-align: center;
+    padding: .78rem .95rem;
+    background: rgba(7,7,7,.98);
+  }
+
+  header::after {
+    display: none;
+  }
+
+  .site-label {
+    font-size: .42rem;
+    letter-spacing: .12em;
+    margin-bottom: .2rem;
+    text-align: center;
   }
 
   .cross-mark {
-    width: 2.6rem;
-    height: 2.6rem;
-    font-size: 1.05rem;
+    margin: 0 auto .28rem;
+    width: 1.65rem;
+    height: 1.65rem;
+    font-size: .72rem;
+  }
+
+  h1 {
+    max-width: none;
+    font-size: clamp(1.55rem, 8vw, 2.05rem);
+    line-height: .95;
+    text-align: center;
+  }
+
+  .subtitle {
+    font-size: .72rem;
+    line-height: 1.1;
+    margin-top: .18rem;
+    text-align: center;
   }
 
   main {
-    padding: 1.6rem 1rem 3rem;
+    width: min(100% - 1rem, 1060px);
+    padding-top: .85rem;
   }
 
   .mode-tabs {
-    gap: 0.55rem;
-    margin-bottom: 1.4rem;
+    gap: .55rem;
+    margin-bottom: 1rem;
   }
 
   .mode-tabs button {
-    min-height: 3rem;
-    padding: 0.7rem 0.5rem;
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
+    min-height: 3.35rem;
+    padding: .65rem .45rem;
+    font-size: .68rem;
+    letter-spacing: .07em;
+  }
+
+  .section {
+    margin-bottom: 1rem;
   }
 
   .section-header {
-    padding: 0.8rem 1rem;
+    padding: .72rem .85rem;
   }
 
   .controls {
-    padding: 0.9rem 1rem 1rem;
+    padding: .85rem;
   }
 
   input[type="date"] {
@@ -305,16 +401,24 @@ footer {
   }
 
   .tabs {
-    gap: 0.45rem;
+    gap: .4rem;
+    padding-bottom: .75rem;
   }
 
   .tabs button {
-    padding: 0.55rem 0.7rem;
-    font-size: 0.72rem;
+    padding: .54rem .66rem;
+    font-size: .66rem;
+    letter-spacing: .06em;
   }
 
   iframe {
-    height: calc(100vh - 250px);
+    height: calc(100vh - 230px);
     min-height: 560px;
   }
+  footer {
+    padding: .55rem .75rem;
+    font-size: .7rem;
+    line-height: 1.2;
+  }
+
 }
