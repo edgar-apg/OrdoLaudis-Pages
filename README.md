@@ -6,7 +6,7 @@ El proyecto busca ayudar a la consulta cotidiana de los textos litúrgicos, espe
 
 ## Finalidad del proyecto 🙏
 
-OrdoLaudis no pretende sustituir los libros litúrgicos oficiales ni las aplicaciones oficiales existentes. Su finalidad es pastoral y práctica: ofrecer una forma accesible de consultar los textos litúrgicos del día y acompañar la oración personal o comunitaria.
+Ordo Laudis no pretende sustituir los libros litúrgicos oficiales ni las aplicaciones oficiales existentes. Su finalidad es pastoral y práctica: ofrecer una forma accesible de consultar los textos litúrgicos del día y acompañar la oración personal o comunitaria.
 
 La página incluye una pequeña guía de oración para orientar el uso del Invitatorio, el Oficio de lectura y Laudes, especialmente cuando se rezan como primera oración del día o en secuencia.
 
@@ -14,7 +14,7 @@ La página incluye una pequeña guía de oración para orientar el uso del Invit
 
 Los textos litúrgicos se consultan desde el sistema público de la **Conferencia del Episcopado Mexicano (CEM)**.
 
-OrdoLaudis es un visor no oficial. No pertenece a la CEM, no representa oficialmente a la CEM y no modifica la fuente litúrgica original. Cualquier error, interrupción, cambio de disponibilidad o variación en los textos consultados depende de la fuente externa correspondiente.
+Ordo Laudis es un visor no oficial. No pertenece a la CEM, no representa oficialmente a la CEM y no modifica la fuente litúrgica original. Cualquier error, interrupción, cambio de disponibilidad o variación en los textos consultados depende de la fuente externa correspondiente.
 
 ## Música ambiental 🎧
 
@@ -24,7 +24,7 @@ Las pistas musicales pertenecen a **Universfield** y fueron obtenidas desde **Pi
 
 ## Inspiración dominicana 🤍🖤
 
-OrdoLaudis está inspirado espiritualmente en el carisma dominicano, especialmente en la tradición de oración, estudio, comunidad y predicación vivida también por las **Fraternidades Laicales Dominicanas** 🏁.
+Ordo Laudis está inspirado espiritualmente en el carisma dominicano, especialmente en la tradición de oración, estudio, comunidad y predicación vivida también por las **Fraternidades Laicales Dominicanas** 🏁.
 
 La intención del proyecto es servir a la vida de oración y ayudar a que la liturgia pueda ser rezada con mayor conciencia, belleza y sencillez.
 
