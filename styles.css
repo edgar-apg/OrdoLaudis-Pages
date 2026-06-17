@@ -77,7 +77,7 @@ header::before {
 }
 
 header::after {
-  content: 'VERITAS';
+  content: '';
   position: absolute;
   right: clamp(.8rem, 4vw, 3.2rem);
   bottom: .42rem;
@@ -93,13 +93,8 @@ header::after {
 .cross-mark,
 h1,
 .subtitle {
-  max-width: 42rem;
-  margin-top: .22rem;
-  color: rgba(255,255,255,.82);
-  font-family: 'EB Garamond', Georgia, serif;
-  font-style: italic;
-  font-size: clamp(.78rem, 1.15vw, .92rem);
-  line-height: 1.08;
+  position: relative;
+  z-index: 1;
 }
 
 .site-label {
@@ -137,11 +132,12 @@ h1 {
 
 .subtitle {
   max-width: 42rem;
-  margin-top: .75rem;
+  margin-top: .22rem;
   color: rgba(255,255,255,.82);
   font-family: 'EB Garamond', Georgia, serif;
   font-style: italic;
-  font-size: clamp(1rem, 1.7vw, 1.2rem);
+  font-size: clamp(.78rem, 1.15vw, .92rem);
+  line-height: 1.08;
 }
 
 /* LAYOUT */
@@ -396,6 +392,49 @@ input[type="date"]:focus {
   background: rgba(255,255,255,.92);
 }
 
+
+.guide-toggle {
+  width: 100%;
+  border: 0;
+  border-radius: 0;
+  cursor: pointer;
+  text-align: left;
+  font: inherit;
+}
+
+.guide-summary {
+  color: rgba(255,255,255,.72);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: .82rem;
+  font-style: italic;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.guide-summary::after {
+  content: ' ▾';
+  color: var(--gold);
+  font-style: normal;
+}
+
+.guide-section.collapsed .guide-summary::after {
+  content: ' ▸';
+}
+
+.guide-section.collapsed .guide-options,
+.guide-section.collapsed .guide-note {
+  display: none;
+}
+
+.guide-section.collapsed .guide-status:not(.hidden) {
+  padding: .58rem .8rem;
+  background: rgba(255,255,255,.92);
+}
+
+.hidden {
+  display: none !important;
+}
+
 /* TABS DE HORAS / MISAL */
 .tabs {
   display: flex;
@@ -433,7 +472,15 @@ input[type="date"]:focus {
   box-shadow: 0 20px 50px rgba(0,0,0,.10);
 }
 
-iframe {
+  .guide-summary {
+    font-size: .74rem;
+  }
+
+  .guide-section.collapsed .guide-status:not(.hidden) {
+    padding: .55rem .7rem;
+  }
+
+  iframe {
   display: block;
   width: 100%;
   height: calc(100vh - 245px);
@@ -443,43 +490,51 @@ iframe {
 }
 
 .music-panel {
-  margin-bottom: 1rem;
-  display: flex;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 1rem auto;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: .8rem;
-  padding: .62rem .85rem;
+  justify-content: flex-end;
+  gap: .45rem;
+  padding: .34rem;
   border: 1px solid var(--black);
-  background: rgba(255,255,255,.86);
-  box-shadow: 0 14px 35px rgba(0,0,0,.045);
+  background: rgba(255,255,255,.88);
+  box-shadow: 0 10px 26px rgba(0,0,0,.04);
 }
 
 .music-copy {
+  display: none;
   min-width: 0;
-  display: grid;
   gap: .05rem;
+  padding: 0 .45rem 0 .3rem;
+}
+
+.music-panel.is-playing .music-copy {
+  display: grid;
 }
 
 .music-title {
   color: var(--ink);
-  font-size: .78rem;
+  font-size: .72rem;
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.05;
 }
 
 .music-track {
   color: var(--muted);
-  font-size: .72rem;
-  line-height: 1.15;
+  font-size: .68rem;
+  line-height: 1.08;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  max-width: min(48vw, 20rem);
 }
 
 .music-actions {
   display: flex;
   align-items: center;
-  gap: .45rem;
+  gap: .35rem;
   flex-shrink: 0;
 }
 
@@ -487,10 +542,12 @@ iframe {
   border: 1px solid var(--black);
   background: var(--black);
   color: var(--white);
-  padding: .42rem .68rem;
-  min-height: 2rem;
-  font-family: var(--font, 'Literata', Georgia, serif);
-  font-size: .76rem;
+  padding: .34rem .58rem;
+  min-height: 1.85rem;
+  font-family: 'Cinzel', serif;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .05em;
   cursor: pointer;
 }
 
@@ -499,9 +556,18 @@ iframe {
   color: var(--black);
 }
 
+#music-next {
+  display: none;
+  padding-inline: .48rem;
+}
+
+.music-panel.is-playing #music-next {
+  display: inline-block;
+}
+
 .music-panel.is-playing {
   border-color: var(--gold);
-  box-shadow: 0 0 0 2px rgba(201,161,74,.16), 0 14px 35px rgba(0,0,0,.045);
+  box-shadow: 0 0 0 2px rgba(201,161,74,.14), 0 10px 26px rgba(0,0,0,.04);
 }
 
 /* FOOTER */
@@ -559,26 +625,28 @@ footer {
   }
 
   .music-panel {
-  align-items: stretch;
-  flex-direction: column;
-  text-align: center;
-  gap: .55rem;
-  padding: .58rem .7rem;
-}
+    margin: 0 auto 1rem;
+    justify-content: center;
+  }
 
-.music-actions {
-  justify-content: center;
-}
+  .music-panel.is-playing {
+    width: 100%;
+    justify-content: space-between;
+  }
 
-.music-actions button {
-  font-size: .72rem;
-  min-height: 1.9rem;
-  padding: .38rem .62rem;
-}
+  .music-track {
+    max-width: 52vw;
+  }
 
-.music-track {
-  white-space: normal;
-}
+  .music-actions {
+    justify-content: center;
+  }
+
+  .music-actions button {
+    font-size: .66rem;
+    min-height: 1.8rem;
+    padding: .34rem .52rem;
+  }
 
   header::after {
     display: none;

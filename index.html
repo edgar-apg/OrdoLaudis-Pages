@@ -6,15 +6,15 @@
   <title>OrdoLaudis — Liturgia y Misal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Cinzel:wght@500;600;700&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=guia-nota-legible">
+  <link rel="stylesheet" href="./styles.css?v=paneles-misal-1">
 </head>
 <body>
 
 <header>
-  <p class="site-label">Liturgia de las Horas y Misal diario - México</p>
+  <p class="site-label">Laudare, Benedicere, Praedicare — in Rete.</p>
   <div class="cross-mark">✥</div>
   <h1>Ordo Laudis</h1>
-  <p class="subtitle">Laudare, Benedicere, Praedicare — in Rete.</p>
+  <p class="subtitle">Liturgia de las Horas y Misal diario - México</p>
 </header>
 
 <main>
@@ -34,10 +34,11 @@
     </div>
   </section>
 
-  <section id="prayer-guide" class="section guide-section">
-    <div class="section-header static">
-      <span class="section-title">Modo de oración</span>
-    </div>
+  <section id="prayer-guide" class="section guide-section collapsed">
+    <button id="guide-toggle" class="section-header guide-toggle" type="button" aria-expanded="false">
+      <span class="section-title">Guía litúrgica</span>
+      <span id="guide-summary" class="guide-summary">Consulta rápida</span>
+    </button>
 
     <div class="guide-options">
       <button type="button" class="guide-card" data-sequence="laudes-first">
@@ -79,17 +80,58 @@
     </p>
   </section>
 
-  <section class="music-panel" aria-label="Música ambiental">
-  <div class="music-copy">
-    <span class="music-title">Música ambiental</span>
-    <span id="music-track" class="music-track">Universfield / Pixabay</span>
-  </div>
+  <section id="misal-guide" class="section guide-section collapsed hidden">
+    <button id="misal-guide-toggle" class="section-header guide-toggle" type="button" aria-expanded="false">
+      <span class="section-title">Guía del Misal</span>
+      <span id="misal-guide-summary" class="guide-summary">Consulta rápida</span>
+    </button>
 
-  <div class="music-actions">
-    <button id="music-toggle" type="button">♪ Música</button>
-    <button id="music-next" type="button" title="Otra pista">⏭</button>
-  </div>
-</section>
+    <div class="guide-options">
+      <button type="button" class="guide-card" data-misal-sequence="misa-habitual">
+        <span class="guide-title">Misa habitual</span>
+        <span class="guide-path">Ritos → Palabra → Eucaristía</span>
+      </button>
+
+      <button type="button" class="guide-card" data-misal-sequence="misa-visperas">
+        <span class="guide-title">Misa con Vísperas</span>
+        <span class="guide-path">Vísperas → Ritos → Palabra → Eucaristía</span>
+      </button>
+
+      <button type="button" class="guide-card active" data-misal-sequence="quick">
+        <span class="guide-title">Consulta rápida</span>
+        <span class="guide-path">Elegir una parte directamente</span>
+      </button>
+    </div>
+
+    <div id="misal-guide-status" class="guide-status hidden">
+      <div>
+        <span id="misal-guide-step-label">Paso 1 de 3</span>
+        <strong id="misal-guide-current-title">Ritos iniciales</strong>
+      </div>
+
+      <div class="guide-actions">
+        <button id="misal-guide-prev" type="button">Anterior</button>
+        <button id="misal-guide-next" type="button">Siguiente</button>
+        <button id="misal-guide-exit" type="button">Salir</button>
+      </div>
+    </div>
+
+    <p id="misal-guide-note" class="guide-note hidden">
+      Al unir Vísperas con la Misa, la forma concreta depende de las rúbricas y de quien preside. Usa esta guía como apoyo de consulta, no como sustituto de las indicaciones litúrgicas de la celebración.
+    </p>
+  </section>
+
+  <section class="music-panel" aria-label="Música ambiental">
+    <div class="music-copy">
+      <span class="music-title">Música ambiental</span>
+      <span id="music-track" class="music-track">Universfield / Pixabay</span>
+    </div>
+
+    <div class="music-actions">
+      <button id="music-toggle" type="button">♪ Música</button>
+      <button id="music-next" type="button" title="Otra pista">⏭</button>
+    </div>
+  </section>
 
   <nav id="liturgia-tabs" class="tabs" aria-label="Horas litúrgicas">
     <button class="active" data-key="invitatorio">Invitatorio</button>
@@ -130,6 +172,6 @@
   </a>
 </footer>
 
-<script src="app.js?v=guia-liturgica-1"></script>
+<script src="app.js?v=paneles-misal-1"></script>
 </body>
 </html>

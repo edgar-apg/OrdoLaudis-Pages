@@ -26,17 +26,49 @@ const DEFAULT_KEY = {
   misal: "ritos"
 };
 
-const guideSequences = {
-  "laudes-first": ["invitatorio", "laudes"],
-  "oficio-first": ["invitatorio", "oficio"],
-  "oficio-laudes": ["invitatorio", "oficio", "laudes"],
+const liturgyGuideSequences = {
+  "laudes-first": [
+    { mode: "liturgia", key: "invitatorio", label: "Invitatorio" },
+    { mode: "liturgia", key: "laudes", label: "Laudes" }
+  ],
+  "oficio-first": [
+    { mode: "liturgia", key: "invitatorio", label: "Invitatorio" },
+    { mode: "liturgia", key: "oficio", label: "Oficio de lectura" }
+  ],
+  "oficio-laudes": [
+    { mode: "liturgia", key: "invitatorio", label: "Invitatorio" },
+    { mode: "liturgia", key: "oficio", label: "Oficio de lectura" },
+    { mode: "liturgia", key: "laudes", label: "Laudes" }
+  ],
   "quick": []
 };
 
-const guideLabels = {
-  invitatorio: "Invitatorio",
-  oficio: "Oficio de lectura",
-  laudes: "Laudes"
+const liturgyGuideNames = {
+  "laudes-first": "Laudes primero",
+  "oficio-first": "Oficio primero",
+  "oficio-laudes": "Oficio + Laudes",
+  "quick": "Consulta rápida"
+};
+
+const misalGuideSequences = {
+  "misa-habitual": [
+    { mode: "misal", key: "ritos", label: "Ritos iniciales" },
+    { mode: "misal", key: "palabra", label: "Liturgia de la Palabra" },
+    { mode: "misal", key: "eucaristica", label: "Liturgia Eucarística" }
+  ],
+  "misa-visperas": [
+    { mode: "liturgia", key: "visperas", label: "Vísperas" },
+    { mode: "misal", key: "ritos", label: "Ritos iniciales" },
+    { mode: "misal", key: "palabra", label: "Liturgia de la Palabra" },
+    { mode: "misal", key: "eucaristica", label: "Liturgia Eucarística" }
+  ],
+  "quick": []
+};
+
+const misalGuideNames = {
+  "misa-habitual": "Misa habitual",
+  "misa-visperas": "Misa con Vísperas",
+  "quick": "Consulta rápida"
 };
 
 let activeMode = "liturgia";
@@ -44,8 +76,11 @@ let activeKey = {
   liturgia: DEFAULT_KEY.liturgia,
   misal: DEFAULT_KEY.misal
 };
-let activeGuide = "quick";
-let guideStep = 0;
+
+let activeLiturgyGuide = "quick";
+let liturgyGuideStep = 0;
+let activeMisalGuide = "quick";
+let misalGuideStep = 0;
 
 const dateInput = document.getElementById("date");
 const todayButton = document.getElementById("today");
@@ -53,8 +88,11 @@ const viewer = document.getElementById("viewer");
 const modeButtons = document.querySelectorAll(".mode-tabs button");
 const liturgiaTabs = document.getElementById("liturgia-tabs");
 const misalTabs = document.getElementById("misal-tabs");
+
 const prayerGuide = document.getElementById("prayer-guide");
-const guideCards = document.querySelectorAll(".guide-card");
+const guideToggle = document.getElementById("guide-toggle");
+const guideSummary = document.getElementById("guide-summary");
+const guideCards = document.querySelectorAll("[data-sequence]");
 const guideStatus = document.getElementById("guide-status");
 const guideNote = document.getElementById("guide-note");
 const guideStepLabel = document.getElementById("guide-step-label");
@@ -62,6 +100,18 @@ const guideCurrentTitle = document.getElementById("guide-current-title");
 const guidePrev = document.getElementById("guide-prev");
 const guideNext = document.getElementById("guide-next");
 const guideExit = document.getElementById("guide-exit");
+
+const misalGuide = document.getElementById("misal-guide");
+const misalGuideToggle = document.getElementById("misal-guide-toggle");
+const misalGuideSummary = document.getElementById("misal-guide-summary");
+const misalGuideCards = document.querySelectorAll("[data-misal-sequence]");
+const misalGuideStatus = document.getElementById("misal-guide-status");
+const misalGuideNote = document.getElementById("misal-guide-note");
+const misalGuideStepLabel = document.getElementById("misal-guide-step-label");
+const misalGuideCurrentTitle = document.getElementById("misal-guide-current-title");
+const misalGuidePrev = document.getElementById("misal-guide-prev");
+const misalGuideNext = document.getElementById("misal-guide-next");
+const misalGuideExit = document.getElementById("misal-guide-exit");
 
 function localDateString(date = new Date()) {
   const year = date.getFullYear();
@@ -81,6 +131,12 @@ function updateViewer() {
   viewer.src = buildUrl();
 }
 
+function setGuideExpanded(section, toggle, expanded) {
+  if (!section || !toggle) return;
+  section.classList.toggle("collapsed", !expanded);
+  toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+}
+
 function updateTabs() {
   modeButtons.forEach(button => {
     button.classList.toggle("active", button.dataset.mode === activeMode);
@@ -89,8 +145,13 @@ function updateTabs() {
   liturgiaTabs.classList.toggle("hidden", activeMode !== "liturgia");
   misalTabs.classList.toggle("hidden", activeMode !== "misal");
 
+  const misalGuideActive = activeMisalGuide !== "quick";
   if (prayerGuide) {
-    prayerGuide.style.display = activeMode === "liturgia" ? "" : "none";
+    prayerGuide.style.display = activeMode === "liturgia" && !misalGuideActive ? "" : "none";
+  }
+
+  if (misalGuide) {
+    misalGuide.classList.toggle("hidden", !(activeMode === "misal" || misalGuideActive));
   }
 
   document.querySelectorAll("#liturgia-tabs button").forEach(button => {
@@ -102,13 +163,24 @@ function updateTabs() {
   });
 }
 
-function setMode(mode) {
+function resetLiturgyGuide() {
+  activeLiturgyGuide = "quick";
+  liturgyGuideStep = 0;
+  updateLiturgyGuideUI();
+}
+
+function resetMisalGuide() {
+  activeMisalGuide = "quick";
+  misalGuideStep = 0;
+  updateMisalGuideUI();
+}
+
+function setMode(mode, fromGuide = false) {
   activeMode = mode;
 
-  if (activeMode === "misal") {
-    activeGuide = "quick";
-    guideStep = 0;
-    updateGuideUI();
+  if (!fromGuide) {
+    if (mode === "liturgia") resetMisalGuide();
+    if (mode === "misal") resetLiturgyGuide();
   }
 
   updateTabs();
@@ -119,22 +191,29 @@ function setKey(mode, key, fromGuide = false) {
   activeMode = mode;
   activeKey[mode] = key;
 
-  if (mode === "liturgia" && !fromGuide) {
-    activeGuide = "quick";
-    guideStep = 0;
-    updateGuideUI();
+  if (!fromGuide) {
+    resetLiturgyGuide();
+    resetMisalGuide();
   }
 
   updateTabs();
   updateViewer();
 }
 
-function updateGuideUI() {
-  const sequence = guideSequences[activeGuide] || [];
+function updateLiturgyGuideUI() {
+  const sequence = liturgyGuideSequences[activeLiturgyGuide] || [];
 
   guideCards.forEach(card => {
-    card.classList.toggle("active", card.dataset.sequence === activeGuide);
+    card.classList.toggle("active", card.dataset.sequence === activeLiturgyGuide);
   });
+
+  if (guideSummary) {
+    if (!sequence.length) {
+      guideSummary.textContent = "Consulta rápida";
+    } else {
+      guideSummary.textContent = `${liturgyGuideNames[activeLiturgyGuide]} · Paso ${liturgyGuideStep + 1}/${sequence.length}`;
+    }
+  }
 
   if (!sequence.length) {
     guideStatus.classList.add("hidden");
@@ -142,28 +221,81 @@ function updateGuideUI() {
     return;
   }
 
-  const currentKey = sequence[guideStep];
+  const current = sequence[liturgyGuideStep];
   guideStatus.classList.remove("hidden");
-  guideStepLabel.textContent = `Paso ${guideStep + 1} de ${sequence.length}`;
-  guideCurrentTitle.textContent = guideLabels[currentKey] || currentKey;
-  guidePrev.disabled = guideStep === 0;
-  guideNext.textContent = guideStep === sequence.length - 1 ? "Terminar" : "Siguiente";
-  guideNote.classList.toggle("hidden", activeGuide !== "oficio-laudes");
+  guideStepLabel.textContent = `Paso ${liturgyGuideStep + 1} de ${sequence.length}`;
+  guideCurrentTitle.textContent = current.label;
+  guidePrev.disabled = liturgyGuideStep === 0;
+  guideNext.textContent = liturgyGuideStep === sequence.length - 1 ? "Terminar" : "Siguiente";
+  guideNote.classList.toggle("hidden", activeLiturgyGuide !== "oficio-laudes");
 }
 
-function startGuide(sequenceName) {
-  activeGuide = sequenceName;
-  guideStep = 0;
+function updateMisalGuideUI() {
+  const sequence = misalGuideSequences[activeMisalGuide] || [];
 
-  const sequence = guideSequences[activeGuide] || [];
+  misalGuideCards.forEach(card => {
+    card.classList.toggle("active", card.dataset.misalSequence === activeMisalGuide);
+  });
 
-  if (sequence.length) {
-    setKey("liturgia", sequence[guideStep], true);
-  } else {
-    setMode("liturgia");
+  if (misalGuideSummary) {
+    if (!sequence.length) {
+      misalGuideSummary.textContent = "Consulta rápida";
+    } else {
+      misalGuideSummary.textContent = `${misalGuideNames[activeMisalGuide]} · Paso ${misalGuideStep + 1}/${sequence.length}`;
+    }
   }
 
-  updateGuideUI();
+  if (!sequence.length) {
+    misalGuideStatus.classList.add("hidden");
+    misalGuideNote.classList.add("hidden");
+    return;
+  }
+
+  const current = sequence[misalGuideStep];
+  misalGuideStatus.classList.remove("hidden");
+  misalGuideStepLabel.textContent = `Paso ${misalGuideStep + 1} de ${sequence.length}`;
+  misalGuideCurrentTitle.textContent = current.label;
+  misalGuidePrev.disabled = misalGuideStep === 0;
+  misalGuideNext.textContent = misalGuideStep === sequence.length - 1 ? "Terminar" : "Siguiente";
+  misalGuideNote.classList.toggle("hidden", activeMisalGuide !== "misa-visperas");
+}
+
+function startLiturgyGuide(sequenceName) {
+  resetMisalGuide();
+  activeLiturgyGuide = sequenceName;
+  liturgyGuideStep = 0;
+
+  const sequence = liturgyGuideSequences[activeLiturgyGuide] || [];
+
+  if (sequence.length) {
+    const first = sequence[liturgyGuideStep];
+    setKey(first.mode, first.key, true);
+    setGuideExpanded(prayerGuide, guideToggle, false);
+  } else {
+    setMode("liturgia", true);
+  }
+
+  updateLiturgyGuideUI();
+  updateTabs();
+}
+
+function startMisalGuide(sequenceName) {
+  resetLiturgyGuide();
+  activeMisalGuide = sequenceName;
+  misalGuideStep = 0;
+
+  const sequence = misalGuideSequences[activeMisalGuide] || [];
+
+  if (sequence.length) {
+    const first = sequence[misalGuideStep];
+    setKey(first.mode, first.key, true);
+    setGuideExpanded(misalGuide, misalGuideToggle, false);
+  } else {
+    setMode("misal", true);
+  }
+
+  updateMisalGuideUI();
+  updateTabs();
 }
 
 modeButtons.forEach(button => {
@@ -184,41 +316,94 @@ document.querySelectorAll("#misal-tabs button").forEach(button => {
   });
 });
 
+if (guideToggle) {
+  guideToggle.addEventListener("click", () => {
+    const expanded = prayerGuide.classList.contains("collapsed");
+    setGuideExpanded(prayerGuide, guideToggle, expanded);
+  });
+}
+
 guideCards.forEach(card => {
   card.addEventListener("click", () => {
-    startGuide(card.dataset.sequence);
+    startLiturgyGuide(card.dataset.sequence);
   });
 });
 
 guidePrev.addEventListener("click", () => {
-  const sequence = guideSequences[activeGuide] || [];
-  if (!sequence.length || guideStep === 0) return;
+  const sequence = liturgyGuideSequences[activeLiturgyGuide] || [];
+  if (!sequence.length || liturgyGuideStep === 0) return;
 
-  guideStep--;
-  setKey("liturgia", sequence[guideStep], true);
-  updateGuideUI();
+  liturgyGuideStep--;
+  const current = sequence[liturgyGuideStep];
+  setKey(current.mode, current.key, true);
+  updateLiturgyGuideUI();
 });
 
 guideNext.addEventListener("click", () => {
-  const sequence = guideSequences[activeGuide] || [];
+  const sequence = liturgyGuideSequences[activeLiturgyGuide] || [];
   if (!sequence.length) return;
 
-  if (guideStep >= sequence.length - 1) {
-    activeGuide = "quick";
-    guideStep = 0;
-    updateGuideUI();
+  if (liturgyGuideStep >= sequence.length - 1) {
+    resetLiturgyGuide();
+    updateTabs();
     return;
   }
 
-  guideStep++;
-  setKey("liturgia", sequence[guideStep], true);
-  updateGuideUI();
+  liturgyGuideStep++;
+  const current = sequence[liturgyGuideStep];
+  setKey(current.mode, current.key, true);
+  updateLiturgyGuideUI();
 });
 
 guideExit.addEventListener("click", () => {
-  activeGuide = "quick";
-  guideStep = 0;
-  updateGuideUI();
+  resetLiturgyGuide();
+  updateTabs();
+});
+
+if (misalGuideToggle) {
+  misalGuideToggle.addEventListener("click", () => {
+    const expanded = misalGuide.classList.contains("collapsed");
+    setGuideExpanded(misalGuide, misalGuideToggle, expanded);
+  });
+}
+
+misalGuideCards.forEach(card => {
+  card.addEventListener("click", () => {
+    startMisalGuide(card.dataset.misalSequence);
+  });
+});
+
+misalGuidePrev.addEventListener("click", () => {
+  const sequence = misalGuideSequences[activeMisalGuide] || [];
+  if (!sequence.length || misalGuideStep === 0) return;
+
+  misalGuideStep--;
+  const current = sequence[misalGuideStep];
+  setKey(current.mode, current.key, true);
+  updateMisalGuideUI();
+});
+
+misalGuideNext.addEventListener("click", () => {
+  const sequence = misalGuideSequences[activeMisalGuide] || [];
+  if (!sequence.length) return;
+
+  if (misalGuideStep >= sequence.length - 1) {
+    resetMisalGuide();
+    setMode("misal", true);
+    updateTabs();
+    return;
+  }
+
+  misalGuideStep++;
+  const current = sequence[misalGuideStep];
+  setKey(current.mode, current.key, true);
+  updateMisalGuideUI();
+});
+
+misalGuideExit.addEventListener("click", () => {
+  resetMisalGuide();
+  setMode("misal", true);
+  updateTabs();
 });
 
 dateInput.addEventListener("change", updateViewer);
@@ -229,10 +414,14 @@ todayButton.addEventListener("click", () => {
 });
 
 dateInput.value = localDateString();
-updateGuideUI();
+setGuideExpanded(prayerGuide, guideToggle, false);
+setGuideExpanded(misalGuide, misalGuideToggle, false);
+updateLiturgyGuideUI();
+updateMisalGuideUI();
 updateTabs();
 updateViewer();
 
+/* Música ambiental aleatoria */
 const musicTracks = [
   { src: "audio/universfield-relaxation-for-relaxing-145469.mp3", title: "Relaxation for Relaxing" },
   { src: "audio/universfield-serene-atmosphere-231725.mp3", title: "Serene Atmosphere" },
