@@ -26,6 +26,108 @@ const DEFAULT_KEY = {
   misal: "ritos"
 };
 
+const DOMINICAN_SANTORAL_SOURCE = "https://www.op.org.ar/nosotros/santos-y-santas/";
+const DOMINICAN_SANTORAL = {
+  "01-28": [
+    [
+      "Santo Tomás de Aquino",
+      "Presbítero y doctor de la Iglesia",
+      "https://www.op.org.ar/santo-tomas-de-aquino/"
+    ]
+  ],
+  "04-05": [
+    [
+      "San Vicente Ferrer",
+      "Presbítero",
+      "https://www.op.org.ar/nosotros/santos-y-santas/"
+    ]
+  ],
+  "04-29": [
+    [
+      "Santa Catalina de Siena",
+      "Virgen y doctora de la Iglesia",
+      "https://www.op.org.ar/nosotros/santos-y-santas/"
+    ]
+  ],
+  "04-30": [
+    [
+      "San Pío V",
+      "Papa",
+      "https://www.op.org.ar/nosotros/santos-y-santas/"
+    ]
+  ],
+  "07-22": [
+    [
+      "Santa María Magdalena",
+      "Apóstol de los apóstoles",
+      "https://www.op.org.ar/nosotros/santos-y-santas/"
+    ]
+  ],
+  "08-08": [
+    [
+      "Nuestro Padre Santo Domingo",
+      "Presbítero, fundador de la Orden de Predicadores",
+      "https://www.op.org.ar/santo-domingo/"
+    ]
+  ],
+  "08-23": [
+    [
+      "Santa Rosa de Lima",
+      "Virgen",
+      "https://www.op.org.ar/nosotros/santos-y-santas/"
+    ]
+  ],
+  "08-28": [
+    [
+      "San Agustín de Hipona",
+      "Obispo y doctor",
+      "https://www.op.org.ar/nosotros/santos-y-santas/"
+    ]
+  ],
+  "09-18": [
+    [
+      "San Juan Macías",
+      "Hermano cooperador",
+      "https://www.op.org.ar/nosotros/santos-y-santas/"
+    ]
+  ],
+  "10-09": [
+    [
+      "San Luis Bertrán",
+      "Presbítero",
+      "https://www.op.org.ar/nosotros/santos-y-santas/"
+    ]
+  ],
+  "11-03": [
+    [
+      "San Martín de Porres",
+      "Hermano cooperador",
+      "https://www.op.org.ar/san-martin-de-porres-hermano-cooperador/"
+    ]
+  ],
+  "11-07": [
+    [
+      "Todos los Santos de la Orden de Predicadores",
+      "Fiesta de la Familia Dominicana",
+      "https://www.op.org.ar/todos-los-santos-de-la-orden-de-predicadores/"
+    ]
+  ],
+  "11-15": [
+    [
+      "San Alberto Magno",
+      "Obispo y doctor",
+      "https://www.op.org.ar/nosotros/santos-y-santas/"
+    ]
+  ],
+  "12-22": [
+    [
+      "Patrocinio de la Virgen María sobre la Familia Dominicana",
+      "Memoria dominicana",
+      "https://www.op.org.ar/nosotros/santos-y-santas/"
+    ]
+  ]
+};
+
 const liturgyGuideSequences = {
   "laudes-first": [
     { mode: "liturgia", key: "invitatorio", label: "Invitatorio" },
@@ -77,6 +179,7 @@ let activeKey = {
   misal: DEFAULT_KEY.misal
 };
 
+let activeDailyTool = null;
 let activeLiturgyGuide = "quick";
 let liturgyGuideStep = 0;
 let activeMisalGuide = "quick";
@@ -89,8 +192,17 @@ const modeButtons = document.querySelectorAll(".mode-tabs button");
 const liturgiaTabs = document.getElementById("liturgia-tabs");
 const misalTabs = document.getElementById("misal-tabs");
 
-const prayerGuide = document.getElementById("prayer-guide");
+const dailyTools = document.getElementById("daily-tools");
+const santoralToggle = document.getElementById("santoral-toggle");
 const guideToggle = document.getElementById("guide-toggle");
+const santoralSection = document.getElementById("dominican-santoral");
+const prayerGuide = document.getElementById("prayer-guide");
+
+const santoralSummary = document.getElementById("santoral-summary");
+const santoralStatus = document.getElementById("santoral-status");
+const santoralResult = document.getElementById("santoral-result");
+const santoralPrimaryLink = document.getElementById("santoral-primary-link");
+
 const guideSummary = document.getElementById("guide-summary");
 const guideCards = document.querySelectorAll("[data-sequence]");
 const guideStatus = document.getElementById("guide-status");
@@ -120,6 +232,17 @@ function localDateString(date = new Date()) {
   return `${year}-${month}-${day}`;
 }
 
+function selectedMonthDay() {
+  return dateInput && dateInput.value ? dateInput.value.slice(5) : "";
+}
+
+function selectedDateLabel() {
+  if (!dateInput || !dateInput.value) return "";
+  const [year, month, day] = dateInput.value.split("-");
+  const months = ["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"];
+  return `${Number(day)} de ${months[Number(month) - 1]} de ${year}`;
+}
+
 function buildUrl() {
   const file = SOURCES[activeMode][activeKey[activeMode]];
   const date = dateInput.value;
@@ -137,6 +260,65 @@ function setGuideExpanded(section, toggle, expanded) {
   toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
 }
 
+function updateDailyToolsUI() {
+  if (!dailyTools) return;
+
+  const santoralOpen = activeDailyTool === "santoral";
+  const guideOpen = activeDailyTool === "guide";
+
+  dailyTools.classList.toggle("collapsed", !activeDailyTool);
+  santoralToggle.classList.toggle("active", santoralOpen);
+  guideToggle.classList.toggle("active", guideOpen);
+  santoralToggle.setAttribute("aria-expanded", santoralOpen ? "true" : "false");
+  guideToggle.setAttribute("aria-expanded", guideOpen ? "true" : "false");
+
+  santoralSection.classList.toggle("hidden", !santoralOpen);
+  prayerGuide.classList.toggle("hidden", !guideOpen);
+}
+
+function openDailyTool(tool) {
+  activeDailyTool = activeDailyTool === tool ? null : tool;
+  updateDailyToolsUI();
+}
+
+function updateSantoral() {
+  if (!santoralSummary || !santoralStatus || !santoralResult) return;
+
+  const entries = DOMINICAN_SANTORAL[selectedMonthDay()] || [];
+  const dateLabel = selectedDateLabel();
+
+  if (!entries.length) {
+    santoralSummary.textContent = "Sin memoria registrada";
+    santoralStatus.textContent = `${dateLabel}: no hay memoria dominicana registrada en esta primera selección del santoral.`;
+    santoralResult.classList.add("hidden");
+    santoralResult.innerHTML = "";
+
+    if (santoralPrimaryLink) {
+      santoralPrimaryLink.classList.add("hidden");
+      santoralPrimaryLink.removeAttribute("href");
+    }
+    return;
+  }
+
+  santoralSummary.textContent = entries.length === 1 ? `Hoy: ${entries[0][0]}` : `Hoy: ${entries.length} memorias dominicanas`;
+  santoralStatus.textContent = `${dateLabel}: hay memoria dominicana registrada. Consulta el propio y aplícalo según corresponda.`;
+  santoralResult.innerHTML = entries.map(entry => `
+    <article class="santoral-card">
+      <span class="santoral-date">${dateLabel}</span>
+      <strong class="santoral-title">${entry[0]}</strong>
+      <span class="santoral-rank">${entry[1]}</span>
+      <span class="santoral-has-office">Liturgia de las Horas</span>
+    </article>
+  `).join("");
+  santoralResult.classList.remove("hidden");
+
+  if (santoralPrimaryLink) {
+    santoralPrimaryLink.href = entries[0][2] || DOMINICAN_SANTORAL_SOURCE;
+    santoralPrimaryLink.textContent = entries[0][2] === DOMINICAN_SANTORAL_SOURCE ? "Abrir santoral" : "Ver propio dominicano";
+    santoralPrimaryLink.classList.remove("hidden");
+  }
+}
+
 function updateTabs() {
   modeButtons.forEach(button => {
     button.classList.toggle("active", button.dataset.mode === activeMode);
@@ -146,8 +328,9 @@ function updateTabs() {
   misalTabs.classList.toggle("hidden", activeMode !== "misal");
 
   const misalGuideActive = activeMisalGuide !== "quick";
-  if (prayerGuide) {
-    prayerGuide.style.display = activeMode === "liturgia" && !misalGuideActive ? "" : "none";
+
+  if (dailyTools) {
+    dailyTools.classList.toggle("hidden", !(activeMode === "liturgia" && !misalGuideActive));
   }
 
   if (misalGuide) {
@@ -208,11 +391,13 @@ function updateLiturgyGuideUI() {
   });
 
   if (guideSummary) {
-    if (!sequence.length) {
-      guideSummary.textContent = "Consulta rápida";
-    } else {
-      guideSummary.textContent = `${liturgyGuideNames[activeLiturgyGuide]} · Paso ${liturgyGuideStep + 1}/${sequence.length}`;
-    }
+    guideSummary.textContent = !sequence.length
+      ? "Consulta rápida"
+      : `${liturgyGuideNames[activeLiturgyGuide]} · Paso ${liturgyGuideStep + 1}/${sequence.length}`;
+  }
+
+  if (prayerGuide) {
+    prayerGuide.classList.toggle("running", !!sequence.length);
   }
 
   if (!sequence.length) {
@@ -238,11 +423,9 @@ function updateMisalGuideUI() {
   });
 
   if (misalGuideSummary) {
-    if (!sequence.length) {
-      misalGuideSummary.textContent = "Consulta rápida";
-    } else {
-      misalGuideSummary.textContent = `${misalGuideNames[activeMisalGuide]} · Paso ${misalGuideStep + 1}/${sequence.length}`;
-    }
+    misalGuideSummary.textContent = !sequence.length
+      ? "Consulta rápida"
+      : `${misalGuideNames[activeMisalGuide]} · Paso ${misalGuideStep + 1}/${sequence.length}`;
   }
 
   if (!sequence.length) {
@@ -270,12 +453,13 @@ function startLiturgyGuide(sequenceName) {
   if (sequence.length) {
     const first = sequence[liturgyGuideStep];
     setKey(first.mode, first.key, true);
-    setGuideExpanded(prayerGuide, guideToggle, false);
   } else {
     setMode("liturgia", true);
   }
 
+  activeDailyTool = "guide";
   updateLiturgyGuideUI();
+  updateDailyToolsUI();
   updateTabs();
 }
 
@@ -298,6 +482,14 @@ function startMisalGuide(sequenceName) {
   updateTabs();
 }
 
+if (santoralToggle) {
+  santoralToggle.addEventListener("click", () => openDailyTool("santoral"));
+}
+
+if (guideToggle) {
+  guideToggle.addEventListener("click", () => openDailyTool("guide"));
+}
+
 modeButtons.forEach(button => {
   button.addEventListener("click", () => {
     setMode(button.dataset.mode);
@@ -315,13 +507,6 @@ document.querySelectorAll("#misal-tabs button").forEach(button => {
     setKey("misal", button.dataset.key);
   });
 });
-
-if (guideToggle) {
-  guideToggle.addEventListener("click", () => {
-    const expanded = prayerGuide.classList.contains("collapsed");
-    setGuideExpanded(prayerGuide, guideToggle, expanded);
-  });
-}
 
 guideCards.forEach(card => {
   card.addEventListener("click", () => {
@@ -406,15 +591,20 @@ misalGuideExit.addEventListener("click", () => {
   updateTabs();
 });
 
-dateInput.addEventListener("change", updateViewer);
+dateInput.addEventListener("change", () => {
+  updateViewer();
+  updateSantoral();
+});
 
 todayButton.addEventListener("click", () => {
   dateInput.value = localDateString();
   updateViewer();
+  updateSantoral();
 });
 
 dateInput.value = localDateString();
-setGuideExpanded(prayerGuide, guideToggle, false);
+updateSantoral();
+updateDailyToolsUI();
 setGuideExpanded(misalGuide, misalGuideToggle, false);
 updateLiturgyGuideUI();
 updateMisalGuideUI();

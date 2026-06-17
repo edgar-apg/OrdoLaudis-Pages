@@ -6,7 +6,7 @@
   <title>OrdoLaudis — Liturgia y Misal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Cinzel:wght@500;600;700&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=paneles-misal-1">
+  <link rel="stylesheet" href="./styles.css?v=guia-santoral-1">
 </head>
 <body>
 
@@ -34,50 +34,71 @@
     </div>
   </section>
 
-  <section id="prayer-guide" class="section guide-section collapsed">
-    <button id="guide-toggle" class="section-header guide-toggle" type="button" aria-expanded="false">
-      <span class="section-title">Guía litúrgica</span>
-      <span id="guide-summary" class="guide-summary">Consulta rápida</span>
-    </button>
-
-    <div class="guide-options">
-      <button type="button" class="guide-card" data-sequence="laudes-first">
-        <span class="guide-title">Laudes como primer rezo</span>
-        <span class="guide-path">Invitatorio → Laudes</span>
+  <section id="daily-tools" class="section daily-tools collapsed" aria-label="Guía litúrgica y Santoral dominicano">
+    <div class="tool-switch" role="tablist" aria-label="Herramientas de oración">
+      <button id="guide-toggle" class="tool-tab" type="button" aria-expanded="false" aria-controls="prayer-guide">
+        <span class="section-title">Guía litúrgica</span>
+        <span id="guide-summary" class="tool-summary">Consulta rápida</span>
       </button>
 
-      <button type="button" class="guide-card" data-sequence="oficio-first">
-        <span class="guide-title">Oficio de lectura primero</span>
-        <span class="guide-path">Invitatorio → Oficio</span>
-      </button>
-
-      <button type="button" class="guide-card" data-sequence="oficio-laudes">
-        <span class="guide-title">Oficio + Laudes</span>
-        <span class="guide-path">Invitatorio → Oficio → Laudes</span>
-      </button>
-
-      <button type="button" class="guide-card active" data-sequence="quick">
-        <span class="guide-title">Consulta rápida</span>
-        <span class="guide-path">Elegir una Hora directamente</span>
+      <button id="santoral-toggle" class="tool-tab" type="button" aria-expanded="false" aria-controls="dominican-santoral">
+        <span class="section-title">Santoral Dominicano</span>
+        <span id="santoral-summary" class="tool-summary">Revisar fecha</span>
       </button>
     </div>
 
-    <div id="guide-status" class="guide-status hidden">
-      <div>
-        <span id="guide-step-label">Paso 1 de 2</span>
-        <strong id="guide-current-title">Invitatorio</strong>
+    <div id="dominican-santoral" class="tool-panel santoral-section hidden">
+      <p id="santoral-status" class="santoral-status">Selecciona una fecha para revisar si hay memoria dominicana registrada.</p>
+      <div id="santoral-result" class="santoral-result hidden"></div>
+
+      <div class="santoral-actions">
+        <a id="santoral-primary-link" class="santoral-link hidden" href="#" target="_blank" rel="noopener noreferrer">Ver propio dominicano</a>
+        <a class="santoral-link secondary" href="https://www.op.org.ar/nosotros/santos-y-santas/" target="_blank" rel="noopener noreferrer">Santoral completo</a>
       </div>
 
-      <div class="guide-actions">
-        <button id="guide-prev" type="button">Anterior</button>
-        <button id="guide-next" type="button">Siguiente</button>
-        <button id="guide-exit" type="button">Salir</button>
-      </div>
+      <p class="santoral-note">Este aviso no modifica automáticamente el texto del CEM. Sirve para consultar el propio dominicano y aplicarlo según corresponda.</p>
     </div>
 
-    <p id="guide-note" class="guide-note hidden">
-      Al unir el Oficio de lectura con Laudes, se rezan como una sola secuencia. Si el texto mostrado incluye fórmulas de cierre o inicio duplicadas, omítelas según corresponda.
-    </p>
+    <div id="prayer-guide" class="tool-panel guide-section hidden">
+      <div class="guide-options">
+        <button type="button" class="guide-card" data-sequence="laudes-first">
+          <span class="guide-title">Laudes como primer rezo</span>
+          <span class="guide-path">Invitatorio → Laudes</span>
+        </button>
+
+        <button type="button" class="guide-card" data-sequence="oficio-first">
+          <span class="guide-title">Oficio de lectura primero</span>
+          <span class="guide-path">Invitatorio → Oficio</span>
+        </button>
+
+        <button type="button" class="guide-card" data-sequence="oficio-laudes">
+          <span class="guide-title">Oficio + Laudes</span>
+          <span class="guide-path">Invitatorio → Oficio → Laudes</span>
+        </button>
+
+        <button type="button" class="guide-card active" data-sequence="quick">
+          <span class="guide-title">Consulta rápida</span>
+          <span class="guide-path">Elegir una Hora directamente</span>
+        </button>
+      </div>
+
+      <div id="guide-status" class="guide-status hidden">
+        <div>
+          <span id="guide-step-label">Paso 1 de 2</span>
+          <strong id="guide-current-title">Invitatorio</strong>
+        </div>
+
+        <div class="guide-actions">
+          <button id="guide-prev" type="button">Anterior</button>
+          <button id="guide-next" type="button">Siguiente</button>
+          <button id="guide-exit" type="button">Salir</button>
+        </div>
+      </div>
+
+      <p id="guide-note" class="guide-note hidden">
+        Al unir el Oficio de lectura con Laudes, se rezan como una sola secuencia. Si el texto mostrado incluye fórmulas de cierre o inicio duplicadas, omítelas según corresponda.
+      </p>
+    </div>
   </section>
 
   <section id="misal-guide" class="section guide-section collapsed hidden">
@@ -172,6 +193,6 @@
   </a>
 </footer>
 
-<script src="app.js?v=paneles-misal-1"></script>
+<script src="app.js?v=guia-santoral-1"></script>
 </body>
 </html>
