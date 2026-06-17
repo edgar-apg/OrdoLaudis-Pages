@@ -1,32 +1,40 @@
-# OrdoLaudis Pages
+# Ordo Laudis ✥
 
-Visor web para consultar la Liturgia de las Horas y el Misal diario desde las fuentes de CEM.
+**Ordo Laudis** es un visor sencillo para consultar la Liturgia de las Horas y el Misal diario desde una interfaz limpia, responsiva y orientada a la oración.
 
-Este proyecto funciona como una página estática para GitHub Pages. Permite seleccionar fecha y consultar las distintas horas litúrgicas, así como las secciones principales del Misal.
+El proyecto busca ayudar a la consulta cotidiana de los textos litúrgicos, especialmente para quienes desean rezar con más orden, recogimiento y continuidad.
 
-## Características
+## Finalidad del proyecto 🙏
 
-- Consulta de Liturgia de las Horas.
-- Consulta del Misal diario.
-- Selector de fecha.
-- Interfaz sencilla y responsiva.
-- Estilo visual alineado con SyntaxLaudis.
-- Publicación directa mediante GitHub Pages.
+OrdoLaudis no pretende sustituir los libros litúrgicos oficiales ni las aplicaciones oficiales existentes. Su finalidad es pastoral y práctica: ofrecer una forma accesible de consultar los textos litúrgicos del día y acompañar la oración personal o comunitaria.
 
-## Relación con SyntaxLaudis
+La página incluye una pequeña guía de oración para orientar el uso del Invitatorio, el Oficio de lectura y Laudes, especialmente cuando se rezan como primera oración del día o en secuencia.
 
-OrdoLaudis complementa el proyecto SyntaxLaudis, dedicado al cancionero litúrgico en formato ChordPro. Mientras SyntaxLaudis se enfoca en cantos, OrdoLaudis se enfoca en la consulta diaria de textos litúrgicos.
+## Fuente de los textos litúrgicos 📖
 
-## Fuentes
+Los textos litúrgicos se consultan desde el sistema público de la **Conferencia del Episcopado Mexicano (CEM)**.
 
-La interfaz usa las mismas familias tipográficas del cancionero:
+OrdoLaudis es un visor no oficial. No pertenece a la CEM, no representa oficialmente a la CEM y no modifica la fuente litúrgica original. Cualquier error, interrupción, cambio de disponibilidad o variación en los textos consultados depende de la fuente externa correspondiente.
 
-- Cinzel
-- Cormorant Garamond
-- EB Garamond
+## Música ambiental 🎧
 
-El contenido litúrgico se carga desde CEM mediante iframe.
+La música ambiental integrada es opcional y está pensada sólo como acompañamiento para la oración personal.
+
+Las pistas musicales pertenecen a **Universfield** y fueron obtenidas desde **Pixabay**, conforme a las condiciones de uso indicadas por dicha plataforma. OrdoLaudis no reclama autoría sobre esas obras ni las ofrece como descarga independiente.
+
+## Inspiración dominicana 🤍🖤
+
+OrdoLaudis está inspirado espiritualmente en el carisma dominicano, especialmente en la tradición de oración, estudio, comunidad y predicación vivida también por las **Fraternidades Laicales Dominicanas** 🏁.
+
+La intención del proyecto es servir a la vida de oración y ayudar a que la liturgia pueda ser rezada con mayor conciencia, belleza y sencillez.
+
+## Aviso ⚠️
+
+Este proyecto es de uso pastoral, devocional y educativo. No es una edición litúrgica oficial, no sustituye los libros aprobados para la celebración litúrgica y no debe entenderse como una publicación oficial de ninguna institución eclesial.
+
+El uso de fuentes externas, textos litúrgicos y música se realiza con intención de facilitar la consulta y acompañar la oración, respetando la autoría y titularidad de sus respectivos responsables.
+
 
 ---
 
-*Laudare, Benedicere, Praedicare — in Rete.*
+*Laudare, Benedicere, Praedicare — in Rete.* 🏁

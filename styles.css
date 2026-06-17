@@ -77,7 +77,7 @@ header::before {
 }
 
 header::after {
-  content: '';
+  content: 'VERITAS';
   position: absolute;
   right: clamp(.8rem, 4vw, 3.2rem);
   bottom: .42rem;
@@ -264,6 +264,138 @@ input[type="date"]:focus {
   text-transform: uppercase;
 }
 
+
+/* GUÍA LITÚRGICA */
+.guide-section {
+  margin-bottom: 1rem;
+}
+
+.guide-options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: .7rem;
+  padding: .9rem;
+  background: rgba(255,255,255,.82);
+}
+
+.guide-card {
+  border: 1px solid var(--black);
+  background: var(--paper);
+  color: var(--ink);
+  padding: .75rem .7rem;
+  min-height: 4.2rem;
+  cursor: pointer;
+  text-align: left;
+  font-family: 'EB Garamond', Georgia, serif;
+  transition: background .15s, color .15s, box-shadow .15s, transform .15s;
+}
+
+.guide-card:hover,
+.guide-card.active {
+  background: var(--black);
+  color: var(--white);
+  box-shadow: 0 0 0 2px rgba(201,161,74,.28);
+  transform: translateY(-1px);
+}
+
+.guide-title {
+  display: block;
+  font-family: 'Cinzel', serif;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  line-height: 1.18;
+}
+
+.guide-path {
+  display: block;
+  margin-top: .32rem;
+  font-size: .78rem;
+  color: var(--muted);
+  font-style: italic;
+  line-height: 1.15;
+}
+
+.guide-card:hover .guide-path,
+.guide-card.active .guide-path {
+  color: rgba(255,255,255,.72);
+}
+
+.guide-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .8rem;
+  padding: .75rem .9rem;
+  border-top: 1px solid rgba(7,7,7,.12);
+  background: rgba(247,243,236,.92);
+}
+
+.guide-status.hidden,
+.guide-note.hidden {
+  display: none;
+}
+
+#guide-step-label {
+  display: block;
+  color: var(--muted);
+  font-size: .72rem;
+  font-style: italic;
+}
+
+#guide-current-title {
+  display: block;
+  font-family: 'Cinzel', serif;
+  font-size: .86rem;
+  color: var(--ink);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.guide-actions {
+  display: flex;
+  gap: .45rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.guide-actions button {
+  border: 1px solid var(--black);
+  background: var(--white);
+  color: var(--black);
+  padding: .45rem .7rem;
+  font-family: 'Cinzel', serif;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.guide-actions button:hover:not(:disabled) {
+  background: var(--black);
+  color: var(--white);
+}
+
+.guide-actions button:disabled {
+  opacity: .42;
+  cursor: not-allowed;
+}
+
+.guide-note {
+  margin: 0;
+  padding: .72rem .9rem;
+  border-top: 1px solid rgba(201,161,74,.45);
+  border-left: 4px solid var(--gold);
+  color: var(--ink);
+  font-size: .84rem;
+  line-height: 1.38;
+  font-style: normal;
+  font-weight: 500;
+  background: rgba(255,255,255,.92);
+}
+
 /* TABS DE HORAS / MISAL */
 .tabs {
   display: flex;
@@ -310,6 +442,68 @@ iframe {
   background: white;
 }
 
+.music-panel {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .8rem;
+  padding: .62rem .85rem;
+  border: 1px solid var(--black);
+  background: rgba(255,255,255,.86);
+  box-shadow: 0 14px 35px rgba(0,0,0,.045);
+}
+
+.music-copy {
+  min-width: 0;
+  display: grid;
+  gap: .05rem;
+}
+
+.music-title {
+  color: var(--ink);
+  font-size: .78rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+.music-track {
+  color: var(--muted);
+  font-size: .72rem;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.music-actions {
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  flex-shrink: 0;
+}
+
+.music-actions button {
+  border: 1px solid var(--black);
+  background: var(--black);
+  color: var(--white);
+  padding: .42rem .68rem;
+  min-height: 2rem;
+  font-family: var(--font, 'Literata', Georgia, serif);
+  font-size: .76rem;
+  cursor: pointer;
+}
+
+.music-actions button:hover {
+  background: var(--white);
+  color: var(--black);
+}
+
+.music-panel.is-playing {
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(201,161,74,.16), 0 14px 35px rgba(0,0,0,.045);
+}
+
 /* FOOTER */
 footer {
   position: relative;
@@ -325,6 +519,35 @@ footer {
   border-top: 3px solid var(--gold);
 }
 
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: .7rem;
+  flex-wrap: wrap;
+}
+
+.footer-help {
+  width: 1.35rem;
+  height: 1.35rem;
+  display: inline-grid;
+  place-items: center;
+  border: 1px solid rgba(201,161,74,.75);
+  color: var(--gold);
+  text-decoration: none;
+  font-style: normal;
+  font-weight: 700;
+  font-size: .82rem;
+  line-height: 1;
+  border-radius: 999px;
+  background: rgba(255,255,255,.04);
+}
+
+.footer-help:hover {
+  background: var(--gold);
+  color: var(--black);
+}
+
 /* RESPONSIVE */
 @media (max-width: 760px) {
   header {
@@ -334,6 +557,28 @@ footer {
     padding: .78rem .95rem;
     background: rgba(7,7,7,.98);
   }
+
+  .music-panel {
+  align-items: stretch;
+  flex-direction: column;
+  text-align: center;
+  gap: .55rem;
+  padding: .58rem .7rem;
+}
+
+.music-actions {
+  justify-content: center;
+}
+
+.music-actions button {
+  font-size: .72rem;
+  min-height: 1.9rem;
+  padding: .38rem .62rem;
+}
+
+.music-track {
+  white-space: normal;
+}
 
   header::after {
     display: none;
@@ -409,6 +654,44 @@ footer {
     padding: .54rem .66rem;
     font-size: .66rem;
     letter-spacing: .06em;
+  }
+
+
+
+  .guide-options {
+    grid-template-columns: 1fr;
+    gap: .55rem;
+    padding: .75rem;
+  }
+
+  .guide-card {
+    min-height: auto;
+    padding: .68rem .75rem;
+    text-align: center;
+  }
+
+  .guide-title {
+    font-size: .66rem;
+  }
+
+  .guide-path {
+    font-size: .74rem;
+  }
+
+  .guide-status {
+    align-items: stretch;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .guide-actions {
+    justify-content: center;
+  }
+  .guide-note {
+    text-align: left;
+    font-size: .78rem;
+    line-height: 1.34;
+    padding: .65rem .75rem;
   }
 
   iframe {

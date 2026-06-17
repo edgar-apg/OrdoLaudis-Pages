@@ -6,7 +6,7 @@
   <title>OrdoLaudis — Liturgia y Misal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Cinzel:wght@500;600;700&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=dominican-footer-compact">
+  <link rel="stylesheet" href="./styles.css?v=guia-nota-legible">
 </head>
 <body>
 
@@ -34,6 +34,63 @@
     </div>
   </section>
 
+  <section id="prayer-guide" class="section guide-section">
+    <div class="section-header static">
+      <span class="section-title">Modo de oración</span>
+    </div>
+
+    <div class="guide-options">
+      <button type="button" class="guide-card" data-sequence="laudes-first">
+        <span class="guide-title">Laudes como primer rezo</span>
+        <span class="guide-path">Invitatorio → Laudes</span>
+      </button>
+
+      <button type="button" class="guide-card" data-sequence="oficio-first">
+        <span class="guide-title">Oficio de lectura primero</span>
+        <span class="guide-path">Invitatorio → Oficio</span>
+      </button>
+
+      <button type="button" class="guide-card" data-sequence="oficio-laudes">
+        <span class="guide-title">Oficio + Laudes</span>
+        <span class="guide-path">Invitatorio → Oficio → Laudes</span>
+      </button>
+
+      <button type="button" class="guide-card active" data-sequence="quick">
+        <span class="guide-title">Consulta rápida</span>
+        <span class="guide-path">Elegir una Hora directamente</span>
+      </button>
+    </div>
+
+    <div id="guide-status" class="guide-status hidden">
+      <div>
+        <span id="guide-step-label">Paso 1 de 2</span>
+        <strong id="guide-current-title">Invitatorio</strong>
+      </div>
+
+      <div class="guide-actions">
+        <button id="guide-prev" type="button">Anterior</button>
+        <button id="guide-next" type="button">Siguiente</button>
+        <button id="guide-exit" type="button">Salir</button>
+      </div>
+    </div>
+
+    <p id="guide-note" class="guide-note hidden">
+      Al unir el Oficio de lectura con Laudes, se rezan como una sola secuencia. Si el texto mostrado incluye fórmulas de cierre o inicio duplicadas, omítelas según corresponda.
+    </p>
+  </section>
+
+  <section class="music-panel" aria-label="Música ambiental">
+  <div class="music-copy">
+    <span class="music-title">Música ambiental</span>
+    <span id="music-track" class="music-track">Universfield / Pixabay</span>
+  </div>
+
+  <div class="music-actions">
+    <button id="music-toggle" type="button">♪ Música</button>
+    <button id="music-next" type="button" title="Otra pista">⏭</button>
+  </div>
+</section>
+
   <nav id="liturgia-tabs" class="tabs" aria-label="Horas litúrgicas">
     <button class="active" data-key="invitatorio">Invitatorio</button>
     <button data-key="oficio">Oficio</button>
@@ -57,9 +114,22 @@
 </main>
 
 <footer>
-  Fuente: Conferencia del Episcopado Mexicano (CEM). Visor no oficial.
+  <span>
+    Fuente: Conferencia del Episcopado Mexicano (CEM). Visor no oficial.
+  </span>
+
+  <a
+    class="footer-help"
+    href="https://github.com/edgar-apg/OrdoLaudis-Pages#readme"
+    target="_blank"
+    rel="noopener noreferrer"
+    aria-label="Acerca de OrdoLaudis"
+    title="Acerca de OrdoLaudis"
+  >
+    ?
+  </a>
 </footer>
 
-<script src="app.js"></script>
+<script src="app.js?v=guia-liturgica-1"></script>
 </body>
 </html>
