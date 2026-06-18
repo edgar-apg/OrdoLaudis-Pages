@@ -383,6 +383,12 @@ input[type="date"]:focus {
   line-height: 1.2;
 }
 
+.santoral-extra-tag {
+  margin-left: .35rem;
+  color: var(--ink);
+  border-color: rgba(7,7,7,.28);
+}
+
 .santoral-has-office {
   display: inline-block;
   margin-top: .45rem;

@@ -26,108 +26,6 @@ const DEFAULT_KEY = {
   misal: "ritos"
 };
 
-const DOMINICAN_SANTORAL_SOURCE = "https://www.op.org.ar/nosotros/santos-y-santas/";
-const DOMINICAN_SANTORAL = {
-  "01-28": [
-    [
-      "Santo Tomás de Aquino",
-      "Presbítero y doctor de la Iglesia",
-      "https://www.op.org.ar/santo-tomas-de-aquino/"
-    ]
-  ],
-  "04-05": [
-    [
-      "San Vicente Ferrer",
-      "Presbítero",
-      "https://www.op.org.ar/nosotros/santos-y-santas/"
-    ]
-  ],
-  "04-29": [
-    [
-      "Santa Catalina de Siena",
-      "Virgen y doctora de la Iglesia",
-      "https://www.op.org.ar/nosotros/santos-y-santas/"
-    ]
-  ],
-  "04-30": [
-    [
-      "San Pío V",
-      "Papa",
-      "https://www.op.org.ar/nosotros/santos-y-santas/"
-    ]
-  ],
-  "07-22": [
-    [
-      "Santa María Magdalena",
-      "Apóstol de los apóstoles",
-      "https://www.op.org.ar/nosotros/santos-y-santas/"
-    ]
-  ],
-  "08-08": [
-    [
-      "Nuestro Padre Santo Domingo",
-      "Presbítero, fundador de la Orden de Predicadores",
-      "https://www.op.org.ar/santo-domingo/"
-    ]
-  ],
-  "08-23": [
-    [
-      "Santa Rosa de Lima",
-      "Virgen",
-      "https://www.op.org.ar/nosotros/santos-y-santas/"
-    ]
-  ],
-  "08-28": [
-    [
-      "San Agustín de Hipona",
-      "Obispo y doctor",
-      "https://www.op.org.ar/nosotros/santos-y-santas/"
-    ]
-  ],
-  "09-18": [
-    [
-      "San Juan Macías",
-      "Hermano cooperador",
-      "https://www.op.org.ar/nosotros/santos-y-santas/"
-    ]
-  ],
-  "10-09": [
-    [
-      "San Luis Bertrán",
-      "Presbítero",
-      "https://www.op.org.ar/nosotros/santos-y-santas/"
-    ]
-  ],
-  "11-03": [
-    [
-      "San Martín de Porres",
-      "Hermano cooperador",
-      "https://www.op.org.ar/san-martin-de-porres-hermano-cooperador/"
-    ]
-  ],
-  "11-07": [
-    [
-      "Todos los Santos de la Orden de Predicadores",
-      "Fiesta de la Familia Dominicana",
-      "https://www.op.org.ar/todos-los-santos-de-la-orden-de-predicadores/"
-    ]
-  ],
-  "11-15": [
-    [
-      "San Alberto Magno",
-      "Obispo y doctor",
-      "https://www.op.org.ar/nosotros/santos-y-santas/"
-    ]
-  ],
-  "12-22": [
-    [
-      "Patrocinio de la Virgen María sobre la Familia Dominicana",
-      "Memoria dominicana",
-      "https://www.op.org.ar/nosotros/santos-y-santas/"
-    ]
-  ]
-};
-
 const liturgyGuideSequences = {
   "laudes-first": [
     { mode: "liturgia", key: "invitatorio", label: "Invitatorio" },
@@ -289,7 +187,7 @@ function updateSantoral() {
 
   if (!entries.length) {
     santoralSummary.textContent = "Sin memoria registrada";
-    santoralStatus.textContent = `${dateLabel}: no hay memoria dominicana registrada en esta primera selección del santoral.`;
+    santoralStatus.textContent = `${dateLabel}: no hay memoria dominicana verificada en la selección actual.`;
     santoralResult.classList.add("hidden");
     santoralResult.innerHTML = "";
 
@@ -307,7 +205,8 @@ function updateSantoral() {
       <span class="santoral-date">${dateLabel}</span>
       <strong class="santoral-title">${entry[0]}</strong>
       <span class="santoral-rank">${entry[1]}</span>
-      <span class="santoral-has-office">Liturgia de las Horas</span>
+      ${entry[3] ? `<span class="santoral-has-office">Liturgia de las Horas</span>` : ""}
+      ${entry[4] ? `<span class="santoral-has-office santoral-extra-tag">${entry[4]}</span>` : ""}
     </article>
   `).join("");
   santoralResult.classList.remove("hidden");

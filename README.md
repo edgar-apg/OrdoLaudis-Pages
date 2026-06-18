@@ -18,21 +18,23 @@ Ordo Laudis es un visor no oficial. No pertenece a la CEM, no representa oficial
 
 ## Guía litúrgica y Santoral Dominicano 🤍🖤
 
-Ordo Laudis integra la **Guía litúrgica** y el **Santoral Dominicano** en un mismo panel dinámico. La mitad izquierda orienta algunas secuencias de oración de la Liturgia de las Horas; la mitad derecha ayuda a consultar si la fecha seleccionada tiene una memoria dominicana registrada.
+Ordo Laudis integra la **Guía litúrgica** y el **Santoral Dominicano** en un mismo panel dinámico. La mitad izquierda orienta algunas secuencias de oración de la Liturgia de las Horas; la mitad derecha ayuda a consultar si la fecha seleccionada tiene una memoria dominicana verificada en la selección actual.
 
 La Guía litúrgica permite seguir algunas secuencias frecuentes, como:
 
-* Invitatorio → Laudes
-* Invitatorio → Oficio de lectura
-* Invitatorio → Oficio de lectura → Laudes
+- Invitatorio → Laudes
+- Invitatorio → Oficio de lectura
+- Invitatorio → Oficio de lectura → Laudes
 
 También incluye una guía básica para el Misal, incluyendo una opción de consulta cuando la celebración se relaciona con Vísperas.
 
-El Santoral Dominicano se ofrece como una ayuda de consulta vinculada al carisma de la Orden de Predicadores. En esta primera versión, Ordo Laudis incluye una selección de memorias dominicanas significativas y enlaza al Santoral Dominicano publicado por **Dominicos Argentina y Chile**.
+El Santoral Dominicano se ofrece como una ayuda de consulta vinculada al carisma de la Orden de Predicadores. En esta versión, Ordo Laudis usa una selección manual de memorias dominicanas con fecha, descripción, enlace y señal de si la ficha contiene Liturgia de las Horas u otra ayuda de oración.
 
 Cuando una fecha tiene memoria dominicana registrada, el panel puede mostrar el santo, beato o celebración correspondiente y ofrecer un enlace al propio o al santoral fuente. Esto no modifica automáticamente los textos litúrgicos del CEM ni reemplaza el discernimiento litúrgico correspondiente.
 
 Para usar un propio dominicano, conviene revisar la celebración del día, el grado litúrgico, el calendario local y las indicaciones propias de la comunidad o de quien preside. Ordo Laudis sólo facilita el acceso a la información; no pretende ser un calendario litúrgico oficial de la Orden ni una edición oficial de sus textos propios.
+
+Las fechas y enlaces del Santoral Dominicano se mantienen como una selección manual verificable y pueden requerir ajustes conforme se revisen las fichas fuente.
 
 ## Música ambiental 🎧
 
@@ -50,7 +52,7 @@ La intención del proyecto es servir a la vida de oración y ayudar a que la lit
 
 Este proyecto es de uso pastoral, devocional y educativo. No es una edición litúrgica oficial, no sustituye los libros aprobados para la celebración litúrgica y no debe entenderse como una publicación oficial de ninguna institución eclesial.
 
-El uso de fuentes externas, textos litúrgicos, santoral y música se realiza con intención de facilitar la consulta y acompañar la oración, respetando la autoría y titularidad de sus respectivos responsables.
+El uso de fuentes externas, textos litúrgicos, santoral, oraciones y música se realiza con intención de facilitar la consulta y acompañar la oración, respetando la autoría y titularidad de sus respectivos responsables.
 
 ---
 
