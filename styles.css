@@ -670,6 +670,16 @@ input[type="date"]:focus {
   .santoral-status { text-align: center; font-size: .8rem; }
   .santoral-actions { justify-content: center; }
   .santoral-link { font-size: .62rem; padding: .34rem .58rem; }
+
+  .gospel-status {
+    text-align: center;
+    font-size: .8rem;
+  }
+
+  .gospel-actions {
+    justify-content: center;
+  }
+
   .santoral-title { font-size: .72rem; text-align: left; }
 
 
@@ -807,6 +817,29 @@ input[type="date"]:focus {
 .music-panel.is-playing {
   border-color: var(--gold);
   box-shadow: 0 0 0 2px rgba(201,161,74,.14), 0 10px 26px rgba(0,0,0,.04);
+}
+
+
+/* COMENTARIO DEL EVANGELIO */
+.gospel-panel {
+  background: rgba(255,255,255,.86);
+}
+
+.gospel-status {
+  margin: 0 0 .75rem;
+  color: var(--ink);
+  font-size: .88rem;
+  line-height: 1.34;
+}
+
+.gospel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+#misal-guide.running .guide-options {
+  display: none;
 }
 
 /* FOOTER */

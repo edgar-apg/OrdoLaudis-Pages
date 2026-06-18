@@ -78,6 +78,7 @@ let activeKey = {
 };
 
 let activeDailyTool = null;
+let activeMisalTool = null;
 let activeLiturgyGuide = "quick";
 let liturgyGuideStep = 0;
 let activeMisalGuide = "quick";
@@ -111,6 +112,7 @@ const guidePrev = document.getElementById("guide-prev");
 const guideNext = document.getElementById("guide-next");
 const guideExit = document.getElementById("guide-exit");
 
+const misalTools = document.getElementById("misal-tools");
 const misalGuide = document.getElementById("misal-guide");
 const misalGuideToggle = document.getElementById("misal-guide-toggle");
 const misalGuideSummary = document.getElementById("misal-guide-summary");
@@ -122,6 +124,11 @@ const misalGuideCurrentTitle = document.getElementById("misal-guide-current-titl
 const misalGuidePrev = document.getElementById("misal-guide-prev");
 const misalGuideNext = document.getElementById("misal-guide-next");
 const misalGuideExit = document.getElementById("misal-guide-exit");
+
+const gospelToggle = document.getElementById("gospel-toggle");
+const gospelPanel = document.getElementById("gospel-reflection");
+const gospelSummary = document.getElementById("gospel-summary");
+const gospelLink = document.getElementById("gospel-link");
 
 function localDateString(date = new Date()) {
   const year = date.getFullYear();
@@ -141,6 +148,26 @@ function selectedDateLabel() {
   return `${Number(day)} de ${months[Number(month) - 1]} de ${year}`;
 }
 
+function buildDominicosGospelUrl() {
+  if (!dateInput || !dateInput.value) {
+    return "https://www.dominicos.org/predicacion/evangelio-del-dia/";
+  }
+
+  const [year, month, day] = dateInput.value.split("-");
+  return `https://www.dominicos.org/predicacion/evangelio-del-dia/${Number(day)}-${Number(month)}-${year}/`;
+}
+
+function updateGospelLink() {
+  if (!gospelLink) return;
+
+  const url = buildDominicosGospelUrl();
+  gospelLink.href = url;
+  gospelLink.textContent = "Abrir comentario";
+  if (gospelSummary) {
+    gospelSummary.textContent = selectedDateLabel() || "Abrir reflexión del día";
+  }
+}
+
 function buildUrl() {
   const file = SOURCES[activeMode][activeKey[activeMode]];
   const date = dateInput.value;
@@ -150,12 +177,6 @@ function buildUrl() {
 
 function updateViewer() {
   viewer.src = buildUrl();
-}
-
-function setGuideExpanded(section, toggle, expanded) {
-  if (!section || !toggle) return;
-  section.classList.toggle("collapsed", !expanded);
-  toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
 }
 
 function updateDailyToolsUI() {
@@ -174,19 +195,40 @@ function updateDailyToolsUI() {
   prayerGuide.classList.toggle("hidden", !guideOpen);
 }
 
+function updateMisalToolsUI() {
+  if (!misalTools) return;
+
+  const guideOpen = activeMisalTool === "guide";
+  const gospelOpen = activeMisalTool === "gospel";
+
+  misalTools.classList.toggle("collapsed", !activeMisalTool);
+  misalGuideToggle.classList.toggle("active", guideOpen);
+  gospelToggle.classList.toggle("active", gospelOpen);
+  misalGuideToggle.setAttribute("aria-expanded", guideOpen ? "true" : "false");
+  gospelToggle.setAttribute("aria-expanded", gospelOpen ? "true" : "false");
+
+  misalGuide.classList.toggle("hidden", !guideOpen);
+  gospelPanel.classList.toggle("hidden", !gospelOpen);
+}
+
 function openDailyTool(tool) {
   activeDailyTool = activeDailyTool === tool ? null : tool;
   updateDailyToolsUI();
 }
 
+function openMisalTool(tool) {
+  activeMisalTool = activeMisalTool === tool ? null : tool;
+  updateMisalToolsUI();
+}
+
 function updateSantoral() {
   if (!santoralSummary || !santoralStatus || !santoralResult) return;
 
-  const entries = DOMINICAN_SANTORAL[selectedMonthDay()] || [];
+  const entries = (typeof DOMINICAN_SANTORAL !== "undefined" ? DOMINICAN_SANTORAL[selectedMonthDay()] : []) || [];
   const dateLabel = selectedDateLabel();
 
   if (!entries.length) {
-    santoralSummary.textContent = "Sin memoria registrada";
+    santoralSummary.textContent = "Sin memoria verificada";
     santoralStatus.textContent = `${dateLabel}: no hay memoria dominicana verificada en la selección actual.`;
     santoralResult.classList.add("hidden");
     santoralResult.innerHTML = "";
@@ -212,7 +254,7 @@ function updateSantoral() {
   santoralResult.classList.remove("hidden");
 
   if (santoralPrimaryLink) {
-    santoralPrimaryLink.href = entries[0][2] || DOMINICAN_SANTORAL_SOURCE;
+    santoralPrimaryLink.href = entries[0][2] || (typeof DOMINICAN_SANTORAL_SOURCE !== "undefined" ? DOMINICAN_SANTORAL_SOURCE : "#");
     santoralPrimaryLink.textContent = entries[0][2] === DOMINICAN_SANTORAL_SOURCE ? "Abrir santoral" : "Ver propio dominicano";
     santoralPrimaryLink.classList.remove("hidden");
   }
@@ -232,8 +274,8 @@ function updateTabs() {
     dailyTools.classList.toggle("hidden", !(activeMode === "liturgia" && !misalGuideActive));
   }
 
-  if (misalGuide) {
-    misalGuide.classList.toggle("hidden", !(activeMode === "misal" || misalGuideActive));
+  if (misalTools) {
+    misalTools.classList.toggle("hidden", !(activeMode === "misal" || misalGuideActive));
   }
 
   document.querySelectorAll("#liturgia-tabs button").forEach(button => {
@@ -327,6 +369,10 @@ function updateMisalGuideUI() {
       : `${misalGuideNames[activeMisalGuide]} · Paso ${misalGuideStep + 1}/${sequence.length}`;
   }
 
+  if (misalGuide) {
+    misalGuide.classList.toggle("running", !!sequence.length);
+  }
+
   if (!sequence.length) {
     misalGuideStatus.classList.add("hidden");
     misalGuideNote.classList.add("hidden");
@@ -372,12 +418,13 @@ function startMisalGuide(sequenceName) {
   if (sequence.length) {
     const first = sequence[misalGuideStep];
     setKey(first.mode, first.key, true);
-    setGuideExpanded(misalGuide, misalGuideToggle, false);
   } else {
     setMode("misal", true);
   }
 
+  activeMisalTool = "guide";
   updateMisalGuideUI();
+  updateMisalToolsUI();
   updateTabs();
 }
 
@@ -387,6 +434,17 @@ if (santoralToggle) {
 
 if (guideToggle) {
   guideToggle.addEventListener("click", () => openDailyTool("guide"));
+}
+
+if (misalGuideToggle) {
+  misalGuideToggle.addEventListener("click", () => openMisalTool("guide"));
+}
+
+if (gospelToggle) {
+  gospelToggle.addEventListener("click", () => {
+    updateGospelLink();
+    openMisalTool("gospel");
+  });
 }
 
 modeButtons.forEach(button => {
@@ -444,13 +502,6 @@ guideExit.addEventListener("click", () => {
   updateTabs();
 });
 
-if (misalGuideToggle) {
-  misalGuideToggle.addEventListener("click", () => {
-    const expanded = misalGuide.classList.contains("collapsed");
-    setGuideExpanded(misalGuide, misalGuideToggle, expanded);
-  });
-}
-
 misalGuideCards.forEach(card => {
   card.addEventListener("click", () => {
     startMisalGuide(card.dataset.misalSequence);
@@ -493,18 +544,21 @@ misalGuideExit.addEventListener("click", () => {
 dateInput.addEventListener("change", () => {
   updateViewer();
   updateSantoral();
+  updateGospelLink();
 });
 
 todayButton.addEventListener("click", () => {
   dateInput.value = localDateString();
   updateViewer();
   updateSantoral();
+  updateGospelLink();
 });
 
 dateInput.value = localDateString();
 updateSantoral();
+updateGospelLink();
 updateDailyToolsUI();
-setGuideExpanded(misalGuide, misalGuideToggle, false);
+updateMisalToolsUI();
 updateLiturgyGuideUI();
 updateMisalGuideUI();
 updateTabs();

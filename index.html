@@ -6,7 +6,7 @@
   <title>OrdoLaudis — Liturgia y Misal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,400&family=Cinzel:wght@500;600;700&family=EB+Garamond:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=imelda-oracion-1">
+  <link rel="stylesheet" href="./styles.css?v=misal-evangelio-1">
 </head>
 <body>
 
@@ -101,45 +101,70 @@
     </div>
   </section>
 
-  <section id="misal-guide" class="section guide-section collapsed hidden">
-    <button id="misal-guide-toggle" class="section-header guide-toggle" type="button" aria-expanded="false">
-      <span class="section-title">Guía del Misal</span>
-      <span id="misal-guide-summary" class="guide-summary">Consulta rápida</span>
-    </button>
-
-    <div class="guide-options">
-      <button type="button" class="guide-card" data-misal-sequence="misa-habitual">
-        <span class="guide-title">Misa habitual</span>
-        <span class="guide-path">Ritos → Palabra → Eucaristía</span>
+  <section id="misal-tools" class="section daily-tools collapsed hidden" aria-label="Guía del Misal y comentario del Evangelio">
+    <div class="tool-switch" role="tablist" aria-label="Herramientas del Misal">
+      <button id="misal-guide-toggle" class="tool-tab" type="button" aria-expanded="false" aria-controls="misal-guide">
+        <span class="section-title">Guía del Misal</span>
+        <span id="misal-guide-summary" class="tool-summary">Consulta rápida</span>
       </button>
 
-      <button type="button" class="guide-card" data-misal-sequence="misa-visperas">
-        <span class="guide-title">Misa con Vísperas</span>
-        <span class="guide-path">Vísperas → Ritos → Palabra → Eucaristía</span>
-      </button>
-
-      <button type="button" class="guide-card active" data-misal-sequence="quick">
-        <span class="guide-title">Consulta rápida</span>
-        <span class="guide-path">Elegir una parte directamente</span>
+      <button id="gospel-toggle" class="tool-tab" type="button" aria-expanded="false" aria-controls="gospel-reflection">
+        <span class="section-title">Comentario del Evangelio</span>
+        <span id="gospel-summary" class="tool-summary">Abrir reflexión del día</span>
       </button>
     </div>
 
-    <div id="misal-guide-status" class="guide-status hidden">
-      <div>
-        <span id="misal-guide-step-label">Paso 1 de 3</span>
-        <strong id="misal-guide-current-title">Ritos iniciales</strong>
+    <div id="misal-guide" class="tool-panel guide-section hidden">
+      <div class="guide-options">
+        <button type="button" class="guide-card" data-misal-sequence="misa-habitual">
+          <span class="guide-title">Misa habitual</span>
+          <span class="guide-path">Ritos → Palabra → Eucaristía</span>
+        </button>
+
+        <button type="button" class="guide-card" data-misal-sequence="misa-visperas">
+          <span class="guide-title">Misa con Vísperas</span>
+          <span class="guide-path">Vísperas → Ritos → Palabra → Eucaristía</span>
+        </button>
+
+        <button type="button" class="guide-card active" data-misal-sequence="quick">
+          <span class="guide-title">Consulta rápida</span>
+          <span class="guide-path">Elegir una parte directamente</span>
+        </button>
       </div>
 
-      <div class="guide-actions">
-        <button id="misal-guide-prev" type="button">Anterior</button>
-        <button id="misal-guide-next" type="button">Siguiente</button>
-        <button id="misal-guide-exit" type="button">Salir</button>
+      <div id="misal-guide-status" class="guide-status hidden">
+        <div>
+          <span id="misal-guide-step-label">Paso 1 de 3</span>
+          <strong id="misal-guide-current-title">Ritos iniciales</strong>
+        </div>
+
+        <div class="guide-actions">
+          <button id="misal-guide-prev" type="button">Anterior</button>
+          <button id="misal-guide-next" type="button">Siguiente</button>
+          <button id="misal-guide-exit" type="button">Salir</button>
+        </div>
       </div>
+
+      <p id="misal-guide-note" class="guide-note hidden">
+        Al unir Vísperas con la Misa, la forma concreta depende de las rúbricas y de quien preside. Usa esta guía como apoyo de consulta, no como sustituto de las indicaciones litúrgicas de la celebración.
+      </p>
     </div>
 
-    <p id="misal-guide-note" class="guide-note hidden">
-      Al unir Vísperas con la Misa, la forma concreta depende de las rúbricas y de quien preside. Usa esta guía como apoyo de consulta, no como sustituto de las indicaciones litúrgicas de la celebración.
-    </p>
+    <div id="gospel-reflection" class="tool-panel gospel-panel hidden">
+      <p class="gospel-status">
+        Consulta en Dominicos.org el Evangelio del día y la sección “Reflexión del Evangelio de hoy”.
+      </p>
+
+      <div class="gospel-actions">
+        <a id="gospel-link" class="santoral-link" href="https://www.dominicos.org/predicacion/evangelio-del-dia/" target="_blank" rel="noopener noreferrer">
+          Abrir comentario
+        </a>
+      </div>
+
+      <p class="santoral-note">
+        El enlace se ajusta automáticamente a la fecha seleccionada en Ordo Laudis.
+      </p>
+    </div>
   </section>
 
   <section class="music-panel" aria-label="Música ambiental">
@@ -193,7 +218,7 @@
   </a>
 </footer>
 
-<script src="santoral-dominicano.js?v=imelda-oracion-1"></script>
-<script src="app.js?v=imelda-oracion-1"></script>
+<script src="santoral-dominicano.js?v=misal-evangelio-1"></script>
+<script src="app.js?v=misal-evangelio-1"></script>
 </body>
 </html>

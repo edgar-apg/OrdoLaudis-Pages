@@ -26,7 +26,7 @@ La Guía litúrgica permite seguir algunas secuencias frecuentes, como:
 - Invitatorio → Oficio de lectura
 - Invitatorio → Oficio de lectura → Laudes
 
-También incluye una guía básica para el Misal, incluyendo una opción de consulta cuando la celebración se relaciona con Vísperas.
+También incluye una guía básica para el Misal, incluyendo una opción de consulta cuando la celebración se relaciona con Vísperas. En el modo Misal, Ordo Laudis ofrece además un acceso directo al comentario del Evangelio del día publicado por Dominicos.org, calculando el enlace conforme a la fecha seleccionada.
 
 El Santoral Dominicano se ofrece como una ayuda de consulta vinculada al carisma de la Orden de Predicadores. En esta versión, Ordo Laudis usa una selección manual de memorias dominicanas con fecha, descripción, enlace y señal de si la ficha contiene Liturgia de las Horas u otra ayuda de oración.
 
