@@ -130,6 +130,20 @@ const gospelPanel = document.getElementById("gospel-reflection");
 const gospelSummary = document.getElementById("gospel-summary");
 const gospelLink = document.getElementById("gospel-link");
 
+const suggestedHourTitle = document.getElementById("suggested-hour-title");
+const suggestedHourDetail = document.getElementById("suggested-hour-detail");
+const viewerStatus = document.getElementById("viewer-status");
+const viewerStatusTitle = document.getElementById("viewer-status-title");
+const viewerStatusMessage = document.getElementById("viewer-status-message");
+const viewerRetry = document.getElementById("viewer-retry");
+const viewerOpenSource = document.getElementById("viewer-open-source");
+const ordoFab = document.getElementById("ordo-fab");
+const ordoFabMain = document.getElementById("ordo-fab-main");
+const ordoFabMenu = document.getElementById("ordo-fab-menu");
+const ordoFabGuideNext = document.getElementById("ordo-fab-guide-next");
+const ordoFabMusicPause = document.getElementById("ordo-fab-music-pause");
+let viewerLoadTimer = null;
+
 function localDateString(date = new Date()) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -168,6 +182,111 @@ function updateGospelLink() {
   }
 }
 
+
+const liturgicalHourLabels = {
+  invitatorio: "Invitatorio",
+  oficio: "Oficio de lectura",
+  laudes: "Laudes",
+  tercia: "Tercia",
+  sexta: "Sexta",
+  nona: "Nona",
+  visperas: "Vísperas",
+  completas: "Completas"
+};
+
+function isSelectedDateToday() {
+  return dateInput && dateInput.value === localDateString();
+}
+
+function getSuggestedLiturgicalHour() {
+  const hour = new Date().getHours();
+
+  if (hour >= 5 && hour < 10) {
+    return {
+      key: "laudes",
+      title: "Laudes",
+      detail: "Sugerida para la mañana."
+    };
+  }
+
+  if (hour >= 10 && hour < 12) {
+    return {
+      key: "tercia",
+      title: "Tercia",
+      detail: "Sugerida para media mañana."
+    };
+  }
+
+  if (hour >= 12 && hour < 15) {
+    return {
+      key: "sexta",
+      title: "Sexta",
+      detail: "Sugerida alrededor del mediodía."
+    };
+  }
+
+  if (hour >= 15 && hour < 18) {
+    return {
+      key: "nona",
+      title: "Nona",
+      detail: "Sugerida para media tarde."
+    };
+  }
+
+  if (hour >= 18 && hour < 21) {
+    return {
+      key: "visperas",
+      title: "Vísperas",
+      detail: "Sugerida para la tarde."
+    };
+  }
+
+  return {
+    key: "completas",
+    title: "Completas",
+    detail: "Sugerida para la noche."
+  };
+}
+
+function updateSuggestedHourUI() {
+  const suggestion = getSuggestedLiturgicalHour();
+
+  if (suggestedHourTitle) {
+    suggestedHourTitle.textContent = `${suggestion.title} · ${isSelectedDateToday() ? "para este momento" : "referencia del día"}`;
+  }
+
+  if (suggestedHourDetail) {
+    suggestedHourDetail.textContent = isSelectedDateToday()
+      ? suggestion.detail
+      : "La fecha seleccionada no es hoy; la sugerencia se calcula según la hora actual.";
+  }
+
+  document.querySelectorAll("#liturgia-tabs button").forEach(button => {
+    const suggested = activeMode === "liturgia" && isSelectedDateToday() && button.dataset.key === suggestion.key;
+    button.classList.toggle("suggested-now", suggested);
+    if (suggested) {
+      button.setAttribute("title", "Hora sugerida según el momento del día");
+    } else {
+      button.removeAttribute("title");
+    }
+  });
+}
+
+function selectSuggestedHourOnEntry() {
+  if (!dateInput || dateInput.value !== localDateString()) return;
+
+  const suggestion = getSuggestedLiturgicalHour();
+  activeMode = "liturgia";
+  activeKey.liturgia = suggestion.key;
+
+  resetLiturgyGuide();
+  resetMisalGuide();
+  activeDailyTool = null;
+  activeMisalTool = null;
+}
+
+
+
 function buildUrl() {
   const file = SOURCES[activeMode][activeKey[activeMode]];
   const date = dateInput.value;
@@ -175,8 +294,56 @@ function buildUrl() {
   return `${BASES[activeMode]}/${file}${fecha ? `?fecha=${encodeURIComponent(fecha)}` : ""}`;
 }
 
+function showViewerStatus(state, title, message) {
+  if (!viewerStatus) return;
+
+  viewerStatus.classList.remove("hidden", "loading", "error", "compact");
+  viewerStatus.classList.add(state);
+
+  if (viewerStatusTitle) viewerStatusTitle.textContent = title;
+  if (viewerStatusMessage) viewerStatusMessage.textContent = message;
+}
+
+function hideViewerStatus() {
+  if (viewerStatus) {
+    viewerStatus.classList.add("hidden");
+    viewerStatus.classList.remove("compact", "loading", "error");
+  }
+
+  if (viewer) {
+    viewer.classList.remove("is-loading");
+  }
+}
+
 function updateViewer() {
-  viewer.src = buildUrl();
+  const url = buildUrl();
+
+  if (viewerOpenSource) {
+    viewerOpenSource.href = url;
+  }
+
+  if (viewer) {
+    viewer.classList.add("is-loading");
+  }
+
+  // No mostramos aviso de carga al inicio para no tapar el texto del CEM.
+  // Sólo aparece si después de varios segundos el iframe no reporta carga.
+  hideViewerStatus();
+  clearTimeout(viewerLoadTimer);
+
+  viewerLoadTimer = window.setTimeout(() => {
+    showViewerStatus(
+      "error",
+      "El texto no parece haber cargado",
+      "Revisa tu conexión, reintenta o abre directamente la fuente."
+    );
+
+    if (viewerStatus) {
+      viewerStatus.classList.add("compact");
+    }
+  }, 12000);
+
+  viewer.src = url;
 }
 
 function updateDailyToolsUI() {
@@ -285,6 +452,8 @@ function updateTabs() {
   document.querySelectorAll("#misal-tabs button").forEach(button => {
     button.classList.toggle("active", button.dataset.key === activeKey.misal);
   });
+
+  updateSuggestedHourUI();
 }
 
 function resetLiturgyGuide() {
@@ -541,20 +710,42 @@ misalGuideExit.addEventListener("click", () => {
   updateTabs();
 });
 
+
 dateInput.addEventListener("change", () => {
+  if (isSelectedDateToday()) {
+    selectSuggestedHourOnEntry();
+    updateTabs();
+  }
+
   updateViewer();
   updateSantoral();
   updateGospelLink();
+  updateSuggestedHourUI();
 });
 
 todayButton.addEventListener("click", () => {
   dateInput.value = localDateString();
+  selectSuggestedHourOnEntry();
+  updateTabs();
   updateViewer();
   updateSantoral();
   updateGospelLink();
+  updateSuggestedHourUI();
 });
 
+if (viewer) {
+  viewer.addEventListener("load", () => {
+    clearTimeout(viewerLoadTimer);
+    window.setTimeout(hideViewerStatus, 180);
+  });
+}
+
+if (viewerRetry) {
+  viewerRetry.addEventListener("click", () => updateViewer());
+}
+
 dateInput.value = localDateString();
+selectSuggestedHourOnEntry();
 updateSantoral();
 updateGospelLink();
 updateDailyToolsUI();
@@ -610,6 +801,10 @@ function loadTrack(index) {
   ambientAudio.src = track.src;
   musicTrackLabel.textContent = `${track.title} — Universfield / Pixabay`;
   localStorage.setItem("ordoLastMusicTrack", track.src);
+
+  if (typeof renderOrdoFab === "function") {
+    renderOrdoFab();
+  }
 }
 
 function updateMusicUI(isPlaying) {
@@ -621,6 +816,10 @@ function updateMusicUI(isPlaying) {
 
   if (musicPanel) {
     musicPanel.classList.toggle("is-playing", isPlaying);
+  }
+
+  if (typeof renderOrdoFab === "function") {
+    renderOrdoFab();
   }
 }
 
@@ -667,3 +866,277 @@ if (musicToggle && musicNext && musicTrackLabel) {
     updateMusicUI(true);
   });
 }
+
+
+/* Controles rápidos dinámicos: música + guía */
+function getActiveGuideContext() {
+  const liturgySequence = liturgyGuideSequences[activeLiturgyGuide] || [];
+  const misalSequence = misalGuideSequences[activeMisalGuide] || [];
+
+  if (activeLiturgyGuide !== "quick" && liturgySequence.length) {
+    return {
+      type: "liturgia",
+      name: liturgyGuideNames[activeLiturgyGuide],
+      step: liturgyGuideStep,
+      total: liturgySequence.length,
+      current: liturgySequence[liturgyGuideStep]
+    };
+  }
+
+  if (activeMisalGuide !== "quick" && misalSequence.length) {
+    return {
+      type: "misal",
+      name: misalGuideNames[activeMisalGuide],
+      step: misalGuideStep,
+      total: misalSequence.length,
+      current: misalSequence[misalGuideStep]
+    };
+  }
+
+  return null;
+}
+
+function isAmbientMusicActive() {
+  return musicStarted || !ambientAudio.paused || currentTrackIndex >= 0;
+}
+
+function getCurrentTrackTitle() {
+  return currentTrackIndex >= 0 && musicTracks[currentTrackIndex]
+    ? musicTracks[currentTrackIndex].title
+    : "Universfield / Pixabay";
+}
+
+function fabButton(action, label, className = "") {
+  return `<button type="button" data-fab-action="${action}" class="${className}" role="menuitem">${label}</button>`;
+}
+
+function renderOrdoFab() {
+  if (!ordoFab || !ordoFabMain || !ordoFabMenu) return;
+
+  const guideContext = getActiveGuideContext();
+  const musicActive = isAmbientMusicActive();
+  const isPlaying = !ambientAudio.paused;
+  const html = [];
+
+  if (guideContext) {
+    html.push(`
+      <div class="ordo-fab-status">
+        <strong>${guideContext.name}</strong>
+        <span>Paso ${guideContext.step + 1} de ${guideContext.total}: ${guideContext.current.label}</span>
+      </div>
+    `);
+
+    html.push('<span class="ordo-fab-group">Guía activa</span>');
+    html.push(fabButton("guide-next", guideContext.step >= guideContext.total - 1 ? "Terminar guía" : "Siguiente", "primary"));
+    html.push(fabButton("guide-prev", "Anterior", guideContext.step === 0 ? "disabled" : ""));
+    html.push(fabButton("guide-exit", "Salir de la guía", "danger"));
+    html.push('<div class="ordo-fab-separator"></div>');
+  }
+
+  html.push('<span class="ordo-fab-group">Escoger guía de rezo</span>');
+  html.push(fabButton("start-liturgy-laudes-first", "Laudes como primer rezo"));
+  html.push(fabButton("start-liturgy-oficio-first", "Oficio de lectura primero"));
+  html.push(fabButton("start-liturgy-oficio-laudes", "Oficio + Laudes"));
+  html.push(fabButton("start-misal-misa-habitual", "Misa habitual"));
+  html.push(fabButton("start-misal-misa-visperas", "Misa con Vísperas"));
+  html.push('<div class="ordo-fab-separator"></div>');
+
+  html.push('<span class="ordo-fab-group">Música</span>');
+
+  if (musicActive) {
+    html.push(`
+      <div class="ordo-fab-status">
+        <strong>Música ambiental</strong>
+        <span>${getCurrentTrackTitle()}</span>
+      </div>
+    `);
+
+    html.push(fabButton("music-toggle", isPlaying ? "Pausar música" : "Reproducir música", "primary"));
+    html.push(fabButton("music-next", "Siguiente pista"));
+  } else {
+    html.push(fabButton("music-toggle", "Reproducir música", "primary"));
+  }
+
+  ordoFabMenu.innerHTML = html.join("");
+
+  ordoFabMain.classList.remove("fab-action-guide", "fab-action-music", "fab-action-menu");
+  ordoFabMain.innerHTML = `<span class="fab-icon-cross">✥</span><span class="fab-icon-music">♪</span>`;
+  ordoFabMain.setAttribute("aria-label", "Abrir guía de rezo y música");
+  ordoFabMain.setAttribute("title", "Guía de rezo y música");
+  ordoFabMain.classList.add("fab-action-menu");
+  ordoFabMain.classList.toggle("is-playing", isPlaying);
+  ordoFabMain.classList.toggle("has-guide", !!guideContext);
+
+  if (ordoFabGuideNext) {
+    ordoFabGuideNext.classList.toggle("hidden", !guideContext);
+    ordoFabGuideNext.setAttribute(
+      "aria-label",
+      guideContext
+        ? `Siguiente paso del rezo guiado: ${guideContext.current.label}`
+        : "Siguiente paso del rezo guiado"
+    );
+  }
+
+  if (ordoFabMusicPause) {
+    ordoFabMusicPause.classList.toggle("hidden", !isPlaying);
+  }
+}
+
+function openOrdoFab() {
+  if (!ordoFab || !ordoFabMain) return;
+  renderOrdoFab();
+  ordoFab.classList.add("open");
+  ordoFabMain.setAttribute("aria-expanded", "true");
+}
+
+function closeOrdoFab() {
+  if (!ordoFab || !ordoFabMain) return;
+  ordoFab.classList.remove("open");
+  ordoFabMain.setAttribute("aria-expanded", "false");
+}
+
+function toggleOrdoFab(event) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  if (!ordoFab) return;
+
+  if (ordoFab.classList.contains("open")) {
+    closeOrdoFab();
+  } else {
+    openOrdoFab();
+  }
+}
+
+function handleOrdoFabAction(action) {
+  const guideContext = getActiveGuideContext();
+
+  if (action === "start-liturgy-laudes-first") {
+    startLiturgyGuide("laudes-first");
+  }
+
+  if (action === "start-liturgy-oficio-first") {
+    startLiturgyGuide("oficio-first");
+  }
+
+  if (action === "start-liturgy-oficio-laudes") {
+    startLiturgyGuide("oficio-laudes");
+  }
+
+  if (action === "start-misal-misa-habitual") {
+    startMisalGuide("misa-habitual");
+  }
+
+  if (action === "start-misal-misa-visperas") {
+    startMisalGuide("misa-visperas");
+  }
+
+  if (action === "music-toggle" && musicToggle) {
+    musicToggle.click();
+  }
+
+  if (action === "music-next" && musicNext) {
+    musicNext.click();
+  }
+
+  if (action === "guide-next" && guideContext) {
+    if (guideContext.type === "liturgia") {
+      guideNext.click();
+    } else {
+      misalGuideNext.click();
+    }
+  }
+
+  if (action === "guide-prev" && guideContext && guideContext.step > 0) {
+    if (guideContext.type === "liturgia") {
+      guidePrev.click();
+    } else {
+      misalGuidePrev.click();
+    }
+  }
+
+  if (action === "guide-exit" && guideContext) {
+    if (guideContext.type === "liturgia") {
+      guideExit.click();
+    } else {
+      misalGuideExit.click();
+    }
+  }
+
+  renderOrdoFab();
+}
+
+if (ordoFabMain) {
+  ordoFabMain.addEventListener("click", toggleOrdoFab);
+}
+
+if (ordoFabGuideNext) {
+  ordoFabGuideNext.addEventListener("click", event => {
+    event.preventDefault();
+    event.stopPropagation();
+    handleOrdoFabAction("guide-next");
+    closeOrdoFab();
+  });
+}
+
+if (ordoFabMusicPause) {
+  ordoFabMusicPause.addEventListener("click", event => {
+    event.preventDefault();
+    event.stopPropagation();
+    handleOrdoFabAction("music-toggle");
+    closeOrdoFab();
+  });
+}
+
+if (ordoFabMenu) {
+  ordoFabMenu.addEventListener("click", event => {
+    const button = event.target.closest("button[data-fab-action]");
+    if (!button || button.classList.contains("disabled")) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    handleOrdoFabAction(button.dataset.fabAction);
+    closeOrdoFab();
+  });
+}
+
+document.addEventListener("click", event => {
+  if (!ordoFab || !ordoFab.classList.contains("open")) return;
+  if (!ordoFab.contains(event.target)) closeOrdoFab();
+});
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeOrdoFab();
+});
+
+[guideNext, guidePrev, guideExit, misalGuideNext, misalGuidePrev, misalGuideExit, musicToggle, musicNext].forEach(control => {
+  if (!control) return;
+  control.addEventListener("click", () => {
+    window.setTimeout(renderOrdoFab, 0);
+  });
+});
+
+function addRippleEffect(event) {
+  const target = event.target.closest("button, .santoral-link, .footer-help");
+  if (!target || target.disabled || target.classList.contains("disabled")) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const rect = target.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+  const ripple = document.createElement("span");
+
+  ripple.className = "ripple";
+  ripple.style.width = ripple.style.height = `${size}px`;
+  ripple.style.left = `${event.clientX - rect.left - size / 2}px`;
+  ripple.style.top = `${event.clientY - rect.top - size / 2}px`;
+
+  target.appendChild(ripple);
+  ripple.addEventListener("animationend", () => ripple.remove(), { once: true });
+}
+
+document.addEventListener("click", addRippleEffect);
+
+renderOrdoFab();
+updateSuggestedHourUI();

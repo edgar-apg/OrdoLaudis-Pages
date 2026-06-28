@@ -57,3 +57,119 @@ El uso de fuentes externas, textos litúrgicos, santoral, oraciones y música se
 ---
 
 *Laudare, Benedicere, Praedicare — in Rete.* 🏁
+
+
+## Mejoras de uso diario agregadas
+
+Esta versión agrega mejoras sobre la versión subida:
+
+- Indicador de hora sugerida de la Liturgia de las Horas.
+- Estado visible de carga del iframe, con opción de reintentar o abrir en CEM si tarda demasiado.
+- Botón flotante dinámico para controlar la música.
+- Si una guía está activa, el botón flotante muestra controles de siguiente, anterior y salir.
+- Animaciones suaves en botones y transiciones ligeras del visor.
+- Favicon con la cruz de Ordo Laudis.
+
+Versión de archivos: `ordo-mejoras-actual-1`.
+
+
+## Ajuste del botón flotante
+
+Esta versión retira de la interfaz el botón no flotante de música. La sección de música queda oculta visualmente, pero se conserva en el DOM para que los controles existentes sigan funcionando desde JavaScript.
+
+El botón flotante ahora usa un ícono compuesto `♪ ✥`, para sugerir música y rezo guiado. Cuando hay música activa muestra pausa, y cuando hay guía activa resalta la cruz.
+
+Versión de archivos: `ordo-fab-musica-guia-2`.
+
+
+## Ajuste visual de hora sugerida y FAB
+
+- La hora sugerida ahora aparece compacta debajo de la fila “Guía litúrgica / Santoral Dominicano”.
+- La tarjeta ocupa aproximadamente la mitad de alto que la versión anterior.
+- El botón flotante ahora prioriza el ícono de rezo guiado `✥` y deja la música `♪` como segundo elemento visual.
+
+Versión de archivos: `ordo-fab-ajustes-ui-3`.
+
+
+## Ajuste del FAB como selector de guía
+
+- Se elimina la barra visible de “Hora sugerida”.
+- La indicación de hora sugerida permanece sólo como marca discreta en los botones de las Horas.
+- El botón flotante ahora permite escoger directamente una guía de rezo:
+  - Laudes como primer rezo.
+  - Oficio de lectura primero.
+  - Oficio + Laudes.
+  - Misa habitual.
+  - Misa con Vísperas.
+- Después de escoger una guía desde el FAB, el mismo botón muestra los controles de Siguiente, Anterior y Salir.
+
+Versión de archivos: `ordo-fab-guia-boton-4`.
+
+
+## Ajuste del estado de carga del iframe
+
+Esta versión cambia el aviso de carga para que no tape el texto del CEM durante las pruebas en Live Server.
+
+- El aviso de carga inicial se oculta solo después de unos segundos.
+- Si la carga tarda, el aviso se convierte en una tarjeta pequeña no bloqueante.
+- El iframe queda visible aunque el evento de carga externo tarde en responder.
+- Se conservan las opciones de Reintentar y Abrir en CEM.
+
+Versión de archivos: `ordo-iframe-no-bloqueante-5`.
+
+
+## Controles superiores compactos y aviso de carga
+
+- Los botones “Liturgia de las Horas” y “Misal” quedan más bajos y discretos.
+- La sección de fecha se redujo en encabezado, márgenes, campo de fecha y botón “Hoy”.
+- El aviso de carga ya no aparece al abrir cada texto.
+- El aviso sólo aparece después de varios segundos si el iframe no reporta carga.
+
+Versión de archivos: `ordo-controles-compactos-6`.
+
+
+## Hora sugerida automática
+
+Esta versión conserva la marca visual de la hora sugerida en los botones, pero además selecciona automáticamente esa Hora al entrar a la página.
+
+También se aplica al presionar “Hoy” o al cambiar la fecha de nuevo al día actual.
+
+Versión de archivos: `ordo-hora-sugerida-auto-7`.
+
+
+## FAB con acción directa
+
+Esta versión transforma el botón flotante según el estado:
+
+- Si hay guía activa, el botón se convierte en flecha `➜` y avanza directamente al siguiente paso.
+- Si hay música sonando y no hay guía activa, el botón se convierte en pausa `❚❚`.
+- Si hay guía y música al mismo tiempo, se prioriza el siguiente paso del rezo.
+- Si no hay guía activa ni música reproduciéndose, el botón abre el menú normal de guía y música.
+
+Versión de archivos: `ordo-fab-accion-directa-8`.
+
+
+## FAB con botones auxiliares contextuales
+
+Esta versión cambia el flujo del botón flotante:
+
+- El botón principal ya no se transforma; siempre abre el menú de guía y música.
+- Si hay una guía activa, aparece un botón auxiliar `➜` para avanzar al siguiente paso.
+- Si la música está sonando, aparece un botón auxiliar `❚❚` para pausar.
+- Si guía y música están activas al mismo tiempo, aparecen ambos botones auxiliares.
+- Al seleccionar una opción dentro del menú del FAB, el menú se cierra automáticamente.
+
+Versión de archivos: `ordo-fab-botones-auxiliares-9`.
+
+
+## Guías compactas
+
+Esta versión reduce el tamaño de las tarjetas de guía de rezo para que queden en proporción con los controles superiores compactos.
+
+- Tarjetas más bajas.
+- Menos padding interno.
+- Tipografía ligeramente más pequeña.
+- Separación más discreta.
+- Aplica tanto a la guía de Liturgia de las Horas como a la guía del Misal.
+
+Versión de archivos: `ordo-guia-compacta-10`.

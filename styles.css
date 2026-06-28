@@ -1049,3 +1049,959 @@ footer {
   }
 
 }
+
+/* === Mejoras de uso diario: hora sugerida, iframe, FAB y animaciones === */
+
+button,
+.santoral-link,
+.footer-help {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 130ms ease,
+    background 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    opacity 160ms ease;
+}
+
+button:active,
+.santoral-link:active,
+.footer-help:active {
+  transform: scale(.97);
+}
+
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  transform: scale(0);
+  background: rgba(201, 161, 74, .32);
+  animation: ripple-effect 620ms ease-out;
+}
+
+@keyframes ripple-effect {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+.suggested-hour-section {
+  margin-top: -0.55rem;
+}
+
+.suggested-hour-card {
+  display: grid;
+  gap: .08rem;
+  padding: .75rem 1rem;
+  background: rgba(255,255,255,.86);
+  border-left: 4px solid var(--gold);
+}
+
+.suggested-hour-kicker {
+  color: var(--gold2);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+#suggested-hour-title {
+  font-family: var(--font-serif);
+  color: var(--ink);
+  font-size: clamp(1.05rem, 2vw, 1.34rem);
+  line-height: 1.08;
+}
+
+#suggested-hour-detail {
+  color: var(--muted);
+  font-size: .82rem;
+  line-height: 1.28;
+}
+
+.tabs button.suggested-now {
+  border-color: var(--gold2);
+  box-shadow: inset 0 -3px 0 var(--gold);
+}
+
+.tabs button.suggested-now::after {
+  content: ' · sugerida';
+  color: var(--gold2);
+  font-size: .6rem;
+  letter-spacing: .04em;
+}
+
+.viewer-wrap {
+  position: relative;
+}
+
+iframe {
+  transition: opacity 220ms ease, filter 220ms ease;
+}
+
+iframe.is-loading {
+  opacity: .55;
+  filter: saturate(.92);
+}
+
+.viewer-status {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(251,248,241,.86);
+  backdrop-filter: blur(2px);
+}
+
+.viewer-status.hidden {
+  display: none !important;
+}
+
+.viewer-status-card {
+  width: min(92%, 28rem);
+  border: 1px solid var(--black);
+  border-top: 4px solid var(--gold);
+  background: rgba(255,255,255,.97);
+  padding: 1rem;
+  text-align: center;
+  box-shadow: 0 18px 45px rgba(0,0,0,.14);
+}
+
+.viewer-status-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: .5rem;
+  border: 1px solid rgba(201,161,74,.75);
+  color: var(--gold2);
+  background: rgba(247,243,236,.75);
+}
+
+.viewer-status-card strong {
+  display: block;
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 1.18rem;
+  line-height: 1.1;
+}
+
+.viewer-status-card p {
+  margin: .5rem auto .8rem;
+  color: var(--muted);
+  font-size: .86rem;
+  line-height: 1.35;
+}
+
+.viewer-status-actions {
+  display: flex;
+  gap: .55rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.viewer-status-actions button,
+.viewer-status-actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.15rem;
+  border: 1px solid var(--black);
+  padding: .42rem .7rem;
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.viewer-status-actions a {
+  background: var(--white);
+  color: var(--black);
+}
+
+.viewer-status-actions button:hover,
+.viewer-status-actions a:hover {
+  background: var(--gold);
+  color: var(--black);
+}
+
+.ordo-fab {
+  position: fixed;
+  right: clamp(.9rem, 4vw, 1.6rem);
+  bottom: clamp(.9rem, 4vw, 1.6rem);
+  z-index: 60;
+  display: grid;
+  justify-items: end;
+  gap: .5rem;
+}
+
+.ordo-fab-main {
+  width: 3.25rem;
+  height: 3.25rem;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  background: var(--black);
+  color: var(--gold);
+  display: grid;
+  place-items: center;
+  font-size: 1.05rem;
+  cursor: pointer;
+  box-shadow: 0 14px 34px rgba(0,0,0,.24);
+}
+
+.ordo-fab-main.is-playing {
+  color: var(--white);
+  background: var(--gold2);
+  border-color: var(--black);
+}
+
+.ordo-fab-menu {
+  min-width: min(20rem, calc(100vw - 2rem));
+  max-height: min(72vh, 34rem);
+  overflow-y: auto;
+  display: grid;
+  gap: .36rem;
+  padding: .55rem;
+  border: 1px solid var(--black);
+  background: rgba(251,248,241,.98);
+  box-shadow: 0 18px 45px rgba(0,0,0,.20);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(.7rem);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.ordo-fab.open .ordo-fab-menu {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.ordo-fab-group {
+  display: block;
+  margin: .2rem .2rem .04rem;
+  color: var(--gold2);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.ordo-fab-status {
+  display: grid;
+  gap: .12rem;
+  padding: .55rem .6rem;
+  border-left: 4px solid var(--gold);
+  background: rgba(255,255,255,.86);
+}
+
+.ordo-fab-status strong {
+  font-family: var(--font-serif);
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.1;
+}
+
+.ordo-fab-status span {
+  color: var(--muted);
+  font-size: .72rem;
+  line-height: 1.25;
+}
+
+.ordo-fab-menu button {
+  min-height: 2.25rem;
+  border: 1px solid var(--black);
+  background: var(--white);
+  color: var(--black);
+  padding: .44rem .7rem;
+  font-family: var(--font-body);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-align: left;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.ordo-fab-menu button:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+.ordo-fab-menu button.primary {
+  background: var(--black);
+  color: var(--white);
+  border-color: var(--gold);
+}
+
+.ordo-fab-menu button.danger {
+  color: var(--red);
+}
+
+.ordo-fab-menu button.disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.ordo-fab-separator {
+  height: 1px;
+  margin: .25rem .15rem;
+  background: rgba(7,7,7,.12);
+}
+
+@media (max-width: 760px) {
+  .tabs button.suggested-now::after {
+    display: block;
+    margin-top: .1rem;
+  }
+
+  .ordo-fab {
+    right: .85rem;
+    bottom: .85rem;
+  }
+
+  .ordo-fab-main {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .ordo-fab-menu {
+    min-width: min(20rem, calc(100vw - 1.7rem));
+    max-height: 68vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+
+  .ripple {
+    display: none !important;
+  }
+}
+
+
+/* === Ajuste: la música se controla sólo desde el botón flotante === */
+.music-panel.music-panel-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  overflow: hidden !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+.ordo-fab-main {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr;
+  line-height: 1;
+}
+
+.ordo-fab-main .fab-icon-music,
+.ordo-fab-main .fab-icon-cross {
+  grid-area: 1 / 1;
+  display: block;
+  pointer-events: none;
+}
+
+.ordo-fab-main .fab-icon-music {
+  transform: translate(-.28rem, -.18rem);
+  font-size: 1.05rem;
+}
+
+.ordo-fab-main .fab-icon-cross {
+  transform: translate(.34rem, .3rem);
+  font-size: .78rem;
+  color: var(--ivory);
+}
+
+.ordo-fab-main.is-playing .fab-icon-music {
+  font-size: .9rem;
+}
+
+.ordo-fab-main.has-guide {
+  box-shadow:
+    0 0 0 3px rgba(201,161,74,.20),
+    0 14px 34px rgba(0,0,0,.24);
+}
+
+.ordo-fab-main.has-guide .fab-icon-cross {
+  color: var(--gold);
+}
+
+.ordo-fab-main.is-playing .fab-icon-cross {
+  color: var(--white);
+}
+
+@media (max-width: 760px) {
+  .ordo-fab-main .fab-icon-music {
+    font-size: 1rem;
+  }
+
+  .ordo-fab-main .fab-icon-cross {
+    font-size: .72rem;
+  }
+}
+
+
+/* === Ajustes UI: hora sugerida compacta e ícono de rezo primero === */
+.suggested-hour-section {
+  display: none !important;
+}
+
+.suggested-hour-inline {
+  display: grid;
+  gap: .02rem;
+  padding: .34rem .85rem .38rem;
+  border-top: 1px solid rgba(201,161,74,.35);
+  border-left: 4px solid var(--gold);
+  background: rgba(255,255,255,.88);
+}
+
+.suggested-hour-inline .suggested-hour-kicker {
+  color: var(--gold2);
+  font-size: .56rem;
+  font-weight: 700;
+  letter-spacing: .11em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.suggested-hour-inline #suggested-hour-title {
+  font-family: var(--font-serif);
+  color: var(--ink);
+  font-size: clamp(.92rem, 1.55vw, 1.08rem);
+  line-height: 1.05;
+}
+
+.suggested-hour-inline #suggested-hour-detail {
+  color: var(--muted);
+  font-size: .72rem;
+  line-height: 1.12;
+}
+
+.ordo-fab-main .fab-icon-cross {
+  transform: translate(-.24rem, -.16rem);
+  font-size: 1.02rem;
+  color: var(--gold);
+}
+
+.ordo-fab-main .fab-icon-music {
+  transform: translate(.34rem, .32rem);
+  font-size: .78rem;
+  color: var(--ivory);
+}
+
+.ordo-fab-main.is-playing .fab-icon-music {
+  color: var(--white);
+  font-size: .72rem;
+}
+
+.ordo-fab-main.is-playing .fab-icon-cross {
+  color: var(--white);
+}
+
+.ordo-fab-main.has-guide .fab-icon-cross {
+  color: var(--gold);
+  font-size: 1.08rem;
+}
+
+@media (max-width: 760px) {
+  .suggested-hour-inline {
+    padding: .32rem .7rem .36rem;
+    text-align: center;
+    border-left: 0;
+    border-top: 3px solid var(--gold);
+  }
+
+  .suggested-hour-inline #suggested-hour-title {
+    font-size: .98rem;
+  }
+
+  .suggested-hour-inline #suggested-hour-detail {
+    font-size: .68rem;
+  }
+
+  .ordo-fab-main .fab-icon-cross {
+    font-size: .98rem;
+  }
+
+  .ordo-fab-main .fab-icon-music {
+    font-size: .74rem;
+  }
+}
+
+
+/* === Ajuste: sin barra de hora sugerida y guía elegible desde FAB === */
+.suggested-hour-inline,
+.suggested-hour-section {
+  display: none !important;
+}
+
+.ordo-fab-menu .ordo-fab-group:first-child {
+  margin-top: .05rem;
+}
+
+.ordo-fab-menu button[data-fab-action^="start-liturgy"],
+.ordo-fab-menu button[data-fab-action^="start-misal"] {
+  background: rgba(255,255,255,.94);
+}
+
+.ordo-fab-menu button[data-fab-action^="start-liturgy"]:hover,
+.ordo-fab-menu button[data-fab-action^="start-misal"]:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+
+/* === Ajuste iframe: aviso no bloqueante === */
+.viewer-status.compact,
+.viewer-status.error {
+  inset: auto .75rem .75rem auto;
+  width: min(92%, 21rem);
+  min-height: 0;
+  display: block;
+  padding: 0;
+  background: transparent;
+  backdrop-filter: none;
+  pointer-events: none;
+}
+
+.viewer-status.compact .viewer-status-card,
+.viewer-status.error .viewer-status-card {
+  width: 100%;
+  padding: .62rem .7rem;
+  text-align: left;
+  border-top-width: 3px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.16);
+}
+
+.viewer-status.compact .viewer-status-mark,
+.viewer-status.error .viewer-status-mark {
+  display: none;
+}
+
+.viewer-status.compact .viewer-status-card strong,
+.viewer-status.error .viewer-status-card strong {
+  font-family: var(--font-body);
+  font-size: .78rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.viewer-status.compact .viewer-status-card p,
+.viewer-status.error .viewer-status-card p {
+  margin: .24rem 0 .5rem;
+  font-size: .72rem;
+  line-height: 1.22;
+}
+
+.viewer-status.compact .viewer-status-actions,
+.viewer-status.error .viewer-status-actions {
+  justify-content: flex-start;
+}
+
+.viewer-status.compact .viewer-status-actions,
+.viewer-status.compact .viewer-status-actions *,
+.viewer-status.error .viewer-status-actions,
+.viewer-status.error .viewer-status-actions * {
+  pointer-events: auto;
+}
+
+.viewer-status.compact .viewer-status-actions button,
+.viewer-status.compact .viewer-status-actions a,
+.viewer-status.error .viewer-status-actions button,
+.viewer-status.error .viewer-status-actions a {
+  min-height: 1.78rem;
+  padding: .28rem .48rem;
+  font-size: .58rem;
+}
+
+iframe.is-loading {
+  opacity: .88;
+  filter: none;
+}
+
+@media (max-width: 760px) {
+  .viewer-status.compact,
+  .viewer-status.error {
+    left: .55rem;
+    right: .55rem;
+    bottom: .55rem;
+    width: auto;
+  }
+}
+
+
+/* === Ajuste: controles superiores compactos y aviso sólo si falla === */
+.mode-tabs {
+  gap: .55rem;
+  margin-bottom: .75rem;
+}
+
+.mode-tabs button {
+  min-height: 2.65rem;
+  padding: .52rem .85rem;
+  font-size: .72rem;
+  letter-spacing: .075em;
+}
+
+.controls-section {
+  margin-bottom: .8rem;
+}
+
+.controls-section .section-header {
+  padding: .5rem .78rem;
+}
+
+.controls-section .section-title {
+  font-size: .64rem;
+  letter-spacing: .1em;
+}
+
+.controls {
+  padding: .62rem .78rem;
+  gap: .55rem;
+}
+
+input[type="date"] {
+  min-height: 2.15rem;
+  padding: .36rem .58rem;
+  font-size: .9rem;
+}
+
+#today {
+  min-height: 2.15rem;
+  padding: .36rem .7rem;
+  font-size: .66rem;
+  letter-spacing: .075em;
+}
+
+.viewer-status.loading {
+  display: none !important;
+}
+
+iframe.is-loading {
+  opacity: 1;
+  filter: none;
+}
+
+.viewer-status.error.compact {
+  animation: soft-notice-in 180ms ease-out;
+}
+
+@keyframes soft-notice-in {
+  from {
+    opacity: 0;
+    transform: translateY(.45rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 760px) {
+  .mode-tabs {
+    gap: .45rem;
+    margin-bottom: .65rem;
+  }
+
+  .mode-tabs button {
+    min-height: 2.45rem;
+    padding: .46rem .55rem;
+    font-size: .64rem;
+    letter-spacing: .055em;
+  }
+
+  .controls-section .section-header {
+    padding: .42rem .62rem;
+  }
+
+  .controls {
+    padding: .54rem .62rem;
+    justify-content: center;
+  }
+
+  input[type="date"],
+  #today {
+    min-height: 2.05rem;
+  }
+}
+
+
+/* === FAB con acción directa === */
+.ordo-fab-main.fab-action-guide {
+  background: var(--black);
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.ordo-fab-main.fab-action-guide .fab-icon-next {
+  font-size: 1.45rem;
+  line-height: 1;
+  transform: translateX(.04rem);
+  pointer-events: none;
+}
+
+.ordo-fab-main.fab-action-music {
+  background: var(--gold2);
+  color: var(--white);
+  border-color: var(--black);
+}
+
+.ordo-fab-main.fab-action-music .fab-icon-pause {
+  font-size: .92rem;
+  letter-spacing: .08em;
+  pointer-events: none;
+}
+
+.ordo-fab-main.fab-action-guide:hover,
+.ordo-fab-main.fab-action-music:hover,
+.ordo-fab-main.fab-action-menu:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 42px rgba(0,0,0,.28);
+}
+
+.ordo-fab-main.fab-action-guide:active,
+.ordo-fab-main.fab-action-music:active,
+.ordo-fab-main.fab-action-menu:active {
+  transform: scale(.96);
+}
+
+.ordo-fab-main.fab-action-guide::after {
+  content: 'Siguiente';
+  position: absolute;
+  right: calc(100% + .55rem);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: .22rem .42rem;
+  border: 1px solid rgba(7,7,7,.18);
+  background: rgba(251,248,241,.96);
+  color: var(--ink);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 8px 22px rgba(0,0,0,.12);
+  opacity: .92;
+}
+
+.ordo-fab-main.fab-action-music::after {
+  content: 'Pausar';
+  position: absolute;
+  right: calc(100% + .55rem);
+  top: 50%;
+  transform: translateY(-50%);
+  padding: .22rem .42rem;
+  border: 1px solid rgba(7,7,7,.18);
+  background: rgba(251,248,241,.96);
+  color: var(--ink);
+  font-size: .62rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  box-shadow: 0 8px 22px rgba(0,0,0,.12);
+  opacity: .92;
+}
+
+@media (max-width: 760px) {
+  .ordo-fab-main.fab-action-guide::after,
+  .ordo-fab-main.fab-action-music::after {
+    display: none;
+  }
+
+  .ordo-fab-main.fab-action-guide .fab-icon-next {
+    font-size: 1.34rem;
+  }
+}
+
+
+/* === FAB con botones auxiliares contextuales === */
+.ordo-fab {
+  grid-template-areas:
+    "menu"
+    "guide"
+    "music"
+    "main";
+}
+
+.ordo-fab-menu {
+  grid-area: menu;
+}
+
+.ordo-fab-main {
+  grid-area: main;
+}
+
+.ordo-fab-quick {
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(251,248,241,.98);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 10px 26px rgba(0,0,0,.18);
+  transition:
+    transform 150ms ease,
+    opacity 150ms ease,
+    background 150ms ease,
+    color 150ms ease,
+    box-shadow 150ms ease;
+}
+
+.ordo-fab-quick:hover {
+  transform: translateY(-2px);
+  background: var(--black);
+  color: var(--gold);
+  box-shadow: 0 16px 34px rgba(0,0,0,.24);
+}
+
+.ordo-fab-quick:active {
+  transform: scale(.96);
+}
+
+.ordo-fab-guide-next {
+  grid-area: guide;
+  font-size: 1.18rem;
+  background: var(--black);
+  color: var(--gold);
+}
+
+.ordo-fab-music-pause {
+  grid-area: music;
+  font-size: .78rem;
+  letter-spacing: .06em;
+  background: var(--gold2);
+  color: var(--white);
+  border-color: var(--black);
+}
+
+.ordo-fab-quick.hidden {
+  display: none !important;
+}
+
+.ordo-fab-main.fab-action-guide,
+.ordo-fab-main.fab-action-music {
+  background: var(--black);
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.ordo-fab-main.fab-action-guide::after,
+.ordo-fab-main.fab-action-music::after {
+  display: none !important;
+}
+
+@media (max-width: 760px) {
+  .ordo-fab-quick {
+    width: 2.55rem;
+    height: 2.55rem;
+  }
+
+  .ordo-fab-guide-next {
+    font-size: 1.08rem;
+  }
+
+  .ordo-fab-music-pause {
+    font-size: .72rem;
+  }
+}
+
+
+/* === Guías compactas: proporción con controles superiores === */
+.guide-options {
+  gap: .48rem;
+  padding: .58rem .7rem;
+}
+
+.guide-card {
+  min-height: 3rem;
+  padding: .48rem .58rem;
+}
+
+.guide-title {
+  font-size: .64rem;
+  letter-spacing: .07em;
+  line-height: 1.1;
+}
+
+.guide-path {
+  margin-top: .2rem;
+  font-size: .68rem;
+  line-height: 1.1;
+}
+
+.guide-status {
+  padding: .58rem .72rem;
+}
+
+#guide-step-label,
+#misal-guide-step-label {
+  font-size: .66rem;
+}
+
+#guide-current-title,
+#misal-guide-current-title {
+  font-size: .76rem;
+}
+
+.guide-actions button {
+  padding: .34rem .55rem;
+  font-size: .62rem;
+  letter-spacing: .06em;
+}
+
+.guide-note {
+  padding: .58rem .72rem;
+  font-size: .78rem;
+}
+
+@media (max-width: 760px) {
+  .guide-options {
+    grid-template-columns: 1fr 1fr;
+    gap: .42rem;
+    padding: .52rem;
+  }
+
+  .guide-card {
+    min-height: 2.75rem;
+    padding: .42rem .48rem;
+  }
+
+  .guide-title {
+    font-size: .58rem;
+  }
+
+  .guide-path {
+    font-size: .62rem;
+  }
+}
