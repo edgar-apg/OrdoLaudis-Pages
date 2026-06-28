@@ -1,3 +1,21 @@
+/* Limpieza preventiva de Service Workers antiguos de pruebas previas */
+(function cleanupOldOrdoCaches() {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.getRegistrations()
+      .then(registrations => registrations.forEach(registration => registration.unregister()))
+      .catch(() => {});
+  }
+
+  if ("caches" in window) {
+    caches.keys()
+      .then(keys => Promise.all(keys
+        .filter(key => key.toLowerCase().includes("ordo"))
+        .map(key => caches.delete(key))
+      ))
+      .catch(() => {});
+  }
+})();
+
 const BASES = {
   liturgia: "https://sistemas.cem.org.mx/Controller/Liturgia",
   misal: "https://sistemas.cem.org.mx/Controller/Misal"
@@ -295,55 +313,57 @@ function buildUrl() {
 }
 
 function showViewerStatus(state, title, message) {
-  if (!viewerStatus) return;
-
-  viewerStatus.classList.remove("hidden", "loading", "error", "compact");
-  viewerStatus.classList.add(state);
-
-  if (viewerStatusTitle) viewerStatusTitle.textContent = title;
-  if (viewerStatusMessage) viewerStatusMessage.textContent = message;
+  // Desactivado: no se coloca ninguna capa sobre el iframe del CEM.
 }
 
 function hideViewerStatus() {
-  if (viewerStatus) {
-    viewerStatus.classList.add("hidden");
-    viewerStatus.classList.remove("compact", "loading", "error");
+  // Desactivado: el iframe debe quedar siempre libre para los controles internos del CEM.
+}
+
+
+function focusCemViewer() {
+  if (!viewer) return;
+
+  try {
+    viewer.focus({ preventScroll: true });
+  } catch (error) {
+    try {
+      viewer.focus();
+    } catch (innerError) {}
   }
 
-  if (viewer) {
-    viewer.classList.remove("is-loading");
+  try {
+    if (viewer.contentWindow) {
+      viewer.contentWindow.focus();
+    }
+  } catch (error) {
+    // El iframe es externo; si el navegador bloquea el foco interno,
+    // simplemente dejamos enfocado el elemento iframe.
   }
+}
+
+function warmUpCemViewerFocus() {
+  // Algunos navegadores requieren que el iframe externo quede enfocado
+  // antes de que los controles internos del CEM respondan al primer clic.
+  window.setTimeout(focusCemViewer, 80);
+  window.setTimeout(focusCemViewer, 320);
+  window.setTimeout(focusCemViewer, 900);
 }
 
 function updateViewer() {
   const url = buildUrl();
+
+  clearTimeout(viewerLoadTimer);
 
   if (viewerOpenSource) {
     viewerOpenSource.href = url;
   }
 
   if (viewer) {
-    viewer.classList.add("is-loading");
+    viewer.dataset.loaded = "0";
+    viewer.src = url;
+    warmUpCemViewerFocus();
   }
-
-  // No mostramos aviso de carga al inicio para no tapar el texto del CEM.
-  // Sólo aparece si después de varios segundos el iframe no reporta carga.
-  hideViewerStatus();
-  clearTimeout(viewerLoadTimer);
-
-  viewerLoadTimer = window.setTimeout(() => {
-    showViewerStatus(
-      "error",
-      "El texto no parece haber cargado",
-      "Revisa tu conexión, reintenta o abre directamente la fuente."
-    );
-
-    if (viewerStatus) {
-      viewerStatus.classList.add("compact");
-    }
-  }, 12000);
-
-  viewer.src = url;
 }
 
 function updateDailyToolsUI() {
@@ -735,10 +755,27 @@ todayButton.addEventListener("click", () => {
 
 if (viewer) {
   viewer.addEventListener("load", () => {
+    viewer.dataset.loaded = "1";
     clearTimeout(viewerLoadTimer);
-    window.setTimeout(hideViewerStatus, 180);
+    warmUpCemViewerFocus();
+  });
+
+  ["mouseenter", "pointerenter", "mouseover", "touchstart"].forEach(eventName => {
+    viewer.addEventListener(eventName, () => {
+      focusCemViewer();
+    }, { passive: true });
   });
 }
+
+window.addEventListener("focus", () => {
+  warmUpCemViewerFocus();
+});
+
+document.addEventListener("visibilitychange", () => {
+  if (!document.hidden) {
+    warmUpCemViewerFocus();
+  }
+});
 
 if (viewerRetry) {
   viewerRetry.addEventListener("click", () => updateViewer());

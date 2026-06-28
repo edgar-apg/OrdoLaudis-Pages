@@ -173,3 +173,54 @@ Esta versión reduce el tamaño de las tarjetas de guía de rezo para que queden
 - Aplica tanto a la guía de Liturgia de las Horas como a la guía del Misal.
 
 Versión de archivos: `ordo-guia-compacta-10`.
+
+
+## Iframe sin interferencia
+
+Esta versión corrige la interacción con los controles internos del CEM dentro del iframe.
+
+- El aviso de carga ya no se coloca como capa sobre el visor.
+- El iframe queda siempre interactivo.
+- El aviso sólo aparece como tarjeta flotante pequeña si el iframe no reporta carga después de 20 segundos.
+- Se evita que el estado de carga bloquee botones internos como aumentar o disminuir texto.
+
+Versión de archivos: `ordo-iframe-sin-interferencia-11`.
+
+
+## Iframe limpio sin overlay
+
+Esta versión elimina por completo el estado visual de carga sobre el iframe del CEM.
+
+- No se crea ninguna capa encima del iframe.
+- El iframe queda siempre libre para los botones internos del CEM.
+- Se agrega `tabindex="0"` al iframe para mejorar el foco.
+- Se incluye un `sw.js` desactivador para limpiar Service Workers y cachés antiguos de pruebas anteriores.
+- `app.js` también intenta borrar registros y cachés antiguos de Ordo Laudis al cargar.
+
+Versión de archivos: `ordo-iframe-limpio-12`.
+
+
+## Enfoque preventivo del iframe CEM
+
+Esta versión intenta corregir el comportamiento en el que los botones internos del CEM necesitan un clic previo dentro del iframe.
+
+- El iframe queda con `loading="eager"`.
+- Al cargar el iframe, se enfoca varias veces de forma suave.
+- También se intenta enfocar `contentWindow` del iframe.
+- Se repite el enfoque al entrar el cursor, tocar el iframe, volver a la ventana o regresar a la pestaña.
+- No se agrega ninguna capa visual encima del visor.
+
+Versión de archivos: `ordo-iframe-focus-cem-13`.
+
+
+## FAB sin interferencia con el iframe
+
+Esta versión ajusta el botón flotante para que su contenedor fijo no capture clics fuera de los botones reales.
+
+- El contenedor `.ordo-fab` queda con `pointer-events: none`.
+- Sólo el botón principal, los botones auxiliares y el menú reciben clics.
+- Cuando el menú está cerrado, el menú no puede interceptar clics invisibles.
+- Se evita que un clic sobre el área del visor CEM sea usado por el listener global para cerrar el FAB.
+- Se mantiene la lógica de enfoque preventivo del iframe.
+
+Versión de archivos: `ordo-fab-no-interfiere-14`.

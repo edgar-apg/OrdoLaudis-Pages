@@ -7,7 +7,7 @@
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=ordo-guia-compacta-10">
+  <link rel="stylesheet" href="./styles.css?v=ordo-fab-no-interfiere-14">
 </head>
 <body>
 
@@ -196,18 +196,7 @@
   </nav>
 
   <section class="viewer-wrap">
-    <div id="viewer-status" class="viewer-status loading" role="status" aria-live="polite">
-      <div class="viewer-status-card">
-        <span class="viewer-status-mark">✥</span>
-        <strong id="viewer-status-title">Cargando oración…</strong>
-        <p id="viewer-status-message">Estamos solicitando el texto a la fuente externa.</p>
-        <div class="viewer-status-actions">
-          <button id="viewer-retry" type="button">Reintentar</button>
-          <a id="viewer-open-source" href="#" target="_blank" rel="noopener noreferrer">Abrir en CEM</a>
-        </div>
-      </div>
-    </div>
-    <iframe id="viewer" title="Consulta litúrgica"></iframe>
+    <iframe id="viewer" title="Consulta litúrgica" tabindex="0" loading="eager"></iframe>
   </section>
 
   <div id="ordo-fab" class="ordo-fab" aria-label="Controles rápidos">
@@ -235,7 +224,7 @@
   </a>
 </footer>
 
-<script src="santoral-dominicano.js?v=ordo-guia-compacta-10"></script>
-<script src="app.js?v=ordo-guia-compacta-10"></script>
+<script src="santoral-dominicano.js?v=ordo-fab-no-interfiere-14"></script>
+<script src="app.js?v=ordo-fab-no-interfiere-14"></script>
 </body>
 </html>
