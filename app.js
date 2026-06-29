@@ -447,6 +447,26 @@ function updateSantoral() {
   }
 }
 
+
+function scrollActiveLiturgyTabIntoView(behavior = "smooth") {
+  if (!liturgiaTabs || activeMode !== "liturgia") return;
+
+  const button = liturgiaTabs.querySelector(`button[data-key="${activeKey.liturgia}"]`);
+  if (!button) return;
+
+  window.requestAnimationFrame(() => {
+    const tabRect = liturgiaTabs.getBoundingClientRect();
+    const buttonRect = button.getBoundingClientRect();
+    const delta = (buttonRect.left + buttonRect.width / 2) - (tabRect.left + tabRect.width / 2);
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    liturgiaTabs.scrollTo({
+      left: liturgiaTabs.scrollLeft + delta,
+      behavior: prefersReducedMotion ? "auto" : behavior
+    });
+  });
+}
+
 function updateTabs() {
   modeButtons.forEach(button => {
     button.classList.toggle("active", button.dataset.mode === activeMode);
@@ -474,6 +494,7 @@ function updateTabs() {
   });
 
   updateSuggestedHourUI();
+  scrollActiveLiturgyTabIntoView();
 }
 
 function resetLiturgyGuide() {
@@ -616,6 +637,29 @@ function startMisalGuide(sequenceName) {
   updateMisalToolsUI();
   updateTabs();
 }
+
+
+function addButtonPressFeedback(target) {
+  if (!target || target.disabled || target.classList.contains("disabled")) return;
+
+  target.classList.remove("is-button-pressing");
+  // Forzar reinicio de la animación.
+  void target.offsetWidth;
+  target.classList.add("is-button-pressing");
+
+  window.setTimeout(() => {
+    target.classList.remove("is-button-pressing");
+  }, 220);
+}
+
+document.addEventListener("pointerdown", event => {
+  const target = event.target.closest(
+    "button, .footer-help, .santoral-link, .gospel-link, .viewer-status-actions a"
+  );
+
+  if (!target) return;
+  addButtonPressFeedback(target);
+}, { passive: true });
 
 if (santoralToggle) {
   santoralToggle.addEventListener("click", () => openDailyTool("santoral"));
@@ -951,6 +995,7 @@ function renderOrdoFab() {
   if (!ordoFab || !ordoFabMain || !ordoFabMenu) return;
 
   const guideContext = getActiveGuideContext();
+  const hasGuideNextStep = !!guideContext && guideContext.step < guideContext.total - 1;
   const musicActive = isAmbientMusicActive();
   const isPlaying = !ambientAudio.paused;
   const html = [];
@@ -1005,12 +1050,17 @@ function renderOrdoFab() {
   ordoFabMain.classList.toggle("has-guide", !!guideContext);
 
   if (ordoFabGuideNext) {
-    ordoFabGuideNext.classList.toggle("hidden", !guideContext);
+    ordoFabGuideNext.classList.toggle("hidden", !hasGuideNextStep);
+    ordoFabGuideNext.disabled = !hasGuideNextStep;
     ordoFabGuideNext.setAttribute(
       "aria-label",
-      guideContext
+      hasGuideNextStep
         ? `Siguiente paso del rezo guiado: ${guideContext.current.label}`
-        : "Siguiente paso del rezo guiado"
+        : "No hay siguiente paso en esta guía"
+    );
+    ordoFabGuideNext.setAttribute(
+      "title",
+      hasGuideNextStep ? "Siguiente rezo" : "Último paso de la guía"
     );
   }
 
@@ -1028,6 +1078,16 @@ function openOrdoFab() {
 
 function closeOrdoFab() {
   if (!ordoFab || !ordoFabMain) return;
+
+  if (ordoFab.classList.contains("open")) {
+    ordoFab.classList.add("closing");
+    window.setTimeout(() => {
+      if (ordoFab) {
+        ordoFab.classList.remove("closing");
+      }
+    }, 180);
+  }
+
   ordoFab.classList.remove("open");
   ordoFabMain.setAttribute("aria-expanded", "false");
 }
@@ -1113,6 +1173,14 @@ if (ordoFabGuideNext) {
   ordoFabGuideNext.addEventListener("click", event => {
     event.preventDefault();
     event.stopPropagation();
+
+    const guideContext = getActiveGuideContext();
+    if (!guideContext || guideContext.step >= guideContext.total - 1) {
+      renderOrdoFab();
+      closeOrdoFab();
+      return;
+    }
+
     handleOrdoFabAction("guide-next");
     closeOrdoFab();
   });

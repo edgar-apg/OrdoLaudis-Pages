@@ -224,3 +224,45 @@ Esta versión ajusta el botón flotante para que su contenedor fijo no capture c
 - Se mantiene la lógica de enfoque preventivo del iframe.
 
 Versión de archivos: `ordo-fab-no-interfiere-14`.
+
+
+## Ajustes finales de interfaz
+
+Esta versión integra los detalles finales solicitados:
+
+- El botón flotante queda por encima del pie de página.
+- El FAB se mueve fuera de `<main>` para evitar conflictos de apilamiento con el footer.
+- Todos los botones tienen una animación rápida y elegante al presionarse.
+- El menú del botón flotante cierra con transición suave.
+- Los botones de las Horas litúrgicas son más compactos y proporcionales al resto de controles.
+- Al seleccionarse automáticamente la Hora sugerida, la tira de botones se desplaza sola para dejarla visible.
+- La marca “sugerido” se reemplaza por la cruz `✥`.
+
+Versión de archivos: `ordo-ajustes-interfaz-15`.
+
+
+## Flecha flotante sólo cuando hay siguiente paso
+
+Esta versión ajusta el botón auxiliar `➜` de la guía:
+
+- Aparece cuando la guía activa todavía tiene un siguiente paso.
+- Se oculta automáticamente al llegar al último paso de la guía.
+- Ejemplo: en “Laudes como primer rezo”, aparece en Invitatorio, pero desaparece al llegar a Laudes.
+- Se protege también el clic del botón por si hubiera caché o algún estado visual atrasado.
+
+Versión de archivos: `ordo-flecha-solo-si-hay-siguiente-16`.
+
+
+## Tamaño unificado de secciones y botones
+
+Esta versión compacta de forma más consistente las secciones y botones que todavía estaban grandes:
+
+- Pestañas de Liturgia de las Horas y Misal en la misma escala.
+- Botones del Misal: “Ritos iniciales”, “Liturgia de la Palabra” y “Liturgia Eucarística”.
+- Secciones de Guía del Misal, Comentario del Evangelio, Guía litúrgica y Santoral.
+- Tarjetas de guía, estados de guía y botones Anterior/Siguiente/Salir.
+- Menú del botón flotante y sus opciones.
+- Enlaces/botones auxiliares como “Abrir comentario”.
+- Ajustes específicos para móvil.
+
+Versión de archivos: `ordo-tamano-unificado-17`.

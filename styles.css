@@ -2192,3 +2192,451 @@ iframe.is-loading,
     max-height: min(68vh, 29rem);
   }
 }
+
+
+/* === Ajustes finales de interfaz === */
+
+/* El FAB queda fuera del main y siempre por encima del pie de página. */
+main {
+  z-index: 2;
+  padding-bottom: 5.6rem;
+}
+
+footer {
+  z-index: 1;
+}
+
+.ordo-fab {
+  z-index: 10000 !important;
+  bottom: calc(clamp(1rem, 4vw, 1.55rem) + env(safe-area-inset-bottom)) !important;
+}
+
+/* Animación general de botones: rápida, suave y sobria. */
+button,
+.footer-help,
+.santoral-link,
+.gospel-link,
+.viewer-status-actions a {
+  will-change: transform;
+  transition:
+    transform 150ms cubic-bezier(.2,.8,.2,1),
+    background-color 150ms cubic-bezier(.2,.8,.2,1),
+    color 150ms cubic-bezier(.2,.8,.2,1),
+    border-color 150ms cubic-bezier(.2,.8,.2,1),
+    box-shadow 150ms cubic-bezier(.2,.8,.2,1),
+    opacity 150ms cubic-bezier(.2,.8,.2,1);
+}
+
+button.is-button-pressing,
+.footer-help.is-button-pressing,
+.santoral-link.is-button-pressing,
+.gospel-link.is-button-pressing,
+.viewer-status-actions a.is-button-pressing {
+  animation: ordo-button-press 180ms cubic-bezier(.2,.8,.2,1);
+}
+
+@keyframes ordo-button-press {
+  0% {
+    transform: scale(1);
+  }
+
+  45% {
+    transform: scale(.965);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Apertura/cierre más elegante del menú flotante. */
+.ordo-fab-menu {
+  transform-origin: bottom right;
+  transition:
+    opacity 160ms cubic-bezier(.2,.8,.2,1),
+    transform 160ms cubic-bezier(.2,.8,.2,1),
+    filter 160ms cubic-bezier(.2,.8,.2,1),
+    box-shadow 160ms cubic-bezier(.2,.8,.2,1) !important;
+}
+
+.ordo-fab.open .ordo-fab-menu {
+  transform: translateY(0) scale(1) !important;
+}
+
+.ordo-fab.closing .ordo-fab-menu,
+.ordo-fab:not(.open) .ordo-fab-menu {
+  opacity: 0 !important;
+  transform: translateY(.42rem) scale(.985) !important;
+  filter: blur(.2px);
+}
+
+/* Horas litúrgicas más compactas y proporcionadas con el resto de controles. */
+#liturgia-tabs.tabs {
+  gap: .38rem;
+  padding: .1rem 0 .62rem;
+  margin-bottom: .25rem;
+  scroll-behavior: smooth;
+}
+
+#liturgia-tabs.tabs button {
+  min-height: 2.05rem;
+  padding: .32rem .54rem;
+  font-size: .61rem;
+  letter-spacing: .055em;
+  line-height: 1.05;
+}
+
+/* La hora sugerida se marca con la cruz, no con texto. */
+#liturgia-tabs.tabs button.suggested-now {
+  border-color: var(--gold2);
+  box-shadow: inset 0 -2px 0 var(--gold);
+}
+
+#liturgia-tabs.tabs button.suggested-now::after,
+.tabs button.suggested-now::after {
+  content: ' ✥' !important;
+  display: inline !important;
+  margin-top: 0 !important;
+  margin-left: .2rem;
+  color: var(--gold);
+  font-size: .68rem;
+  letter-spacing: 0;
+  vertical-align: baseline;
+}
+
+#liturgia-tabs.tabs button.active.suggested-now::after {
+  color: var(--gold);
+}
+
+@media (max-width: 760px) {
+  main {
+    padding-bottom: 5.25rem;
+  }
+
+  .ordo-fab {
+    bottom: calc(.85rem + env(safe-area-inset-bottom)) !important;
+  }
+
+  #liturgia-tabs.tabs {
+    gap: .3rem;
+    padding-bottom: .55rem;
+  }
+
+  #liturgia-tabs.tabs button {
+    min-height: 1.92rem;
+    padding: .28rem .46rem;
+    font-size: .56rem;
+    letter-spacing: .045em;
+  }
+
+  #liturgia-tabs.tabs button.suggested-now::after,
+  .tabs button.suggested-now::after {
+    display: inline !important;
+    margin-top: 0 !important;
+    margin-left: .16rem;
+    font-size: .62rem;
+  }
+}
+
+
+/* === Tamaño unificado de secciones y botones === */
+.section {
+  margin-bottom: .78rem;
+}
+
+.section-header,
+.controls-section .section-header {
+  min-height: 2rem;
+  padding: .44rem .68rem;
+}
+
+.section-title,
+.tool-tab .section-title {
+  font-size: .6rem;
+  letter-spacing: .085em;
+  line-height: 1.05;
+}
+
+.controls,
+.tool-panel {
+  padding: .54rem .64rem;
+}
+
+.tool-switch {
+  min-height: 0;
+}
+
+.tool-tab {
+  min-height: 2.35rem;
+  padding: .42rem .56rem;
+  gap: .08rem;
+}
+
+.tool-summary,
+.guide-summary {
+  font-size: .62rem;
+  line-height: 1.05;
+}
+
+.daily-tools {
+  margin-bottom: .78rem;
+}
+
+/* Unifica las pestañas de Liturgia y Misal */
+.tabs,
+#liturgia-tabs.tabs,
+#misal-tabs.tabs {
+  gap: .32rem;
+  padding: .08rem 0 .5rem;
+  margin-bottom: .18rem;
+  scroll-behavior: smooth;
+}
+
+.tabs button,
+#liturgia-tabs.tabs button,
+#misal-tabs.tabs button {
+  min-height: 1.95rem;
+  padding: .28rem .48rem;
+  font-size: .56rem;
+  letter-spacing: .045em;
+  line-height: 1.05;
+}
+
+/* Misal: secciones largas, compactas pero legibles */
+#misal-tabs.tabs button {
+  padding-inline: .5rem;
+  font-size: .55rem;
+  max-width: none;
+}
+
+/* Guías y tarjetas auxiliares en la misma escala */
+.guide-options {
+  gap: .38rem;
+  padding: .48rem .56rem;
+}
+
+.guide-card {
+  min-height: 2.65rem;
+  padding: .38rem .46rem;
+}
+
+.guide-title {
+  font-size: .56rem;
+  letter-spacing: .055em;
+  line-height: 1.08;
+}
+
+.guide-path {
+  margin-top: .16rem;
+  font-size: .6rem;
+  line-height: 1.08;
+}
+
+.guide-status {
+  padding: .48rem .58rem;
+  gap: .55rem;
+}
+
+#guide-step-label,
+#misal-guide-step-label {
+  font-size: .58rem;
+}
+
+#guide-current-title,
+#misal-guide-current-title {
+  font-size: .68rem;
+  letter-spacing: .06em;
+}
+
+.guide-actions {
+  gap: .34rem;
+}
+
+.guide-actions button,
+.gospel-actions .santoral-link,
+.santoral-actions .santoral-link,
+.santoral-link {
+  min-height: 1.85rem;
+  padding: .28rem .46rem;
+  font-size: .56rem;
+  letter-spacing: .055em;
+}
+
+.guide-note,
+.santoral-note,
+.gospel-status,
+.santoral-status {
+  padding: .48rem .58rem;
+  font-size: .72rem;
+  line-height: 1.28;
+}
+
+.santoral-card {
+  padding: .46rem .58rem;
+}
+
+.santoral-title {
+  font-size: .66rem;
+  letter-spacing: .045em;
+}
+
+.santoral-date,
+.santoral-rank {
+  font-size: .62rem;
+}
+
+.santoral-has-office {
+  padding: .12rem .32rem;
+  font-size: .54rem;
+}
+
+/* Menú flotante y botones rápidos en la misma escala */
+.ordo-fab-menu {
+  gap: .26rem;
+  padding: .44rem;
+}
+
+.ordo-fab-group {
+  margin: .14rem .16rem .02rem;
+  font-size: .54rem;
+  letter-spacing: .095em;
+}
+
+.ordo-fab-status {
+  gap: .08rem;
+  padding: .42rem .5rem;
+}
+
+.ordo-fab-status strong {
+  font-size: .82rem;
+}
+
+.ordo-fab-status span {
+  font-size: .62rem;
+}
+
+.ordo-fab-menu button {
+  min-height: 1.95rem;
+  padding: .28rem .46rem;
+  font-size: .58rem;
+  letter-spacing: .055em;
+}
+
+.ordo-fab-separator {
+  margin: .18rem .1rem;
+}
+
+.footer-help {
+  width: 1.55rem;
+  height: 1.55rem;
+  font-size: .72rem;
+}
+
+@media (max-width: 760px) {
+  .section {
+    margin-bottom: .68rem;
+  }
+
+  .section-header,
+  .controls-section .section-header {
+    min-height: 1.85rem;
+    padding: .36rem .52rem;
+  }
+
+  .section-title,
+  .tool-tab .section-title {
+    font-size: .54rem;
+    letter-spacing: .07em;
+  }
+
+  .controls,
+  .tool-panel {
+    padding: .46rem .5rem;
+  }
+
+  .tool-tab {
+    min-height: 2.08rem;
+    padding: .34rem .42rem;
+  }
+
+  .tool-summary,
+  .guide-summary {
+    font-size: .56rem;
+  }
+
+  .tabs,
+  #liturgia-tabs.tabs,
+  #misal-tabs.tabs {
+    gap: .24rem;
+    padding-bottom: .44rem;
+  }
+
+  .tabs button,
+  #liturgia-tabs.tabs button,
+  #misal-tabs.tabs button {
+    min-height: 1.78rem;
+    padding: .24rem .38rem;
+    font-size: .5rem;
+    letter-spacing: .035em;
+  }
+
+  #misal-tabs.tabs button {
+    font-size: .49rem;
+  }
+
+  .guide-options {
+    gap: .32rem;
+    padding: .42rem;
+  }
+
+  .guide-card {
+    min-height: 2.38rem;
+    padding: .34rem .38rem;
+  }
+
+  .guide-title {
+    font-size: .5rem;
+  }
+
+  .guide-path {
+    font-size: .54rem;
+  }
+
+  .guide-status {
+    padding: .42rem .48rem;
+    align-items: flex-start;
+  }
+
+  #guide-step-label,
+  #misal-guide-step-label {
+    font-size: .54rem;
+  }
+
+  #guide-current-title,
+  #misal-guide-current-title {
+    font-size: .62rem;
+  }
+
+  .guide-actions button,
+  .gospel-actions .santoral-link,
+  .santoral-actions .santoral-link,
+  .santoral-link {
+    min-height: 1.72rem;
+    padding: .24rem .38rem;
+    font-size: .5rem;
+  }
+
+  .guide-note,
+  .santoral-note,
+  .gospel-status,
+  .santoral-status {
+    padding: .42rem .48rem;
+    font-size: .68rem;
+  }
+
+  .ordo-fab-menu button {
+    min-height: 1.82rem;
+    padding: .24rem .4rem;
+    font-size: .52rem;
+  }
+}
