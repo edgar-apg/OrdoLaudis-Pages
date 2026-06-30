@@ -2759,3 +2759,130 @@ footer {
     max-width: calc(100vw - 1rem);
   }
 }
+
+
+/* === FAB: carácter para último paso del rezo guiado === */
+.ordo-fab-guide-next.is-last-step {
+  background: rgba(251,248,241,.98);
+  color: var(--gold);
+  border-color: var(--gold);
+  cursor: default;
+}
+
+.ordo-fab-guide-next.is-last-step:hover {
+  background: rgba(251,248,241,.98);
+  color: var(--gold);
+  transform: none;
+  box-shadow: 0 10px 26px rgba(0,0,0,.18);
+}
+
+.ordo-fab-guide-next.is-last-step:active {
+  transform: scale(.98);
+}
+
+
+/* === Botón flotante: volver arriba tras centrar el visor === */
+.scroll-top-fab {
+  position: fixed;
+  right: clamp(1rem, 3vw, 1.55rem);
+  bottom: calc(var(--ordo-fab-bottom, 1rem) + env(safe-area-inset-bottom) + 3.35rem);
+  width: 2.55rem;
+  height: 2.55rem;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  background: rgba(251,248,241,.98);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-size: 1.1rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  z-index: 9999;
+  box-shadow: 0 10px 26px rgba(0,0,0,.18);
+  opacity: .96;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity 160ms cubic-bezier(.2,.8,.2,1),
+    transform 160ms cubic-bezier(.2,.8,.2,1),
+    bottom 180ms cubic-bezier(.2,.8,.2,1),
+    background-color 150ms cubic-bezier(.2,.8,.2,1),
+    color 150ms cubic-bezier(.2,.8,.2,1),
+    box-shadow 150ms cubic-bezier(.2,.8,.2,1);
+}
+
+.scroll-top-fab:hover {
+  transform: translateY(-2px) scale(1);
+  background: var(--black);
+  color: var(--gold);
+  box-shadow: 0 16px 34px rgba(0,0,0,.24);
+}
+
+.scroll-top-fab:active {
+  transform: scale(.96);
+}
+
+.scroll-top-fab.hidden {
+  opacity: 0;
+  transform: translateY(.5rem) scale(.96);
+  pointer-events: none;
+}
+
+@media (max-width: 760px) {
+  .scroll-top-fab {
+    right: calc(.7rem + env(safe-area-inset-right));
+    bottom: calc(var(--ordo-fab-bottom, .85rem) + env(safe-area-inset-bottom) + 3rem);
+    width: 2.35rem;
+    height: 2.35rem;
+    font-size: 1rem;
+  }
+}
+
+
+/* === Ajuste: botón arriba sin encimarse y sin botón en último paso === */
+:root {
+  --scroll-top-extra: 48px;
+}
+
+.scroll-top-fab {
+  bottom: calc(var(--ordo-fab-bottom, 1rem) + env(safe-area-inset-bottom) + var(--scroll-top-extra)) !important;
+}
+
+.ordo-fab-guide-next.hidden,
+.ordo-fab-guide-next[disabled] {
+  display: none !important;
+}
+
+.ordo-fab-guide-next.is-last-step {
+  display: none !important;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --scroll-top-extra: 42px;
+  }
+
+  .scroll-top-fab {
+    bottom: calc(var(--ordo-fab-bottom, .85rem) + env(safe-area-inset-bottom) + var(--scroll-top-extra)) !important;
+  }
+}
+
+
+/* === Separación corregida del botón volver arriba === */
+:root {
+  --scroll-top-extra: 54px;
+}
+
+.scroll-top-fab {
+  bottom: calc(var(--ordo-fab-bottom, 1rem) + env(safe-area-inset-bottom) + var(--scroll-top-extra) + .45rem) !important;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --scroll-top-extra: 48px;
+  }
+
+  .scroll-top-fab {
+    bottom: calc(var(--ordo-fab-bottom, .85rem) + env(safe-area-inset-bottom) + var(--scroll-top-extra) + .4rem) !important;
+  }
+}

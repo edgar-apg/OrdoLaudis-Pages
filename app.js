@@ -160,7 +160,92 @@ const ordoFabMain = document.getElementById("ordo-fab-main");
 const ordoFabMenu = document.getElementById("ordo-fab-menu");
 const ordoFabGuideNext = document.getElementById("ordo-fab-guide-next");
 const ordoFabMusicPause = document.getElementById("ordo-fab-music-pause");
+const scrollTopFab = document.getElementById("scroll-top-fab");
 let viewerLoadTimer = null;
+
+
+
+function shouldUseSmoothScroll() {
+  return !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+function showScrollTopFab() {
+  if (!scrollTopFab) return;
+
+  updateScrollTopFabOffset();
+
+  const shouldShow = window.scrollY > 220;
+  scrollTopFab.classList.toggle("hidden", !shouldShow);
+}
+
+function scrollToPageTop() {
+  window.scrollTo({
+    top: 0,
+    behavior: shouldUseSmoothScroll() ? "smooth" : "auto"
+  });
+}
+
+function scrollViewerIntoCenter() {
+  if (!viewer) return;
+
+  window.requestAnimationFrame(() => {
+    const rect = viewer.getBoundingClientRect();
+    const viewerTop = rect.top + window.scrollY;
+    const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+    const targetTop = Math.max(0, viewerTop - (viewportHeight - rect.height) / 2);
+
+    window.scrollTo({
+      top: targetTop,
+      behavior: shouldUseSmoothScroll() ? "smooth" : "auto"
+    });
+
+    showScrollTopFab();
+    window.setTimeout(showScrollTopFab, 260);
+    window.setTimeout(showScrollTopFab, 620);
+  });
+}
+
+
+function updateScrollTopFabOffset() {
+  if (!scrollTopFab) return;
+
+  let visibleQuickButtons = 0;
+
+  if (ordoFabGuideNext && !ordoFabGuideNext.classList.contains("hidden")) {
+    visibleQuickButtons += 1;
+  }
+
+  if (ordoFabMusicPause && !ordoFabMusicPause.classList.contains("hidden")) {
+    visibleQuickButtons += 1;
+  }
+
+  const isMobile = window.matchMedia("(max-width: 760px)").matches;
+
+  // El botón ↑ debe quedar encima de toda la columna del FAB:
+  // botón principal + botones auxiliares visibles + separaciones.
+  const buttonStep = isMobile ? 48 : 54;
+  const extra = buttonStep * (visibleQuickButtons + 1);
+
+  document.documentElement.style.setProperty("--scroll-top-extra", `${extra}px`);
+}
+
+function updateScrollTopFabVisibility() {
+  showScrollTopFab();
+}
+
+window.addEventListener("scroll", updateScrollTopFabVisibility, { passive: true });
+window.addEventListener("resize", updateScrollTopFabVisibility);
+window.addEventListener("resize", updateScrollTopFabOffset);
+
+if (scrollTopFab) {
+  scrollTopFab.addEventListener("click", event => {
+    event.preventDefault();
+    event.stopPropagation();
+    scrollToPageTop();
+  });
+}
+
+showScrollTopFab();
 
 
 function updateOrdoFabFooterOffset() {
@@ -392,7 +477,7 @@ function warmUpCemViewerFocus() {
   window.setTimeout(focusCemViewer, 900);
 }
 
-function updateViewer() {
+function updateViewer(options = {}) {
   const url = buildUrl();
 
   clearTimeout(viewerLoadTimer);
@@ -405,6 +490,10 @@ function updateViewer() {
     viewer.dataset.loaded = "0";
     viewer.src = url;
     warmUpCemViewerFocus();
+  }
+
+  if (options.scrollToViewer) {
+    scrollViewerIntoCenter();
   }
 }
 
@@ -560,7 +649,7 @@ function setMode(mode, fromGuide = false) {
   }
 
   updateTabs();
-  updateViewer();
+  updateViewer({ scrollToViewer: true });
 }
 
 function setKey(mode, key, fromGuide = false) {
@@ -573,7 +662,7 @@ function setKey(mode, key, fromGuide = false) {
   }
 
   updateTabs();
-  updateViewer();
+  updateViewer({ scrollToViewer: true });
 }
 
 function updateLiturgyGuideUI() {
@@ -823,7 +912,7 @@ dateInput.addEventListener("change", () => {
     updateTabs();
   }
 
-  updateViewer();
+  updateViewer({ scrollToViewer: true });
   updateSantoral();
   updateGospelLink();
   updateSuggestedHourUI();
@@ -833,7 +922,7 @@ todayButton.addEventListener("click", () => {
   dateInput.value = localDateString();
   selectSuggestedHourOnEntry();
   updateTabs();
-  updateViewer();
+  updateViewer({ scrollToViewer: true });
   updateSantoral();
   updateGospelLink();
   updateSuggestedHourUI();
@@ -1094,6 +1183,8 @@ function renderOrdoFab() {
   if (ordoFabGuideNext) {
     ordoFabGuideNext.classList.toggle("hidden", !hasGuideNextStep);
     ordoFabGuideNext.disabled = !hasGuideNextStep;
+    ordoFabGuideNext.classList.remove("is-last-step");
+    ordoFabGuideNext.textContent = "➜";
     ordoFabGuideNext.setAttribute(
       "aria-label",
       hasGuideNextStep
@@ -1111,7 +1202,8 @@ function renderOrdoFab() {
   }
 
 
-  scheduleOrdoFabFooterOffset();}
+  scheduleOrdoFabFooterOffset();
+  updateScrollTopFabOffset();}
 
 function openOrdoFab() {
   if (!ordoFab || !ordoFabMain) return;
