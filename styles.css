@@ -2640,3 +2640,31 @@ button.is-button-pressing,
     font-size: .52rem;
   }
 }
+
+
+/* === Botón flotante debajo del pie de página en el HTML === */
+.ordo-fab {
+  z-index: 9000 !important;
+  bottom: calc(.9rem + env(safe-area-inset-bottom)) !important;
+}
+
+/* Ya no se agrega espacio extra al final del main por el FAB. */
+main {
+  padding-bottom: clamp(1.2rem, 3vw, 2rem);
+}
+
+/* El footer mantiene su propia capa; el FAB está después del footer en el DOM. */
+footer {
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 760px) {
+  .ordo-fab {
+    bottom: calc(.75rem + env(safe-area-inset-bottom)) !important;
+  }
+
+  main {
+    padding-bottom: 1rem;
+  }
+}
