@@ -162,6 +162,48 @@ const ordoFabGuideNext = document.getElementById("ordo-fab-guide-next");
 const ordoFabMusicPause = document.getElementById("ordo-fab-music-pause");
 let viewerLoadTimer = null;
 
+
+function updateOrdoFabFooterOffset() {
+  if (!ordoFab) return;
+
+  const footer = document.querySelector("footer");
+  const root = document.documentElement;
+  const baseBottom = window.matchMedia("(max-width: 760px)").matches ? 14 : 18;
+
+  if (!footer) {
+    root.style.setProperty("--ordo-fab-bottom", `${baseBottom}px`);
+    return;
+  }
+
+  const footerRect = footer.getBoundingClientRect();
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const footerVisibleHeight = Math.max(0, viewportHeight - footerRect.top);
+  const liftedBottom = footerVisibleHeight > 0
+    ? footerVisibleHeight + 14
+    : baseBottom;
+
+  root.style.setProperty("--ordo-fab-bottom", `${Math.max(baseBottom, liftedBottom)}px`);
+}
+
+let ordoFabFooterRaf = null;
+
+function scheduleOrdoFabFooterOffset() {
+  if (ordoFabFooterRaf) return;
+
+  ordoFabFooterRaf = window.requestAnimationFrame(() => {
+    ordoFabFooterRaf = null;
+    updateOrdoFabFooterOffset();
+  });
+}
+
+window.addEventListener("scroll", scheduleOrdoFabFooterOffset, { passive: true });
+window.addEventListener("resize", scheduleOrdoFabFooterOffset);
+window.addEventListener("orientationchange", scheduleOrdoFabFooterOffset);
+document.addEventListener("DOMContentLoaded", scheduleOrdoFabFooterOffset);
+scheduleOrdoFabFooterOffset();
+
+
+
 function localDateString(date = new Date()) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -1067,13 +1109,16 @@ function renderOrdoFab() {
   if (ordoFabMusicPause) {
     ordoFabMusicPause.classList.toggle("hidden", !isPlaying);
   }
-}
+
+
+  scheduleOrdoFabFooterOffset();}
 
 function openOrdoFab() {
   if (!ordoFab || !ordoFabMain) return;
   renderOrdoFab();
   ordoFab.classList.add("open");
   ordoFabMain.setAttribute("aria-expanded", "true");
+  scheduleOrdoFabFooterOffset();
 }
 
 function closeOrdoFab() {
@@ -1090,6 +1135,7 @@ function closeOrdoFab() {
 
   ordoFab.classList.remove("open");
   ordoFabMain.setAttribute("aria-expanded", "false");
+  scheduleOrdoFabFooterOffset();
 }
 
 function toggleOrdoFab(event) {

@@ -2668,3 +2668,94 @@ footer {
     padding-bottom: 1rem;
   }
 }
+
+
+/* === Corrección: FAB siempre flotante y a la derecha === */
+.ordo-fab {
+  position: fixed !important;
+  right: clamp(1rem, 3vw, 1.55rem) !important;
+  left: auto !important;
+  bottom: clamp(4.6rem, 8vh, 6.1rem) !important;
+  z-index: 10000 !important;
+  pointer-events: none !important;
+  width: max-content !important;
+  max-width: min(20rem, calc(100vw - 2rem));
+}
+
+/* El FAB queda visualmente encima del footer en escritorio. */
+footer {
+  position: relative;
+  z-index: 1;
+}
+
+/* Se deja aire suficiente al final del contenido sin empujar el FAB. */
+main {
+  padding-bottom: clamp(1.2rem, 3vw, 2rem);
+}
+
+.ordo-fab-main,
+.ordo-fab-menu,
+.ordo-fab-menu *,
+.ordo-fab-quick {
+  pointer-events: auto !important;
+}
+
+@media (max-width: 760px) {
+  .ordo-fab {
+    right: calc(.7rem + env(safe-area-inset-right)) !important;
+    left: auto !important;
+    bottom: calc(.75rem + env(safe-area-inset-bottom)) !important;
+    z-index: 10000 !important;
+    max-width: calc(100vw - 1rem);
+  }
+
+  main {
+    padding-bottom: 1rem;
+  }
+}
+
+
+/* === FAB siempre flotante y sobre el footer === */
+:root {
+  --ordo-fab-default-bottom: clamp(1rem, 3vw, 1.35rem);
+  --ordo-fab-bottom: var(--ordo-fab-default-bottom);
+}
+
+.ordo-fab {
+  position: fixed !important;
+  right: clamp(1rem, 3vw, 1.55rem) !important;
+  left: auto !important;
+  bottom: calc(var(--ordo-fab-bottom) + env(safe-area-inset-bottom)) !important;
+  z-index: 10000 !important;
+  pointer-events: none !important;
+  width: max-content !important;
+  max-width: min(20rem, calc(100vw - 2rem));
+  transition:
+    bottom 180ms cubic-bezier(.2,.8,.2,1),
+    transform 150ms cubic-bezier(.2,.8,.2,1),
+    opacity 150ms cubic-bezier(.2,.8,.2,1) !important;
+}
+
+.ordo-fab-main,
+.ordo-fab-menu,
+.ordo-fab-menu *,
+.ordo-fab-quick {
+  pointer-events: auto !important;
+}
+
+footer {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --ordo-fab-default-bottom: .85rem;
+  }
+
+  .ordo-fab {
+    right: calc(.7rem + env(safe-area-inset-right)) !important;
+    left: auto !important;
+    max-width: calc(100vw - 1rem);
+  }
+}
