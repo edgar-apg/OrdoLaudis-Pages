@@ -2886,3 +2886,25 @@ footer {
     bottom: calc(var(--ordo-fab-bottom, .85rem) + env(safe-area-inset-bottom) + var(--scroll-top-extra) + .4rem) !important;
   }
 }
+
+
+/* === Corrección móvil: botón volver arriba fuera de la columna FAB === */
+:root {
+  --scroll-top-bottom: 72px;
+}
+
+.scroll-top-fab {
+  bottom: calc(var(--scroll-top-bottom) + env(safe-area-inset-bottom)) !important;
+  right: clamp(1rem, 3vw, 1.55rem) !important;
+}
+
+@media (max-width: 760px) {
+  :root {
+    --scroll-top-bottom: 68px;
+  }
+
+  .scroll-top-fab {
+    right: calc(.7rem + env(safe-area-inset-right)) !important;
+    bottom: calc(var(--scroll-top-bottom) + env(safe-area-inset-bottom)) !important;
+  }
+}

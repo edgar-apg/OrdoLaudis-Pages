@@ -173,6 +173,7 @@ function showScrollTopFab() {
   if (!scrollTopFab) return;
 
   updateScrollTopFabOffset();
+  window.setTimeout(updateScrollTopFabOffset, 80);
 
   const shouldShow = window.scrollY > 220;
   scrollTopFab.classList.toggle("hidden", !shouldShow);
@@ -209,24 +210,33 @@ function scrollViewerIntoCenter() {
 function updateScrollTopFabOffset() {
   if (!scrollTopFab) return;
 
-  let visibleQuickButtons = 0;
+  const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+  const gap = window.matchMedia("(max-width: 760px)").matches ? 12 : 14;
+  const baseBottom = window.matchMedia("(max-width: 760px)").matches ? 14 : 18;
 
-  if (ordoFabGuideNext && !ordoFabGuideNext.classList.contains("hidden")) {
-    visibleQuickButtons += 1;
+  const measuredElements = [
+    ordoFabMain,
+    ordoFabGuideNext,
+    ordoFabMusicPause
+  ].filter(element => (
+    element &&
+    !element.classList.contains("hidden") &&
+    element.offsetParent !== null
+  ));
+
+  if (ordoFab && ordoFab.classList.contains("open") && ordoFabMenu) {
+    measuredElements.push(ordoFabMenu);
   }
 
-  if (ordoFabMusicPause && !ordoFabMusicPause.classList.contains("hidden")) {
-    visibleQuickButtons += 1;
+  if (!measuredElements.length) {
+    document.documentElement.style.setProperty("--scroll-top-bottom", `${baseBottom + 54}px`);
+    return;
   }
 
-  const isMobile = window.matchMedia("(max-width: 760px)").matches;
+  const topMost = Math.min(...measuredElements.map(element => element.getBoundingClientRect().top));
+  const desiredBottom = Math.max(baseBottom + 54, viewportHeight - topMost + gap);
 
-  // El botón ↑ debe quedar encima de toda la columna del FAB:
-  // botón principal + botones auxiliares visibles + separaciones.
-  const buttonStep = isMobile ? 48 : 54;
-  const extra = buttonStep * (visibleQuickButtons + 1);
-
-  document.documentElement.style.setProperty("--scroll-top-extra", `${extra}px`);
+  document.documentElement.style.setProperty("--scroll-top-bottom", `${Math.ceil(desiredBottom)}px`);
 }
 
 function updateScrollTopFabVisibility() {
