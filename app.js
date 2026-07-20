@@ -97,6 +97,8 @@ let activeKey = {
   orden: DEFAULT_KEY.orden
 };
 
+let shouldCenterSpecialOnLoad = false;
+
 let activeDailyTool = null;
 let activeMisalTool = null;
 let activeLiturgyGuide = "quick";
@@ -513,6 +515,11 @@ function getRequestedSpecialEventKey() {
   return params.get("evento") || params.get("orden") || "";
 }
 
+function shouldCenterFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("centrar") === "1" || window.location.hash === "#orden-viewer";
+}
+
 function isSpecialMode() {
   return activeMode === "orden";
 }
@@ -629,6 +636,8 @@ async function updateSpecialEventView(options = {}) {
 
   if (options.scrollToViewer) {
     scrollViewerIntoCenter();
+    window.setTimeout(scrollViewerIntoCenter, 180);
+    window.setTimeout(scrollViewerIntoCenter, 520);
   }
 }
 
@@ -640,6 +649,7 @@ function activateSpecialEventFromUrl() {
 
   activeMode = "orden";
   activeKey.orden = requested;
+  shouldCenterSpecialOnLoad = shouldCenterFromUrl();
   resetLiturgyGuide();
   resetMisalGuide();
   activeDailyTool = null;
@@ -1228,7 +1238,7 @@ updateMisalToolsUI();
 updateLiturgyGuideUI();
 updateMisalGuideUI();
 updateTabs();
-updateViewer();
+updateViewer({ scrollToViewer: shouldCenterSpecialOnLoad });
 
 /* Música ambiental aleatoria */
 const musicTracks = [
