@@ -41,7 +41,8 @@ const SOURCES = {
 
 const DEFAULT_KEY = {
   liturgia: "invitatorio",
-  misal: "ritos"
+  misal: "ritos",
+  orden: "visperas-santiago"
 };
 
 const liturgyGuideSequences = {
@@ -92,7 +93,8 @@ const misalGuideNames = {
 let activeMode = "liturgia";
 let activeKey = {
   liturgia: DEFAULT_KEY.liturgia,
-  misal: DEFAULT_KEY.misal
+  misal: DEFAULT_KEY.misal,
+  orden: DEFAULT_KEY.orden
 };
 
 let activeDailyTool = null;
@@ -108,6 +110,16 @@ const viewer = document.getElementById("viewer");
 const modeButtons = document.querySelectorAll(".mode-tabs button");
 const liturgiaTabs = document.getElementById("liturgia-tabs");
 const misalTabs = document.getElementById("misal-tabs");
+const ordenTabs = document.getElementById("orden-tabs");
+const viewerWrap = document.querySelector(".viewer-wrap");
+const ordenViewer = document.getElementById("orden-viewer");
+const ordenBody = document.getElementById("orden-body");
+const ordenTitle = document.getElementById("orden-title");
+const ordenSubtitle = document.getElementById("orden-subtitle");
+const ordenContent = document.getElementById("orden-content");
+const ordenPdfLink = document.getElementById("orden-pdf-link");
+const ordenFontDecrease = document.getElementById("orden-font-decrease");
+const ordenFontIncrease = document.getElementById("orden-font-increase");
 
 const dailyTools = document.getElementById("daily-tools");
 const santoralToggle = document.getElementById("santoral-toggle");
@@ -165,6 +177,8 @@ let viewerLoadTimer = null;
 
 
 
+
+
 function shouldUseSmoothScroll() {
   return !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
@@ -187,13 +201,15 @@ function scrollToPageTop() {
 }
 
 function scrollViewerIntoCenter() {
-  if (!viewer) return;
+  const target = isSpecialMode() ? ordenViewer : viewer;
+  if (!target) return;
 
   window.requestAnimationFrame(() => {
-    const rect = viewer.getBoundingClientRect();
+    const rect = target.getBoundingClientRect();
     const viewerTop = rect.top + window.scrollY;
     const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-    const targetTop = Math.max(0, viewerTop - (viewportHeight - rect.height) / 2);
+    const targetHeight = Math.min(rect.height || 0, viewportHeight * .82);
+    const targetTop = Math.max(0, viewerTop - (viewportHeight - targetHeight) / 2);
 
     window.scrollTo({
       top: targetTop,
@@ -246,6 +262,7 @@ function updateScrollTopFabVisibility() {
 window.addEventListener("scroll", updateScrollTopFabVisibility, { passive: true });
 window.addEventListener("resize", updateScrollTopFabVisibility);
 window.addEventListener("resize", updateScrollTopFabOffset);
+window.addEventListener("resize", applySpecialTextScale);
 
 if (scrollTopFab) {
   scrollTopFab.addEventListener("click", event => {
@@ -442,6 +459,208 @@ function selectSuggestedHourOnEntry() {
 
 
 
+
+const SPECIAL_TEXT_SCALE_KEY = "ordo-special-text-scale";
+let specialTextScale = 100;
+
+try {
+  specialTextScale = Number(localStorage.getItem(SPECIAL_TEXT_SCALE_KEY)) || 100;
+} catch (error) {
+  specialTextScale = 100;
+}
+
+function clampSpecialTextScale(value) {
+  return Math.min(150, Math.max(80, value));
+}
+
+function applySpecialTextScale() {
+  specialTextScale = clampSpecialTextScale(specialTextScale);
+
+  const isMobile = window.matchMedia("(max-width: 760px)").matches;
+  const baseSize = isMobile ? 1 : 1.12;
+  const computedSize = (baseSize * specialTextScale / 100).toFixed(3);
+
+  if (ordenContent) {
+    ordenContent.style.fontSize = `${computedSize}rem`;
+  }
+
+  try {
+    localStorage.setItem(SPECIAL_TEXT_SCALE_KEY, String(specialTextScale));
+  } catch (error) {
+    /* Si el navegador bloquea localStorage, la lectura sigue funcionando. */
+  }
+
+  if (ordenFontDecrease) ordenFontDecrease.disabled = specialTextScale <= 80;
+  if (ordenFontIncrease) ordenFontIncrease.disabled = specialTextScale >= 150;
+}
+
+function changeSpecialTextScale(delta) {
+  specialTextScale = clampSpecialTextScale(specialTextScale + delta);
+  applySpecialTextScale();
+}
+
+function getSpecialEvents() {
+  if (typeof ORDO_SPECIAL_EVENTS === "undefined") return {};
+  return ORDO_SPECIAL_EVENTS || {};
+}
+
+function getActiveSpecialEvent() {
+  return getSpecialEvents()[activeKey.orden] || null;
+}
+
+function getRequestedSpecialEventKey() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("evento") || params.get("orden") || "";
+}
+
+function isSpecialMode() {
+  return activeMode === "orden";
+}
+
+function setOrdenVisibility(isOrden) {
+  if (viewerWrap) {
+    viewerWrap.hidden = isOrden;
+    viewerWrap.classList.toggle("hidden", isOrden);
+  }
+
+  if (viewer) {
+    viewer.hidden = isOrden;
+  }
+
+  if (ordenViewer) {
+    ordenViewer.hidden = !isOrden;
+    ordenViewer.classList.toggle("hidden", !isOrden);
+  }
+
+  if (ordenTabs) {
+    ordenTabs.hidden = !isOrden;
+    ordenTabs.classList.toggle("hidden", !isOrden);
+  }
+}
+
+function renderSpecialEventFallback(eventData) {
+  if (!ordenContent) return;
+
+  ordenContent.innerHTML = `
+    <article class="special-liturgy">
+      <p class="special-rubric">Texto de prueba / plantilla</p>
+
+      <h3>${eventData?.title || "Celebración especial de la Orden"}</h3>
+      <p>${eventData?.subtitle || "Orden de Predicadores"}</p>
+
+      <h4>Invocación inicial</h4>
+      <p><strong>V.</strong> Dios mío, ven en mi auxilio.</p>
+      <p><strong>R.</strong> Señor, date prisa en socorrerme.</p>
+      <p>Gloria al Padre, y al Hijo, y al Espíritu Santo.</p>
+
+      <h4>Himno</h4>
+      <p class="special-rubric">Aquí irá el himno transcrito.</p>
+
+      <h4>Salmodia</h4>
+      <p class="special-antiphon">Ant. 1. Aquí irá la primera antífona.</p>
+      <p>Aquí irá el salmo o cántico.</p>
+      <p class="special-antiphon">Ant. 1. Aquí se repite la antífona.</p>
+
+      <h4>Lectura breve</h4>
+      <p>Aquí irá la lectura breve.</p>
+
+      <h4>Responsorio breve</h4>
+      <p><strong>V.</strong> Aquí irá el versículo.</p>
+      <p><strong>R.</strong> Aquí irá la respuesta.</p>
+
+      <h4>Cántico evangélico</h4>
+      <p class="special-antiphon">Ant. Magníficat. Aquí irá la antífona.</p>
+
+      <h4>Preces</h4>
+      <p>Aquí irán las preces.</p>
+
+      <h4>Padre nuestro</h4>
+      <p>Padre nuestro...</p>
+
+      <h4>Oración final</h4>
+      <p>Aquí irá la oración final.</p>
+
+      <h4>Conclusión</h4>
+      <p><strong>V.</strong> El Señor nos bendiga, nos guarde de todo mal y nos lleve a la vida eterna.</p>
+      <p><strong>R.</strong> Amén.</p>
+    </article>
+  `;
+}
+
+async function updateSpecialEventView(options = {}) {
+  if (!ordenViewer || !ordenContent) return;
+
+  const eventData = getActiveSpecialEvent();
+
+  if (!eventData) {
+    ordenContent.innerHTML = `
+      <article class="special-liturgy">
+        <p class="special-rubric">Celebración no encontrada</p>
+        <p>Revisa la clave del evento especial en la URL.</p>
+      </article>
+    `;
+    return;
+  }
+
+  if (ordenTitle) ordenTitle.textContent = eventData.title || "Celebración especial";
+  if (ordenSubtitle) ordenSubtitle.textContent = eventData.subtitle || "";
+
+  if (ordenPdfLink) {
+    ordenPdfLink.href = eventData.pdf || "#";
+    ordenPdfLink.classList.toggle("disabled", !eventData.pdf);
+    ordenPdfLink.textContent = eventData.pdf ? "Descargar PDF" : "PDF pendiente";
+  }
+
+  ordenContent.innerHTML = `<p class="special-loading">Cargando texto integrado…</p>`;
+
+  if (!eventData.contentPath) {
+    renderSpecialEventFallback(eventData);
+  } else {
+    try {
+      const response = await fetch(eventData.contentPath, { cache: "no-store" });
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      ordenContent.innerHTML = await response.text();
+    } catch (error) {
+      renderSpecialEventFallback(eventData);
+    }
+  }
+
+  if (ordenBody) ordenBody.scrollTop = 0;
+
+  if (options.scrollToViewer) {
+    scrollViewerIntoCenter();
+  }
+}
+
+function activateSpecialEventFromUrl() {
+  const requested = getRequestedSpecialEventKey();
+  const events = getSpecialEvents();
+
+  if (!requested || !events[requested]) return false;
+
+  activeMode = "orden";
+  activeKey.orden = requested;
+  resetLiturgyGuide();
+  resetMisalGuide();
+  activeDailyTool = null;
+  activeMisalTool = null;
+  return true;
+}
+
+
+if (ordenFontDecrease) {
+  ordenFontDecrease.addEventListener("click", () => changeSpecialTextScale(-10));
+}
+
+if (ordenFontIncrease) {
+  ordenFontIncrease.addEventListener("click", () => changeSpecialTextScale(10));
+}
+
+applySpecialTextScale();
+
+
+
+
 function buildUrl() {
   const file = SOURCES[activeMode][activeKey[activeMode]];
   const date = dateInput.value;
@@ -488,6 +707,14 @@ function warmUpCemViewerFocus() {
 }
 
 function updateViewer(options = {}) {
+  if (isSpecialMode()) {
+    setOrdenVisibility(true);
+    updateSpecialEventView(options);
+    return;
+  }
+
+  setOrdenVisibility(false);
+
   const url = buildUrl();
 
   clearTimeout(viewerLoadTimer);
@@ -615,6 +842,10 @@ function updateTabs() {
 
   liturgiaTabs.classList.toggle("hidden", activeMode !== "liturgia");
   misalTabs.classList.toggle("hidden", activeMode !== "misal");
+  if (ordenTabs) {
+    ordenTabs.hidden = activeMode !== "orden";
+    ordenTabs.classList.toggle("hidden", activeMode !== "orden");
+  }
 
   const misalGuideActive = activeMisalGuide !== "quick";
 
@@ -626,12 +857,21 @@ function updateTabs() {
     misalTools.classList.toggle("hidden", !(activeMode === "misal" || misalGuideActive));
   }
 
+  if (activeMode === "orden") {
+    if (dailyTools) dailyTools.classList.add("hidden");
+    if (misalTools) misalTools.classList.add("hidden");
+  }
+
   document.querySelectorAll("#liturgia-tabs button").forEach(button => {
     button.classList.toggle("active", button.dataset.key === activeKey.liturgia);
   });
 
   document.querySelectorAll("#misal-tabs button").forEach(button => {
     button.classList.toggle("active", button.dataset.key === activeKey.misal);
+  });
+
+  document.querySelectorAll("#orden-tabs button").forEach(button => {
+    button.classList.toggle("active", button.dataset.key === activeKey.orden);
   });
 
   updateSuggestedHourUI();
@@ -656,6 +896,12 @@ function setMode(mode, fromGuide = false) {
   if (!fromGuide) {
     if (mode === "liturgia") resetMisalGuide();
     if (mode === "misal") resetLiturgyGuide();
+    if (mode === "orden") {
+      resetLiturgyGuide();
+      resetMisalGuide();
+      activeDailyTool = null;
+      activeMisalTool = null;
+    }
   }
 
   updateTabs();
@@ -839,6 +1085,12 @@ document.querySelectorAll("#misal-tabs button").forEach(button => {
   });
 });
 
+document.querySelectorAll("#orden-tabs button").forEach(button => {
+  button.addEventListener("click", () => {
+    setKey("orden", button.dataset.key);
+  });
+});
+
 guideCards.forEach(card => {
   card.addEventListener("click", () => {
     startLiturgyGuide(card.dataset.sequence);
@@ -968,6 +1220,7 @@ if (viewerRetry) {
 
 dateInput.value = localDateString();
 selectSuggestedHourOnEntry();
+activateSpecialEventFromUrl();
 updateSantoral();
 updateGospelLink();
 updateDailyToolsUI();

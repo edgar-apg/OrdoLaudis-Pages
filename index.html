@@ -7,7 +7,7 @@
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=ordo-scroll-arriba-movil-corregido-25">
+  <link rel="stylesheet" href="./styles.css?v=ordo-orden-header-compacto-31">
 </head>
 <body>
 
@@ -22,6 +22,7 @@
   <section class="mode-tabs" aria-label="Tipo de consulta">
     <button class="active" data-mode="liturgia">Liturgia de las Horas</button>
     <button data-mode="misal">Misal</button>
+    <button data-mode="orden">Orden</button>
   </section>
 
   <section class="section controls-section">
@@ -194,10 +195,43 @@
     <button data-key="palabra">Liturgia de la Palabra</button>
     <button data-key="eucaristica">Liturgia Eucarística</button>
   </nav>
+  <nav id="orden-tabs" class="tabs hidden" aria-label="Celebraciones de la Orden" hidden>
+    <button class="active" data-key="visperas-santiago">Vísperas Santiago</button>
+  </nav>
+
 
   <section class="viewer-wrap">
     <iframe id="viewer" title="Consulta litúrgica" tabindex="0" loading="eager"></iframe>
   </section>
+  <section id="orden-viewer" class="special-viewer hidden" aria-label="Celebración especial de la Orden" hidden>
+    <article class="special-card">
+      <div class="special-header">
+        <div>
+          <span class="special-eyebrow">Orden de Predicadores</span>
+          <h2 id="orden-title">Vísperas de Santiago Apóstol</h2>
+          <p id="orden-subtitle">Provincia de Santiago de México</p>
+        </div>
+
+        <div class="special-actions">
+          <div class="special-font-controls" aria-label="Tamaño del texto">
+            <button id="orden-font-decrease" type="button" aria-label="Disminuir tamaño del texto">-</button>
+            <button id="orden-font-increase" type="button" aria-label="Aumentar tamaño del texto">+</button>
+          </div>
+
+          <a id="orden-pdf-link" class="santoral-link secondary" href="./eventos/visperas-santiago/visperas-san-santiago.pdf" target="_blank" rel="noopener noreferrer">
+            Descargar PDF
+          </a>
+        </div>
+      </div>
+
+      <div id="orden-body" class="special-body" tabindex="0" aria-label="Texto de la celebración especial">
+        <div id="orden-content" class="special-content">
+          <p class="special-loading">Cargando celebración especial…</p>
+        </div>
+      </div>
+    </article>
+  </section>
+
 </main>
 
 <div id="ordo-fab" class="ordo-fab" aria-label="Controles rápidos">
@@ -228,7 +262,8 @@
 
 <button id="scroll-top-fab" class="scroll-top-fab hidden" type="button" aria-label="Volver al inicio" title="Volver arriba">↑</button>
 
-<script src="santoral-dominicano.js?v=ordo-scroll-arriba-movil-corregido-25"></script>
-<script src="app.js?v=ordo-scroll-arriba-movil-corregido-25"></script>
+<script src="santoral-dominicano.js?v=ordo-orden-header-compacto-31"></script>
+<script src="eventos-especiales.js?v=ordo-orden-header-compacto-31"></script>
+<script src="app.js?v=ordo-orden-header-compacto-31"></script>
 </body>
 </html>

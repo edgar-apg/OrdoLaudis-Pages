@@ -2908,3 +2908,406 @@ footer {
     bottom: calc(var(--scroll-top-bottom) + env(safe-area-inset-bottom)) !important;
   }
 }
+
+
+/* === Sección Orden / Celebraciones especiales: estable === */
+:root {
+  --special-text-scale: 100%;
+}
+
+.mode-tabs {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+#orden-viewer[hidden],
+#orden-tabs[hidden] {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.special-viewer.hidden {
+  display: none !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
+.special-viewer {
+  position: relative;
+  z-index: 1;
+  border: 1px solid var(--black);
+  background: rgba(255,255,255,.88);
+  box-shadow: 0 14px 35px rgba(0,0,0,.06);
+}
+
+.special-card {
+  display: flex;
+  flex-direction: column;
+  max-height: min(78vh, 48rem);
+  background: var(--paper);
+}
+
+.special-header {
+  display: flex;
+  justify-content: space-between;
+  gap: .75rem;
+  align-items: flex-start;
+  padding: .75rem .85rem;
+  border-bottom: 1px solid var(--black);
+  background: var(--black);
+  color: var(--white);
+}
+
+.special-eyebrow {
+  display: block;
+  margin-bottom: .18rem;
+  font-family: var(--font-body);
+  font-size: .56rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.special-header h2 {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  line-height: 1.05;
+}
+
+.special-header p {
+  margin: .2rem 0 0;
+  color: rgba(255,255,255,.78);
+  font-size: .72rem;
+}
+
+.special-actions {
+  display: flex;
+  gap: .35rem;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.special-font-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: .22rem;
+  padding: .16rem;
+  border: 1px solid rgba(255,255,255,.32);
+  background: rgba(255,255,255,.08);
+}
+
+.special-font-controls button {
+  min-height: 1.82rem;
+  min-width: 2.05rem;
+  padding: .22rem .38rem;
+  border: 1px solid rgba(255,255,255,.26);
+  background: rgba(255,255,255,.92);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+  cursor: pointer;
+}
+
+.special-font-controls button:hover {
+  background: var(--gold);
+  color: var(--black);
+}
+
+.special-font-controls button:disabled {
+  opacity: .42;
+  cursor: not-allowed;
+}
+
+.special-body {
+  max-height: min(68vh, 40rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-behavior: smooth;
+  background: var(--paper);
+  border-top: 1px solid rgba(7,7,7,.18);
+}
+
+.special-body:focus {
+  outline: none;
+}
+
+.special-body:focus-visible {
+  outline: 2px solid rgba(184,134,11,.35);
+  outline-offset: -2px;
+}
+
+.special-content {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: clamp(1rem, 2.6vw, 1.7rem);
+  padding-bottom: 4rem;
+  font-family: var(--font-serif);
+  font-size: calc(clamp(1rem, 1.55vw, 1.14rem) * var(--special-text-scale) / 100);
+  line-height: 1.62;
+  color: var(--ink);
+}
+
+.special-content h3,
+.special-content h4 {
+  margin: 1.25rem 0 .55rem;
+  font-family: var(--font-body);
+  font-size: .76rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--black);
+  scroll-margin-top: 1rem;
+}
+
+.special-content p {
+  margin: .55rem 0;
+}
+
+.special-rubric,
+.special-antiphon {
+  color: var(--red);
+  font-style: italic;
+}
+
+.special-loading,
+.special-liturgy code {
+  font-family: var(--font-body);
+}
+
+.santoral-link.disabled {
+  opacity: .55;
+  pointer-events: none;
+}
+
+@media (max-width: 760px) {
+  .mode-tabs {
+    grid-template-columns: 1fr;
+    gap: .42rem;
+  }
+
+  .special-card {
+    max-height: 76vh;
+  }
+
+  .special-header {
+    flex-direction: column;
+    padding: .65rem .7rem;
+  }
+
+  .special-actions {
+    width: 100%;
+    align-items: stretch;
+  }
+
+  .special-font-controls {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .special-font-controls button {
+    flex: 1;
+    min-height: 1.75rem;
+    font-size: .58rem;
+  }
+
+  .special-actions .santoral-link {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .special-body {
+    max-height: 58vh;
+  }
+
+  .special-content {
+    padding: .9rem .78rem 4.8rem;
+    font-size: calc(1rem * var(--special-text-scale) / 100);
+    line-height: 1.56;
+  }
+}
+
+
+/* === Ajuste visual tipo Episcopado: Cambria y controles - / + === */
+.special-card,
+.special-body,
+.special-content {
+  background: #fff !important;
+}
+
+.special-card {
+  border: 1px solid #111;
+}
+
+.special-body {
+  border-top: 1px solid #111 !important;
+}
+
+.special-content {
+  font-family: Cambria, "Cambria Math", Georgia, "Times New Roman", serif !important;
+  color: #222 !important;
+  line-height: 1.35 !important;
+}
+
+.special-content h3,
+.special-content h4 {
+  font-family: Cambria, "Cambria Math", Georgia, "Times New Roman", serif !important;
+  font-size: 1em !important;
+  line-height: 1.2 !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  color: #ff0000 !important;
+  font-weight: normal !important;
+}
+
+.special-rubric,
+.special-antiphon {
+  color: #ff0000 !important;
+}
+
+.special-actions {
+  align-items: flex-start;
+}
+
+.special-font-controls {
+  display: inline-flex !important;
+  gap: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.special-font-controls button {
+  min-width: 56px !important;
+  width: 56px !important;
+  height: 23px !important;
+  min-height: 23px !important;
+  padding: 0 !important;
+  border: 1px solid #111 !important;
+  border-radius: 0 !important;
+  background: #fff !important;
+  color: #000 !important;
+  font-family: Cambria, "Cambria Math", Georgia, "Times New Roman", serif !important;
+  font-size: 16px !important;
+  line-height: 1 !important;
+  font-weight: normal !important;
+  letter-spacing: 0 !important;
+  box-shadow: none !important;
+}
+
+.special-font-controls button + button {
+  margin-left: -1px;
+}
+
+.special-font-controls button:hover,
+.special-font-controls button:focus {
+  background: #f1f1f1 !important;
+  color: #000 !important;
+}
+
+.special-font-controls button:disabled {
+  opacity: .45 !important;
+  cursor: not-allowed !important;
+}
+
+@media (max-width: 760px) {
+  .special-font-controls {
+    width: auto !important;
+    align-self: flex-end;
+  }
+
+  .special-font-controls button {
+    flex: 0 0 50px !important;
+    width: 50px !important;
+    min-width: 50px !important;
+    height: 23px !important;
+    min-height: 23px !important;
+    font-size: 15px !important;
+  }
+
+  .special-content {
+    line-height: 1.38 !important;
+  }
+}
+
+
+/* === Encabezado compacto para el cuadro de Orden === */
+.special-header {
+  min-height: 0 !important;
+  padding: .34rem .55rem !important;
+  gap: .45rem !important;
+  align-items: center !important;
+}
+
+.special-eyebrow {
+  margin-bottom: .08rem !important;
+  font-size: .46rem !important;
+  line-height: 1 !important;
+  letter-spacing: .11em !important;
+}
+
+.special-header h2 {
+  font-size: clamp(.92rem, 1.55vw, 1.12rem) !important;
+  line-height: 1 !important;
+}
+
+.special-header p {
+  margin-top: .08rem !important;
+  font-size: .58rem !important;
+  line-height: 1.05 !important;
+}
+
+.special-actions {
+  gap: .25rem !important;
+}
+
+.special-font-controls button {
+  height: 21px !important;
+  min-height: 21px !important;
+}
+
+.special-actions .santoral-link {
+  min-height: 21px !important;
+  padding-top: .16rem !important;
+  padding-bottom: .16rem !important;
+  font-size: .52rem !important;
+  line-height: 1 !important;
+}
+
+@media (max-width: 760px) {
+  .special-header {
+    padding: .34rem .48rem !important;
+    gap: .34rem !important;
+  }
+
+  .special-header h2 {
+    font-size: .98rem !important;
+  }
+
+  .special-header p {
+    font-size: .57rem !important;
+  }
+
+  .special-eyebrow {
+    font-size: .45rem !important;
+  }
+
+  .special-actions {
+    gap: .22rem !important;
+  }
+
+  .special-font-controls button {
+    height: 21px !important;
+    min-height: 21px !important;
+  }
+
+  .special-actions .santoral-link {
+    min-height: 21px !important;
+    padding-top: .16rem !important;
+    padding-bottom: .16rem !important;
+  }
+}
