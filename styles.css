@@ -3311,3 +3311,72 @@ footer {
     padding-bottom: .16rem !important;
   }
 }
+
+
+/* === Formato fiel al PDF de Vísperas Santiago === */
+.pdf-liturgic-document {
+  font-family: Cambria, "Cambria Math", Georgia, "Times New Roman", serif !important;
+  color: #222 !important;
+  line-height: 1.34 !important;
+}
+
+.pdf-liturgic-document .pdf-line {
+  margin: 0 0 .08rem;
+  min-height: 1.08em;
+  font: inherit;
+}
+
+.pdf-liturgic-document .pdf-center {
+  text-align: center;
+}
+
+.pdf-liturgic-document .pdf-indent {
+  margin-left: var(--pdf-indent, 1.8rem);
+}
+
+.pdf-liturgic-document .pdf-split {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+}
+
+.pdf-liturgic-document .pdf-part:last-child {
+  margin-left: auto;
+  text-align: right;
+}
+
+.pdf-liturgic-document .pdf-red {
+  color: #ee0000 !important;
+}
+
+.pdf-liturgic-document .pdf-bold {
+  font-weight: 700 !important;
+}
+
+.pdf-liturgic-document .pdf-italic {
+  font-style: italic !important;
+}
+
+@media (max-width: 760px) {
+  .pdf-liturgic-document {
+    line-height: 1.36 !important;
+  }
+
+  .pdf-liturgic-document .pdf-line {
+    margin-bottom: .12rem;
+  }
+
+  .pdf-liturgic-document .pdf-indent {
+    margin-left: min(var(--pdf-indent, 1.5rem), 1.65rem);
+  }
+
+  .pdf-liturgic-document .pdf-split {
+    flex-wrap: wrap;
+    gap: .15rem .75rem;
+  }
+
+  .pdf-liturgic-document .pdf-part:last-child {
+    text-align: left;
+  }
+}
