@@ -3427,3 +3427,48 @@ footer {
     font-size: .62rem !important;
   }
 }
+
+/* === Botones de Orden en móvil: PDF izquierda, tamaño derecha === */
+@media (max-width: 760px) {
+  .special-actions {
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: .55rem !important;
+  }
+
+  .special-actions .santoral-link {
+    width: 4.25rem !important;
+    min-width: 4.25rem !important;
+    height: 1.45rem !important;
+    min-height: 1.45rem !important;
+    padding: 0 .35rem !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: .55rem !important;
+    line-height: 1 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+  }
+
+  .special-font-controls {
+    margin-left: auto !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: .25rem !important;
+  }
+
+  .special-font-controls button {
+    width: 2rem !important;
+    min-width: 2rem !important;
+    height: 1.45rem !important;
+    min-height: 1.45rem !important;
+    padding: 0 !important;
+    font-size: .72rem !important;
+    line-height: 1 !important;
+  }
+}
