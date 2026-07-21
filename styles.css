@@ -3436,33 +3436,41 @@ footer {
     flex-direction: row !important;
     justify-content: space-between !important;
     align-items: center !important;
-    gap: .55rem !important;
+    gap: .6rem !important;
+    margin-top: .55rem !important;
   }
 
   .special-actions .santoral-link {
-    width: 4.25rem !important;
-    min-width: 4.25rem !important;
+    order: 1 !important;
+    flex: 0 0 4.35rem !important;
+    width: 4.35rem !important;
+    min-width: 4.35rem !important;
+    max-width: 4.35rem !important;
     height: 1.45rem !important;
     min-height: 1.45rem !important;
-    padding: 0 .35rem !important;
+    padding: 0 !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    font-size: .55rem !important;
+    font-size: .72rem !important;
     line-height: 1 !important;
-    text-align: center !important;
+    letter-spacing: .12em !important;
     white-space: nowrap !important;
   }
 
   .special-font-controls {
+    order: 2 !important;
     margin-left: auto !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: flex-end !important;
-    gap: .25rem !important;
+    gap: .35rem !important;
+    flex: 0 0 4.35rem !important;
+    width: 4.35rem !important;
   }
 
   .special-font-controls button {
+    flex: 0 0 2rem !important;
     width: 2rem !important;
     min-width: 2rem !important;
     height: 1.45rem !important;
