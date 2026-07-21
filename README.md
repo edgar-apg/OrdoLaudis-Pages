@@ -1,59 +1,117 @@
 # Ordo Laudis ✥
 
+> “Sé quien Dios quiso que fueras y prenderás fuego al mundo.”
+> — Santa Catalina de Siena
+
 **Ordo Laudis** es un visor sencillo para consultar la Liturgia de las Horas y el Misal diario desde una interfaz limpia, responsiva y orientada a la oración.
 
-El proyecto busca ayudar a la consulta cotidiana de los textos litúrgicos, especialmente para quienes desean rezar con más orden, recogimiento y continuidad.
+El proyecto nace desde una sensibilidad dominicana: oración, estudio, comunidad y predicación. Quiere servir especialmente a quienes, desde la vida cotidiana y la vocación laical, desean rezar con más orden, recogimiento y continuidad.
 
-## Finalidad del proyecto 🙏
+**Laudare, Benedicere, Praedicare — In Rete.**
 
-Ordo Laudis no pretende sustituir los libros litúrgicos oficiales ni las aplicaciones oficiales existentes. Su finalidad es pastoral y práctica: ofrecer una forma accesible de consultar los textos litúrgicos del día y acompañar la oración personal o comunitaria.
+---
 
-La página incluye una guía dinámica para orientar el uso del Invitatorio, el Oficio de lectura y Laudes, especialmente cuando se rezan como primera oración del día o en secuencia.
+## Finalidad
 
-## Fuente de los textos litúrgicos 📖
+Ordo Laudis no sustituye los libros litúrgicos oficiales ni las aplicaciones oficiales existentes.
 
-Los textos litúrgicos se consultan desde el sistema público de la **Conferencia del Episcopado Mexicano (CEM)**.
+Su finalidad es pastoral y práctica: facilitar la consulta de los textos litúrgicos del día, acompañar la oración personal o comunitaria y ofrecer herramientas sencillas para rezar con mayor atención y belleza.
 
-Ordo Laudis es un visor no oficial. No pertenece a la CEM, no representa oficialmente a la CEM y no modifica la fuente litúrgica original. Cualquier error, interrupción, cambio de disponibilidad o variación en los textos consultados depende de la fuente externa correspondiente.
+---
 
-## Guía litúrgica y Santoral Dominicano 🤍🖤
+## Funciones principales
 
-Ordo Laudis integra la **Guía litúrgica** y el **Santoral Dominicano** en un mismo panel dinámico. La mitad izquierda orienta algunas secuencias de oración de la Liturgia de las Horas; la mitad derecha ayuda a consultar si la fecha seleccionada tiene una memoria dominicana verificada en la selección actual.
+Ordo Laudis integra:
 
-La Guía litúrgica permite seguir algunas secuencias frecuentes, como:
+- Liturgia de las Horas.
+- Misal diario.
+- Guía litúrgica para algunas secuencias frecuentes de oración.
+- Santoral Dominicano.
+- Modo Orden, para celebraciones y materiales especiales de la Orden de Predicadores.
+- Música ambiental opcional para la oración personal.
+
+---
+
+## Liturgia de las Horas y Misal
+
+Los textos litúrgicos ordinarios se consultan desde el sistema público de la **Conferencia del Episcopado Mexicano (CEM)**.
+
+Ordo Laudis funciona como visor no oficial. No pertenece a la CEM, no representa oficialmente a la CEM y no modifica la fuente litúrgica original.
+
+Cualquier cambio, interrupción, error de disponibilidad o variación en los textos depende de la fuente externa correspondiente.
+
+---
+
+## Guía litúrgica y Santoral Dominicano
+
+La Guía litúrgica ayuda a seguir algunas secuencias frecuentes, como:
 
 - Invitatorio → Laudes
 - Invitatorio → Oficio de lectura
 - Invitatorio → Oficio de lectura → Laudes
 
-También incluye una guía básica para el Misal, incluyendo una opción de consulta cuando la celebración se relaciona con Vísperas. En el modo Misal, Ordo Laudis ofrece además un acceso directo al comentario del Evangelio del día publicado por Dominicos.org, calculando el enlace conforme a la fecha seleccionada.
+El Santoral Dominicano se ofrece como una ayuda de consulta vinculada al carisma de la Orden de Predicadores.
 
-El Santoral Dominicano se ofrece como una ayuda de consulta vinculada al carisma de la Orden de Predicadores. En esta versión, Ordo Laudis usa una selección manual de memorias dominicanas con fecha, descripción, enlace y señal de si la ficha contiene Liturgia de las Horas u otra ayuda de oración.
+Cuando una fecha tiene memoria dominicana registrada, el panel puede mostrar el santo, beato o celebración correspondiente y ofrecer un enlace al propio, ficha o santoral fuente.
 
-Cuando una fecha tiene memoria dominicana registrada, el panel puede mostrar el santo, beato o celebración correspondiente y ofrecer un enlace al propio o al santoral fuente. Esto no modifica automáticamente los textos litúrgicos del CEM ni reemplaza el discernimiento litúrgico correspondiente.
+Esta sección no sustituye el calendario litúrgico oficial ni modifica automáticamente los textos de la CEM.
 
-Para usar un propio dominicano, conviene revisar la celebración del día, el grado litúrgico, el calendario local y las indicaciones propias de la comunidad o de quien preside. Ordo Laudis sólo facilita el acceso a la información; no pretende ser un calendario litúrgico oficial de la Orden ni una edición oficial de sus textos propios.
+---
 
-Las fechas y enlaces del Santoral Dominicano se mantienen como una selección manual verificable y pueden requerir ajustes conforme se revisen las fichas fuente.
+## Orden de Predicadores
 
-## Música ambiental 🎧
+El modo **Orden** permite integrar materiales especiales relacionados con la Familia Dominicana.
+
+Está pensado para celebraciones, encuentros, vísperas, propios, subsidios u otros textos que convenga tener disponibles dentro de Ordo Laudis.
+
+Actualmente incluye:
+
+- **Vísperas Santiago, Apóstol**
+- texto integrado en formato de lectura;
+- controles para aumentar o disminuir el tamaño de letra;
+- descarga del PDF original;
+- acceso directo mediante enlace y código QR.
+
+---
+
+## Música ambiental
 
 La música ambiental integrada es opcional y está pensada sólo como acompañamiento para la oración personal.
 
-Las pistas musicales pertenecen a **Universfield** y fueron obtenidas desde **Pixabay**, conforme a las condiciones de uso indicadas por dicha plataforma. Ordo Laudis no reclama autoría sobre esas obras ni las ofrece como descarga independiente.
+Las pistas pertenecen a **Universfield** y fueron obtenidas desde **Pixabay**, conforme a las condiciones de uso indicadas por dicha plataforma.
 
-## Inspiración dominicana 🤍🖤
+Ordo Laudis no reclama autoría sobre esas obras ni las ofrece como descarga independiente.
 
-Ordo Laudis está inspirado espiritualmente en el carisma dominicano, especialmente en la tradición de oración, estudio, comunidad y predicación vivida también por las **Fraternidades Laicales Dominicanas**.
+---
 
-La intención del proyecto es servir a la vida de oración y ayudar a que la liturgia pueda ser rezada con mayor conciencia, belleza y sencillez.
+## Inspiración dominicana
 
-## Aviso ⚠️
+Ordo Laudis está inspirado en el carisma dominicano vivido también por las **Fraternidades Laicales Dominicanas**.
 
-Este proyecto es de uso pastoral, devocional y educativo. No es una edición litúrgica oficial, no sustituye los libros aprobados para la celebración litúrgica y no debe entenderse como una publicación oficial de ninguna institución eclesial.
+Desde esta espiritualidad, la oración litúrgica no es una práctica aislada, sino una fuente para contemplar, estudiar, vivir y predicar desde la propia vocación.
+
+---
+
+## Aviso
+
+Este proyecto es de uso pastoral, devocional y educativo.
+
+No es una edición litúrgica oficial, no sustituye los libros aprobados para la celebración litúrgica y no debe entenderse como publicación oficial de ninguna institución eclesial.
 
 El uso de fuentes externas, textos litúrgicos, santoral, oraciones y música se realiza con intención de facilitar la consulta y acompañar la oración, respetando la autoría y titularidad de sus respectivos responsables.
 
 ---
 
-*Laudare, Benedicere, Praedicare — in Rete.* 🏁
+## Sitios publicados
+
+Sitio principal recomendado:
+
+https://ordolaudis.netlify.app/
+
+Sitio espejo en GitHub Pages:
+
+https://edgar-apg.github.io/OrdoLaudis-Pages/
+
+---
+
+*Ordo Laudis ✥ Laudare, Benedicere, Praedicare — In Rete. 🏁*
