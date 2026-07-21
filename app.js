@@ -615,7 +615,7 @@ async function updateSpecialEventView(options = {}) {
   if (ordenPdfLink) {
     ordenPdfLink.href = eventData.pdf || "#";
     ordenPdfLink.classList.toggle("disabled", !eventData.pdf);
-    ordenPdfLink.textContent = eventData.pdf ? "Descargar PDF" : "PDF pendiente";
+    ordenPdfLink.textContent = eventData.pdf ? "PDF" : "PDF pendiente";
   }
 
   ordenContent.innerHTML = `<p class="special-loading">Cargando texto integrado…</p>`;
