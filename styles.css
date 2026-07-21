@@ -3380,3 +3380,26 @@ footer {
     text-align: left;
   }
 }
+
+
+/* === Alineación izquierda del encabezado de Orden en celular === */
+@media (max-width: 760px) {
+  .special-header {
+    align-items: flex-start !important;
+    text-align: left !important;
+  }
+
+  .special-title-wrap,
+  .special-eyebrow,
+  .special-header h2,
+  .special-header p {
+    width: 100% !important;
+    text-align: left !important;
+  }
+
+  .special-actions {
+    width: 100% !important;
+    justify-content: flex-start !important;
+    align-items: center !important;
+  }
+}
