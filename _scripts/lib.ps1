@@ -204,3 +204,17 @@ function Show-GitSummary {
     }
 
 }
+
+function Get-Version {
+
+    $versionFile = Join-Path (Get-RepoPath) "VERSION"
+
+    if (Test-Path $versionFile) {
+
+        return (Get-Content $versionFile).Trim()
+
+    }
+
+    return "0.0.0"
+
+}

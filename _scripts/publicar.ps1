@@ -2,6 +2,9 @@
 
 Show-Header (Get-ProjectName)
 
+    Write-Host "Versión: $(Get-Version)"
+    Write-Host ""
+
 if ((Get-CurrentBranch) -ne "main") {
 
     Write-ErrorText "Debes estar en main."
@@ -22,6 +25,7 @@ Write-Host ""
 
     Write-Host ""
     Write-Host "Proyecto : $(Get-ProjectName)"
+    Write-Host "Versión  : $(Get-Version)"
     Write-Host "Origen   : main"
     Write-Host "Destino  : production"
     Write-Host ""
