@@ -20,7 +20,15 @@ if (Has-UncommittedChanges) {
 
 Write-Host ""
 
-if (!(Confirm-Action "¿Publicar en production?")) {
+    Write-Host ""
+    Write-Host "Proyecto : $(Get-ProjectName)"
+    Write-Host "Origen   : main"
+    Write-Host "Destino  : production"
+    Write-Host ""
+    Write-WarningText "Esto actualizará la versión pública en Netlify."
+    Write-Host ""
+
+if (!(Confirm-Action "¿Continuar con la publicación?")) {
 
     Write-WarningText "Operación cancelada."
     Pause-Script
