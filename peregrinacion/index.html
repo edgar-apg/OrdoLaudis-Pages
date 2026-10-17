@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#171512">
+<meta name="description" content="Materiales para la Peregrinación anual a la Basílica de Guadalupe 2026.">
+<title>Peregrinación a Guadalupe 2026 | Ordo Laudis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#171512;--panel:#211e19;--text:#f2eadb;--muted:#c2b6a0;--gold:#c5a66a;--line:rgba(197,166,106,.3)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font-family:Literata,Georgia,serif;line-height:1.55}
+header{text-align:center;padding:2.3rem 1rem 1.8rem;border-bottom:1px solid var(--line);background:radial-gradient(ellipse at top,#30291e 0%,var(--bg) 70%)}
+.mark{color:var(--gold);font-size:1.8rem;line-height:1}.eyebrow{color:var(--muted);font-family:"Cormorant Garamond",Georgia,serif;font-size:1.1rem;letter-spacing:.08em;margin:.8rem 0 .3rem}
+h1,h2{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600}h1{font-size:clamp(2rem,5vw,3.2rem);line-height:1.05;margin:.2rem 0 .6rem}.subtitle{color:var(--muted);margin:0}
+main{width:min(100% - 1.5rem,980px);margin:1.5rem auto 3rem}section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:clamp(1rem,3vw,1.5rem);margin-bottom:1.25rem;box-shadow:0 8px 28px rgba(0,0,0,.16)}
+.section-head{margin-bottom:1rem}h2{color:var(--gold);font-size:clamp(1.6rem,4vw,2.1rem);margin:0 0 .2rem}.note{color:var(--muted);margin:0;font-size:.95rem}
+.actions{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1rem}a.button{display:inline-block;text-decoration:none;text-align:center;border:1px solid var(--gold);border-radius:999px;padding:.65rem 1rem;color:var(--text);font-size:.95rem}a.button.primary{background:var(--gold);color:#211a10;font-weight:600}
+.frame-wrap{overflow:hidden;border:1px solid var(--line);border-radius:9px;background:#fff}iframe{display:block;width:100%;border:0}#pdf-viewer{height:min(78vh,900px);min-height:420px}#word-viewer{height:min(78vh,900px);min-height:560px;background:#fff}
+.header-actions{display:flex;justify-content:center;margin-top:1.2rem}
+footer{text-align:center;color:var(--muted);font-size:.85rem;padding:0 1rem 2rem}footer a{color:var(--gold)}
+@media(max-width:560px){header{padding-top:1.7rem}main{width:min(100% - 1rem,980px);margin-top:1rem}section{padding:.85rem;border-radius:10px}#pdf-viewer{min-height:420px;height:68vh}#word-viewer{min-height:620px;height:75vh}.actions a{flex:1 1 100%}}
+</style>
+</head>
+<body>
+<header>
+<div class="mark" aria-hidden="true">✥</div>
+<p class="eyebrow">Convento de San Alberto Magno · Parroquia Universitaria</p>
+<h1>Peregrinación a Guadalupe</h1>
+<p class="subtitle">Peregrinación anual a la Insigne y Nacional Basílica de Nuestra Señora de Guadalupe · 2026</p>
+<div class="header-actions">
+  <a class="button primary" href="../" aria-label="Volver a Ordo Laudis">← Volver a Ordo Laudis</a>
+</div>
+</header>
+<main>
+<section aria-labelledby="materiales-title">
+<div class="section-head"><h2 id="materiales-title">Cantos de la peregrinación</h2><p class="note">Folleto para acompañar el recorrido y la celebración.</p></div>
+<div class="frame-wrap"><iframe id="pdf-viewer" title="Folleto de cantos de la peregrinación" src="./Peregrinacion_2026_Letras.pdf#view=FitH" loading="lazy"></iframe></div>
+<div class="actions"><a class="button primary" href="./Peregrinacion_2026_Letras.pdf" target="_blank" rel="noopener noreferrer">Abrir PDF</a><a class="button" href="./Peregrinacion_2026_Letras.pdf" download>Descargar PDF</a></div>
+</section>
+<section aria-labelledby="palabra-title">
+<div class="section-head"><h2 id="palabra-title">Liturgia de la Palabra</h2><p class="note">Lecturas del día, tal como aparecen en el Misal de la Conferencia del Episcopado Mexicano.</p></div>
+<div class="frame-wrap"><iframe id="word-viewer" title="Liturgia de la Palabra del 17 de octubre de 2026" src="https://sistemas.cem.org.mx/Controller/Misal/liturgia_palabra.php?fecha=2026-10-17T00%3A00%3A00" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+<div class="actions"><a class="button primary" href="https://sistemas.cem.org.mx/Controller/Misal/liturgia_palabra.php?fecha=2026-10-17T00%3A00%3A00" target="_blank" rel="noopener noreferrer">Abrir lecturas en la CEM</a></div>
+</section>
+</main>
+<footer>Ordo Laudis · Laudare, Benedicere, Praedicare — In Rete<br>Fuente de las lecturas: Conferencia del Episcopado Mexicano (CEM). Visor no oficial.</footer>
+</body>
+</html>
