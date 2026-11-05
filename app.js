@@ -613,6 +613,8 @@ async function updateSpecialEventView(options = {}) {
   if (ordenSubtitle) ordenSubtitle.textContent = eventData.subtitle || "";
 
   if (ordenPdfLink) {
+    ordenPdfLink.hidden = !eventData.pdf;
+    ordenPdfLink.classList.toggle("hidden", !eventData.pdf);
     ordenPdfLink.href = eventData.pdf || "#";
     ordenPdfLink.classList.toggle("disabled", !eventData.pdf);
     ordenPdfLink.textContent = eventData.pdf ? "PDF" : "PDF pendiente";
