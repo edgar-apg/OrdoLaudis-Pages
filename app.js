@@ -120,6 +120,7 @@ const ordenTitle = document.getElementById("orden-title");
 const ordenSubtitle = document.getElementById("orden-subtitle");
 const ordenContent = document.getElementById("orden-content");
 const ordenPdfLink = document.getElementById("orden-pdf-link");
+const ordenPdfSubtitleSlot = document.getElementById("orden-pdf-subtitle-slot");
 const ordenFontDecrease = document.getElementById("orden-font-decrease");
 const ordenFontIncrease = document.getElementById("orden-font-increase");
 
@@ -613,11 +614,27 @@ async function updateSpecialEventView(options = {}) {
   if (ordenSubtitle) ordenSubtitle.textContent = eventData.subtitle || "";
 
   if (ordenPdfLink) {
-    ordenPdfLink.hidden = !eventData.pdf;
-    ordenPdfLink.classList.toggle("hidden", !eventData.pdf);
+    const hasPdf = Boolean(eventData.pdf);
+    const placeUnderSubtitle = eventData.pdfPlacement === "subtitle";
+    const destination = placeUnderSubtitle ? ordenPdfSubtitleSlot : document.querySelector(".special-actions");
+    if (destination && ordenPdfLink.parentElement !== destination) destination.appendChild(ordenPdfLink);
+    if (ordenPdfSubtitleSlot) {
+      const hideSubtitleSlot = !hasPdf || !placeUnderSubtitle;
+      ordenPdfSubtitleSlot.hidden = hideSubtitleSlot;
+      ordenPdfSubtitleSlot.classList.toggle("hidden", hideSubtitleSlot);
+    }
+    ordenPdfLink.hidden = !hasPdf;
+    ordenPdfLink.classList.toggle("hidden", !hasPdf);
     ordenPdfLink.href = eventData.pdf || "#";
-    ordenPdfLink.classList.toggle("disabled", !eventData.pdf);
-    ordenPdfLink.textContent = eventData.pdf ? "PDF" : "PDF pendiente";
+    ordenPdfLink.classList.toggle("disabled", !hasPdf);
+    ordenPdfLink.textContent = hasPdf ? (eventData.downloadName ? "Descargar PDF" : "PDF") : "PDF pendiente";
+    if (eventData.downloadName) {
+      ordenPdfLink.setAttribute("download", eventData.downloadName);
+      ordenPdfLink.removeAttribute("target");
+    } else {
+      ordenPdfLink.removeAttribute("download");
+      ordenPdfLink.setAttribute("target", "_blank");
+    }
   }
 
   ordenContent.innerHTML = `<p class="special-loading">Cargando texto integrado…</p>`;
