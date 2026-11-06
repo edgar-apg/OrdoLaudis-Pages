@@ -27,7 +27,7 @@ Ordo Laudis integra:
 - Misal diario.
 - Guía litúrgica para algunas secuencias frecuentes de oración.
 - Santoral Dominicano.
-- Modo Orden, para celebraciones y materiales especiales de la Orden de Predicadores.
+- Modo Orden, para celebraciones y materiales especiales de la Orden de Predicadores de la Provincia de Santiago.
 - Música ambiental opcional para la oración personal.
 
 ---
@@ -66,7 +66,7 @@ Está pensado para celebraciones, encuentros, vísperas, propios, subsidios u ot
 
 Actualmente incluye:
 
-- **Vísperas Santiago, Apóstol**
+- **textos auxiliares para eventos de la Provincia de Santiago de México. En específico el Convento de San Alberto Magno (CUC)**
 - texto integrado en formato de lectura;
 - controles para aumentar o disminuir el tamaño de letra;
 - descarga del PDF original;
@@ -106,11 +106,13 @@ El uso de fuentes externas, textos litúrgicos, santoral, oraciones y música se
 
 Sitio principal recomendado:
 
-https://ordolaudis.netlify.app/
+https://ordolaudis.lectio.mx/
 
-Sitio espejo en GitHub Pages:
+## Proyecto principal
 
-https://edgar-apg.github.io/OrdoLaudis-Pages/
+Forma parte del proyecto principal **Lectio**:
+
+https://lectio.mx/
 
 
 ---

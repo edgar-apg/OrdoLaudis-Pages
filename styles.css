@@ -3493,3 +3493,18 @@ footer {
 .mode-tabs {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
+
+.mobile-pdf-note {
+  display: none;
+}
+
+@media (max-width: 560px) {
+  .pdf-frame {
+    display: none;
+  }
+
+  .mobile-pdf-note {
+    display: block;
+    margin-top: 1rem;
+  }
+}
