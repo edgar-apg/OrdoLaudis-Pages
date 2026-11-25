@@ -42,7 +42,8 @@ const SOURCES = {
 const DEFAULT_KEY = {
   liturgia: "invitatorio",
   misal: "ritos",
-  orden: "visperas-santiago"
+  orden: "visperas-santiago",
+  adviento: "primer-domingo"
 };
 
 const liturgyGuideSequences = {
@@ -94,7 +95,8 @@ let activeMode = "liturgia";
 let activeKey = {
   liturgia: DEFAULT_KEY.liturgia,
   misal: DEFAULT_KEY.misal,
-  orden: DEFAULT_KEY.orden
+  orden: DEFAULT_KEY.orden,
+  adviento: DEFAULT_KEY.adviento
 };
 
 let shouldCenterSpecialOnLoad = false;
@@ -113,10 +115,13 @@ const modeButtons = document.querySelectorAll(".mode-tabs button");
 const liturgiaTabs = document.getElementById("liturgia-tabs");
 const misalTabs = document.getElementById("misal-tabs");
 const ordenTabs = document.getElementById("orden-tabs");
+const advientoTabs = document.getElementById("adviento-tabs");
+const dateSection = document.getElementById("date-section");
 const viewerWrap = document.querySelector(".viewer-wrap");
 const ordenViewer = document.getElementById("orden-viewer");
 const ordenBody = document.getElementById("orden-body");
 const ordenTitle = document.getElementById("orden-title");
+const ordenEyebrow = document.getElementById("orden-eyebrow");
 const ordenSubtitle = document.getElementById("orden-subtitle");
 const ordenContent = document.getElementById("orden-content");
 const ordenPdfLink = document.getElementById("orden-pdf-link");
@@ -507,7 +512,13 @@ function getSpecialEvents() {
   return ORDO_SPECIAL_EVENTS || {};
 }
 
+function getAdventEvents() {
+  if (typeof ORDO_ADVENT_EVENTS === "undefined") return {};
+  return ORDO_ADVENT_EVENTS || {};
+}
+
 function getActiveSpecialEvent() {
+  if (activeMode === "adviento") return getAdventEvents()[activeKey.adviento] || null;
   return getSpecialEvents()[activeKey.orden] || null;
 }
 
@@ -522,7 +533,7 @@ function shouldCenterFromUrl() {
 }
 
 function isSpecialMode() {
-  return activeMode === "orden";
+  return activeMode === "orden" || activeMode === "adviento";
 }
 
 function setOrdenVisibility(isOrden) {
@@ -541,8 +552,15 @@ function setOrdenVisibility(isOrden) {
   }
 
   if (ordenTabs) {
-    ordenTabs.hidden = !isOrden;
-    ordenTabs.classList.toggle("hidden", !isOrden);
+    const showOrdenTabs = activeMode === "orden";
+    ordenTabs.hidden = !showOrdenTabs;
+    ordenTabs.classList.toggle("hidden", !showOrdenTabs);
+  }
+
+  if (advientoTabs) {
+    const showAdventTabs = activeMode === "adviento";
+    advientoTabs.hidden = !showAdventTabs;
+    advientoTabs.classList.toggle("hidden", !showAdventTabs);
   }
 }
 
@@ -598,6 +616,8 @@ function renderSpecialEventFallback(eventData) {
 async function updateSpecialEventView(options = {}) {
   if (!ordenViewer || !ordenContent) return;
 
+  ordenViewer.classList.toggle("advent-guide-viewer", activeMode === "adviento");
+
   const eventData = getActiveSpecialEvent();
 
   if (!eventData) {
@@ -610,6 +630,7 @@ async function updateSpecialEventView(options = {}) {
     return;
   }
 
+  if (ordenEyebrow) ordenEyebrow.textContent = eventData.eyebrow || "Orden de Predicadores";
   if (ordenTitle) ordenTitle.textContent = eventData.title || "Celebración especial";
   if (ordenSubtitle) ordenSubtitle.textContent = eventData.subtitle || "";
 
@@ -627,7 +648,7 @@ async function updateSpecialEventView(options = {}) {
     ordenPdfLink.classList.toggle("hidden", !hasPdf);
     ordenPdfLink.href = eventData.pdf || "#";
     ordenPdfLink.classList.toggle("disabled", !hasPdf);
-    ordenPdfLink.textContent = hasPdf ? (eventData.downloadName ? "Descargar PDF" : "PDF") : "PDF pendiente";
+    ordenPdfLink.textContent = hasPdf ? (eventData.downloadLabel || (eventData.downloadName ? "Descargar PDF" : "PDF")) : "PDF pendiente";
     if (eventData.downloadName) {
       ordenPdfLink.setAttribute("download", eventData.downloadName);
       ordenPdfLink.removeAttribute("target");
@@ -658,6 +679,23 @@ async function updateSpecialEventView(options = {}) {
     window.setTimeout(scrollViewerIntoCenter, 180);
     window.setTimeout(scrollViewerIntoCenter, 520);
   }
+}
+
+function activateAdventEventFromUrl() {
+  const requested = new URLSearchParams(window.location.search).get("adviento") || "";
+  const requestedKey = requested === "auto" ? getAdventKeyForDate(dateInput?.value || "") : requested;
+  const events = getAdventEvents();
+
+  if (!requestedKey || !events[requestedKey]) return false;
+
+  activeMode = "adviento";
+  activeKey.adviento = requestedKey;
+  shouldCenterSpecialOnLoad = shouldCenterFromUrl();
+  resetLiturgyGuide();
+  resetMisalGuide();
+  activeDailyTool = null;
+  activeMisalTool = null;
+  return true;
 }
 
 function activateSpecialEventFromUrl() {
@@ -875,6 +913,13 @@ function updateTabs() {
     ordenTabs.hidden = activeMode !== "orden";
     ordenTabs.classList.toggle("hidden", activeMode !== "orden");
   }
+  if (advientoTabs) {
+    advientoTabs.hidden = activeMode !== "adviento";
+    advientoTabs.classList.toggle("hidden", activeMode !== "adviento");
+  }
+  if (dateSection) {
+    dateSection.hidden = activeMode === "adviento";
+  }
 
   const misalGuideActive = activeMisalGuide !== "quick";
 
@@ -886,7 +931,7 @@ function updateTabs() {
     misalTools.classList.toggle("hidden", !(activeMode === "misal" || misalGuideActive));
   }
 
-  if (activeMode === "orden") {
+  if (activeMode === "orden" || activeMode === "adviento") {
     if (dailyTools) dailyTools.classList.add("hidden");
     if (misalTools) misalTools.classList.add("hidden");
   }
@@ -901,6 +946,9 @@ function updateTabs() {
 
   document.querySelectorAll("#orden-tabs button").forEach(button => {
     button.classList.toggle("active", button.dataset.key === activeKey.orden);
+  });
+  document.querySelectorAll("#adviento-tabs button").forEach(button => {
+    button.classList.toggle("active", button.dataset.key === activeKey.adviento);
   });
 
   updateSuggestedHourUI();
@@ -919,13 +967,27 @@ function resetMisalGuide() {
   updateMisalGuideUI();
 }
 
+function getAdventKeyForDate(dateValue = dateInput?.value || "") {
+  if (!dateValue.startsWith("2026-")) return DEFAULT_KEY.adviento;
+  if (dateValue < "2026-12-06") return "primer-domingo";
+  if (dateValue < "2026-12-13") return "segundo-domingo";
+  if (dateValue < "2026-12-20") return "tercer-domingo";
+  if (dateValue < "2026-12-24") return "cuarto-domingo";
+  if (dateValue <= "2026-12-31") return "navidad";
+  return DEFAULT_KEY.adviento;
+}
+
 function setMode(mode, fromGuide = false) {
   activeMode = mode;
+
+  if (mode === "adviento") {
+    activeKey.adviento = getAdventKeyForDate();
+  }
 
   if (!fromGuide) {
     if (mode === "liturgia") resetMisalGuide();
     if (mode === "misal") resetLiturgyGuide();
-    if (mode === "orden") {
+    if (mode === "orden" || mode === "adviento") {
       resetLiturgyGuide();
       resetMisalGuide();
       activeDailyTool = null;
@@ -1120,6 +1182,12 @@ document.querySelectorAll("#orden-tabs button").forEach(button => {
   });
 });
 
+document.querySelectorAll("#adviento-tabs button").forEach(button => {
+  button.addEventListener("click", () => {
+    setKey("adviento", button.dataset.key);
+  });
+});
+
 guideCards.forEach(card => {
   card.addEventListener("click", () => {
     startLiturgyGuide(card.dataset.sequence);
@@ -1198,6 +1266,11 @@ misalGuideExit.addEventListener("click", () => {
 
 
 dateInput.addEventListener("change", () => {
+  if (activeMode === "adviento") {
+    activeKey.adviento = getAdventKeyForDate(dateInput.value);
+    updateTabs();
+  }
+
   if (isSelectedDateToday()) {
     selectSuggestedHourOnEntry();
     updateTabs();
@@ -1249,7 +1322,7 @@ if (viewerRetry) {
 
 dateInput.value = localDateString();
 selectSuggestedHourOnEntry();
-activateSpecialEventFromUrl();
+if (!activateAdventEventFromUrl()) activateSpecialEventFromUrl();
 updateSantoral();
 updateGospelLink();
 updateDailyToolsUI();

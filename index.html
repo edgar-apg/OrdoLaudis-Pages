@@ -7,7 +7,7 @@
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Serif:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./styles.css?v=ordo-header-movil-izquierda-37">
+  <link rel="stylesheet" href="./styles.css?v=adviento-navidad-2026-4">
 </head>
 <body>
 
@@ -23,9 +23,10 @@
     <button class="active" data-mode="liturgia">Liturgia de las Horas</button>
     <button data-mode="misal">Misal</button>
     <button class="hidden" data-mode="orden">Orden</button>
+    <button data-mode="adviento">Mes Dominicano por la Paz | México 2026</button>
   </section>
 
-  <section class="section controls-section">
+  <section id="date-section" class="section controls-section">
     <div class="section-header static">
       <span class="section-title">Fecha</span>
     </div>
@@ -199,16 +200,23 @@
     <button class="active" data-key="visperas-santiago">Vísperas Santiago, Apóstol</button>
     <button data-key="visperas-san-alberto-magno">V&#237;speras San Alberto Magno</button>
   </nav>
+  <nav id="adviento-tabs" class="tabs hidden" aria-label="Domingos de Adviento y Navidad" hidden>
+    <button class="active" data-key="primer-domingo">I Domingo · 29 nov</button>
+    <button data-key="segundo-domingo">II Domingo · 6 dic</button>
+    <button data-key="tercer-domingo">III Domingo · 13 dic</button>
+    <button data-key="cuarto-domingo">IV Domingo · 20 dic</button>
+    <button data-key="navidad">Navidad · 24/25 dic</button>
+  </nav>
 
 
   <section class="viewer-wrap">
     <iframe id="viewer" title="Consulta litúrgica" tabindex="0" loading="eager"></iframe>
   </section>
-  <section id="orden-viewer" class="special-viewer hidden" aria-label="Celebración especial de la Orden" hidden>
+  <section id="orden-viewer" class="special-viewer hidden" aria-label="Celebración o guía litúrgica" hidden>
     <article class="special-card">
       <div class="special-header">
         <div>
-          <span class="special-eyebrow">Orden de Predicadores</span>
+          <span id="orden-eyebrow" class="special-eyebrow">Orden de Predicadores</span>
           <h2 id="orden-title">Vísperas Santiago, Apóstol</h2>
           <p id="orden-subtitle">Provincia de Santiago de México</p>
           <p id="orden-pdf-subtitle-slot" class="special-subtitle-actions hidden"></p>
@@ -226,8 +234,8 @@
         </div>
       </div>
 
-      <div id="orden-body" class="special-body" tabindex="0" aria-label="Texto de la celebración especial">
-        <div id="orden-content" class="special-content">
+      <div id="orden-body" class="special-body" tabindex="0" aria-label="Texto de la celebración o guía litúrgica">
+        <div id="orden-content" class="special-content" aria-label="Texto litúrgico">
           <p class="special-loading">Cargando celebración especial…</p>
         </div>
       </div>
@@ -265,7 +273,7 @@
 <button id="scroll-top-fab" class="scroll-top-fab hidden" type="button" aria-label="Volver al inicio" title="Volver arriba">↑</button>
 
 <script src="santoral-dominicano.js?v=ordo-header-movil-izquierda-37"></script>
-<script src="eventos-especiales.js?v=san-alberto-pdf-1"></script>
-<script src="app.js?v=san-alberto-pdf-1"></script>
+<script src="eventos-especiales.js?v=adviento-navidad-2026-4"></script>
+<script src="app.js?v=adviento-navidad-2026-4"></script>
 </body>
 </html>

@@ -2916,7 +2916,11 @@ footer {
 }
 
 .mode-tabs {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.mode-tabs button[data-mode="adviento"] {
+  grid-column: 1 / -1;
 }
 
 #orden-viewer[hidden],
@@ -3491,7 +3495,7 @@ footer {
 }
 
 .mode-tabs {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .mobile-pdf-note {
@@ -3507,4 +3511,128 @@ footer {
     display: block;
     margin-top: 1rem;
   }
+}
+
+/* Guía litúrgica de Adviento y Navidad 2026 */
+.advent-guide .advent-source-note {
+  margin: 0 0 .8rem;
+  color: #666;
+  font-family: var(--font-body);
+  font-size: .7rem;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.advent-reading-panel {
+  margin: 1.2rem 0 1.8rem;
+  padding: .75rem;
+  border: 1px solid rgba(7,7,7,.2);
+  border-top: 3px solid var(--gold);
+  background: #fff;
+}
+
+.advent-reading-panel h3 {
+  margin: .1rem 0 .35rem;
+}
+
+.advent-reading-note {
+  margin: 0 0 .65rem;
+  color: #666;
+  font: .76rem/1.45 var(--font-body);
+}
+
+.advent-reading-frame {
+  display: block;
+  width: 100%;
+  min-height: 42rem;
+  border: 1px solid rgba(7,7,7,.14);
+  background: #fff;
+}
+
+.advent-guide .guide-heading {
+  scroll-margin-top: .8rem;
+}
+
+.advent-guide .guide-role {
+  margin: .8rem 0 .12rem;
+  color: #666;
+  font-family: var(--font-body);
+  font-size: .72em;
+  font-weight: 700;
+  letter-spacing: .045em;
+}
+
+.advent-guide .guide-theme {
+  padding: .5rem .65rem;
+  border-left: 2px solid var(--gold);
+  background: #f8f5ee;
+  font-weight: 600;
+}
+
+.advent-guide .guide-list-item {
+  margin-left: 1.2rem;
+  list-style: disc outside;
+}
+
+.advent-mass-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .35rem;
+  margin: .5rem 0 .2rem;
+}
+
+.advent-mass-index a {
+  display: inline-block;
+  padding: .35rem .55rem;
+  border: 1px solid rgba(7,7,7,.28);
+  color: #111;
+  font: 600 .68rem/1.2 var(--font-body);
+  text-decoration: none;
+}
+
+.advent-mass-index a:hover,
+.advent-mass-index a:focus-visible {
+  background: #111;
+  color: #fff;
+}
+
+.advent-guide .advent-mass-note {
+  margin: .15rem 0 .9rem;
+  color: #666;
+  font: .68rem/1.4 var(--font-body);
+}
+
+.advent-full-text .source-line {
+  display: block;
+  min-height: 1.22em;
+  margin: 0;
+  padding: 0;
+  line-height: 1.22;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.advent-full-text .source-line.align-center { text-align: center; }
+.advent-full-text .source-line.align-left { text-align: left; }
+.advent-full-text .source-line.align-right { text-align: right; }
+.advent-full-text .source-line.align-justify { text-align: justify; }
+
+.advent-full-text .source-gap {
+  display: block;
+  height: 1.22em;
+  margin: 0;
+  padding: 0;
+}
+
+.special-subtitle-actions .santoral-link {
+  max-width: 100%;
+  margin-top: .28rem;
+  white-space: normal;
+  text-align: center;
+}
+
+@media (max-width: 560px) {
+  .advent-reading-panel { padding: .5rem; }
+  .advent-reading-frame { min-height: 36rem; }
+  .special-subtitle-actions .santoral-link { width: 100%; }
 }
